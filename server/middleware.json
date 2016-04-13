@@ -45,6 +45,12 @@
     },
     "./middleware/queryOreLavUtenteMese": {
       "paths": "/query_ore_lav_utente_mese"
+    },
+    "./middleware/queryGiorniCommessaUtente": {
+      "paths": "/query_giorni_lav_commessa_utente_mese"
+    },
+    "./middleware/queryGiorniCommessa": {
+      "paths": "/query_giorni_lav_commessa_mese"
     }
   },
   "files": {
