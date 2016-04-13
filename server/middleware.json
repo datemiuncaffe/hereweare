@@ -42,6 +42,9 @@
     },
     "./middleware/log": {
       "paths": "/log"
+    },
+    "./middleware/queryOreLavUtenteMese": {
+      "paths": "/query_ore_lav_utente_mese"
     }
   },
   "files": {
