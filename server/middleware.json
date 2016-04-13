@@ -51,7 +51,16 @@
     },
     "./middleware/queryGiorniCommessa": {
       "paths": "/query_giorni_lav_commessa_mese"
-    }
+    },
+    "./middleware/queryGiorni": {
+      "paths": "/query_giorni_lav_mese"
+    },
+    "./middleware/queryGiorniCliente": {
+      "paths": "/query_giorni_lav_cliente_mese"
+    },
+    "./middleware/queryGiorniClienteProgetto": {
+      "paths": "/query_giorni_lav_cliente_progetto_mese"
+    }    
   },
   "files": {
   },
