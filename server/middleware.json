@@ -13,9 +13,9 @@
     },
     "helmet#xssFilter": {},
     "helmet#frameguard": {
-      "params": [ 
+      "params": [
         "deny"
-       ]
+      ]
     },
     "helmet#hsts": {
       "params": {
@@ -26,19 +26,18 @@
     "helmet#hidePoweredBy": {},
     "helmet#ieNoOpen": {},
     "helmet#noSniff": {},
-    "helmet#noCache": { 
+    "helmet#noCache": {
       "enabled": false
     }
   },
-  "session": {
-  },
-  "auth": {
-  },
-  "parse": {
-  },
+  "session": {},
+  "auth": {},
+  "parse": {},
   "routes": {
     "loopback#rest": {
-      "paths": ["${restApiRoot}"]
+      "paths": [
+        "${restApiRoot}"
+      ]
     },
     "./middleware/log": {
       "paths": "/log"
@@ -60,10 +59,12 @@
     },
     "./middleware/queryGiorniClienteProgetto": {
       "paths": "/query_giorni_lav_cliente_progetto_mese"
-    }    
+    },
+    "./middleware/connMongoDb": {
+      "paths": "/conn_mongo"
+    }
   },
-  "files": {
-  },
+  "files": {},
   "final": {
     "loopback#urlNotFound": {}
   },

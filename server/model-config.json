@@ -12,5 +12,13 @@
       "../common/mixins",
       "./mixins"
     ]
+  },
+  "Customer": {
+    "dataSource": "mongoDs",
+    "public": true
+  },
+  "Project": {
+    "dataSource": "mongoDs",
+    "public": true
   }
 }
