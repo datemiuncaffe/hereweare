@@ -20,7 +20,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+  	"budgets": {
+      "type": "hasMany",
+      "model": "Budget",
+      "foreignKey": "projectId"
+    }
+  },
   "acls": [],
   "methods": {}
 }

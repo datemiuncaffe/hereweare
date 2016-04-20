@@ -7,7 +7,7 @@ module.exports = function(app) {
   //create all models
   async.parallel({
 	customers: async.apply(createCustomers),
-	budgets: async.apply(createBudgets)
+//	budgets: async.apply(createBudgets)
 //	customers: async.apply(createCustomers, function(err, customers) {
 //	      if (err) throw err;   	 
 //	      console.log('Customers created: \n', customers);
@@ -21,9 +21,17 @@ module.exports = function(app) {
     if (err) {
     	throw err;
     }
-    createProjects(results.customers, function(err, projects) {
-        if (err) throw err; 	   
-        console.log('Models created: \n', projects);
+    var customer = results.customers[0];
+    console.log('customer: ' + customer);
+    createProjects(customer, function(err, projects) {
+        if (err) throw err;
+        
+        console.log('project: ' + JSON.stringify(projects[0]));
+        createBudgets(projects[0], function(err, budgets) {
+        	console.log('Budgets created: \n', budgets);
+        });
+                
+        console.log('Projects created: \n', projects);
     });
   });
   //create customers
@@ -44,35 +52,36 @@ module.exports = function(app) {
     });
   }
   //create budgets
-  function createBudgets(cb) {
+  function createBudgets(project, cb) {
+	  console.log('createBudgets...');
     mongoDs.automigrate('Budget', function(err) {
       if (err) { 
     	  return cb(err);
       }
       var Budget = app.models.Budget;
       Budget.create([
-		{id: 1, from: new Date(), to: new Date(), amount: 10000, type: 'Y'},
-		{id: 2, from: new Date(), to: new Date(), amount: 2000, type: 'M'},
-		{id: 3, from: new Date(), to: new Date(), amount: 3000, type: 'M'}
+		{id: 1, month: 'GEN', amount: 10000, type: 'Y', projectId: project.id},
+		{id: 2, month: 'FEB', amount: 2000, type: 'M', projectId: project.id},
+		{id: 3, month: 'MAR', amount: 3000, type: 'M', projectId: project.id}
 	    ], cb);
     });
   }
   
   
   //create projects
-  function createProjects(customers, cb) {
+  function createProjects(customer, cb) {
     mongoDs.automigrate('Project', function(err) {
       if (err) {
     	  return cb(err);
       }
       var Project = app.models.Project;
       Project.create([
-  		{id: '2', name: 'Supporto Manzoni', code: 'CF12001'},
-		{id: '4', name: 'Configuratore 1', code: 'CF11015'},
-		{id: '5', name: 'CF11001', code: 'CF11001'},
-		{id: '6', name: 'Gestione Credito 1', code: 'CF12903'},
-		{id: '7', name: 'Gestione Credito 2', code: 'CF12904'},
-		{id: '8', name: 'Cosuntivo 10/2012', code: 'CF12901'}
+  		{id: '2', name: 'Supporto Manzoni', code: 'CF12001', customerId: customer.id},
+		{id: '4', name: 'Configuratore 1', code: 'CF11015', customerId: customer.id},
+		{id: '5', name: 'CF11001', code: 'CF11001', customerId: customer.id},
+		{id: '6', name: 'Gestione Credito 1', code: 'CF12903', customerId: customer.id},
+		{id: '7', name: 'Gestione Credito 2', code: 'CF12904', customerId: customer.id},
+		{id: '8', name: 'Cosuntivo 10/2012', code: 'CF12901', customerId: customer.id}
 	      ], cb);
     });
   }

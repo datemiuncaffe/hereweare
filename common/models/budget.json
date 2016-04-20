@@ -10,12 +10,8 @@
       "type": "number",
       "required": true
     },
-    "from": {
-      "type": "date",
-      "required": true
-    },
-    "to": {
-      "type": "date",
+    "month": {
+      "type": "string",
       "required": true
     },
     "amount": {
