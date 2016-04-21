@@ -60,10 +60,14 @@ module.exports = function(app) {
       }
       var Budget = app.models.Budget;
       Budget.create([
-		{id: 1, month: 'GEN', amount: 10000, type: 'Y', projectId: project.id},
-		{id: 2, month: 'FEB', amount: 2000, type: 'M', projectId: project.id},
-		{id: 3, month: 'MAR', amount: 3000, type: 'M', projectId: project.id}
-	    ], cb);
+//		{id: 1, month: 'GEN', amount: 10000, type: 'Y', projectId: project.id},
+//		{id: 2, month: 'FEB', amount: 2000, type: 'M', projectId: project.id},
+//		{id: 3, month: 'MAR', amount: 3000, type: 'M', projectId: project.id}
+//	    ], cb);
+		{month: 'GEN', amount: 10000, type: 'Y', projectId: project.id},
+		{month: 'FEB', amount: 2000, type: 'M', projectId: project.id},
+		{month: 'MAR', amount: 3000, type: 'M', projectId: project.id}
+		], cb);
     });
   }
   
