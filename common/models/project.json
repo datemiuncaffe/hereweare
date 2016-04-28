@@ -6,10 +6,6 @@
     "validateUpsert": true
   },
   "properties": {
-    "id": {
-      "type": "number",
-      "required": true
-    },
     "name": {
       "type": "string",
       "required": true
@@ -17,6 +13,15 @@
     "code": {
       "type": "string",
       "required": true
+    },
+    "from": {
+      "type": "date"
+    },
+    "to": {
+      "type": "date"
+    },
+    "budgettot": {
+      "type": "number"
     }
   },
   "validations": [],

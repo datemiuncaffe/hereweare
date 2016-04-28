@@ -7,15 +7,6 @@ module.exports = function(app) {
   //create all models
   async.parallel({
 	customers: async.apply(createCustomers),
-//	budgets: async.apply(createBudgets)
-//	customers: async.apply(createCustomers, function(err, customers) {
-//	      if (err) throw err;   	 
-//	      console.log('Customers created: \n', customers);
-//	}),
-//	budgets: async.apply(createBudgets, function(err, budgets) {
-//	      if (err) throw err;   	 
-//	      console.log('Budgets created: \n', budgets);
-//	})
   }, function(err, results) {
 	  console.log('Results: \n', results);
     if (err) {
@@ -60,13 +51,9 @@ module.exports = function(app) {
       }
       var Budget = app.models.Budget;
       Budget.create([
-//		{id: 1, month: 'GEN', amount: 10000, type: 'Y', projectId: project.id},
-//		{id: 2, month: 'FEB', amount: 2000, type: 'M', projectId: project.id},
-//		{id: 3, month: 'MAR', amount: 3000, type: 'M', projectId: project.id}
-//	    ], cb);
-		{month: 'GEN', amount: 10000, type: 'Y', projectId: project.id},
-		{month: 'FEB', amount: 2000, type: 'M', projectId: project.id},
-		{month: 'MAR', amount: 3000, type: 'M', projectId: project.id}
+		{month: 'GEN', days: 30, amount: 10000, projectId: project.id},
+		{month: 'FEB', days: 40, amount: 2000, projectId: project.id},
+		{month: 'MAR', days: 50, amount: 3000, projectId: project.id}
 		], cb);
     });
   }
@@ -80,12 +67,12 @@ module.exports = function(app) {
       }
       var Project = app.models.Project;
       Project.create([
-  		{id: '2', name: 'Supporto Manzoni', code: 'CF12001', customerId: customer.id},
-		{id: '4', name: 'Configuratore 1', code: 'CF11015', customerId: customer.id},
-		{id: '5', name: 'CF11001', code: 'CF11001', customerId: customer.id},
-		{id: '6', name: 'Gestione Credito 1', code: 'CF12903', customerId: customer.id},
-		{id: '7', name: 'Gestione Credito 2', code: 'CF12904', customerId: customer.id},
-		{id: '8', name: 'Cosuntivo 10/2012', code: 'CF12901', customerId: customer.id}
+  		{name: 'Supporto Manzoni', code: 'CF12001', budgettot: 2000, customerId: customer.id},
+		{name: 'Configuratore 1', code: 'CF11015', budgettot: 3000, customerId: customer.id},
+		{name: 'CF11001', code: 'CF11001', budgettot: 4000, customerId: customer.id},
+		{name: 'Gestione Credito 1', code: 'CF12903', budgettot: 5000, customerId: customer.id},
+		{name: 'Gestione Credito 2', code: 'CF12904', budgettot: 6000, customerId: customer.id},
+		{name: 'Cosuntivo 10/2012', code: 'CF12901', budgettot: 7000, customerId: customer.id}
 	      ], cb);
     });
   }
