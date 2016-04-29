@@ -33,12 +33,12 @@ module.exports = function(app) {
       }
       var Customer = app.models.Customer;
       Customer.create([
-		{id: '1', name: 'Manzoni'},
-		{id: '2', name: 'Idea'},
-		{id: '3', name: 'Elmedia'},
-		{id: '4', name: 'Sensei'},
-		{id: '5', name: 'Cobra'},
-		{id: '6', name: 'Climate'}
+		{name: 'Manzoni'},
+		{name: 'Idea'},
+		{name: 'Elmedia'},
+		{name: 'Sensei'},
+		{name: 'Cobra'},
+		{name: 'Climate'}
 	    ], cb);
     });
   }
