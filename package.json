@@ -18,6 +18,7 @@
     "loopback-connector-mongodb": "^1.13.3",
     "loopback-connector-mysql": "^2.2.1",
     "loopback-datasource-juggler": "^2.39.0",
+    "moment": "^2.13.0",
     "serve-favicon": "^2.0.1"
   },
   "devDependencies": {
