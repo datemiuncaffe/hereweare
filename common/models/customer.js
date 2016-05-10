@@ -16,7 +16,7 @@ module.exports = function(Customer) {
 					console.log('err: ' + err);
 				}
 				console.log('customers: ' + customers);
-				cb(null, {customers: customers});
+				cb(null, customers);
 			});
 		}		
 	};
@@ -25,7 +25,7 @@ module.exports = function(Customer) {
 		'autocompleteByName', 
 		{
 		  accepts:	[{arg: 'name', type: 'string'}],
-		  returns: {arg: 'res', type: ['object']},
+		  returns: {arg: 'customers', type: ['object']},
 		  http: {path: '/autocompleteByName', verb: 'get'}
 		}
 	);
