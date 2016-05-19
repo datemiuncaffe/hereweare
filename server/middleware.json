@@ -57,14 +57,18 @@
     "./middleware/ehourqueries/queryOreLavUtenteMese": {
       "paths": "/query_ore_lav_utente_mese"
     },
-    "./middleware/automigrate": {
+    "./middleware/local/automigrate": {
       "paths": "/automigrate"
+    },
+    "./middleware/local/clear": {
+      "paths": "/clear",
+      "params": {"name": "customer"}
+    },
+    "./middleware/local/connMongoDb": {
+      "paths": "/conn_mongo"
     },
     "./middleware/log": {
       "paths": "/log"
-    },
-    "./middleware/connMongoDb": {
-      "paths": "/conn_mongo"
     }
   },
   "files": {},

@@ -1,5 +1,5 @@
 var async = require('async');
-module.exports = function(app) {
+module.exports = function(options) {
 	return function automigrate(req, res, next) {
 		console.log('init automigrate for generating models...');
 		var app = req.app;
