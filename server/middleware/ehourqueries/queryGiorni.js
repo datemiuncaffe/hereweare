@@ -3,8 +3,8 @@ module.exports = function(options) {
 	  return function queryGiorni(req, res, next) {
 		// First you need to create a connection to the db
 	  var con = mysql.createConnection({
-	    host: "localhost",
-		user: "federico",
+	    host: "192.168.88.158",
+		user: "centos",
 		database: "ehour"
 	  });
 	

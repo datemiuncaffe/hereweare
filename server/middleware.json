@@ -39,26 +39,29 @@
         "${restApiRoot}"
       ]
     },
-    "./middleware/log": {
-      "paths": "/log"
-    },
-    "./middleware/queryOreLavUtenteMese": {
-      "paths": "/query_ore_lav_utente_mese"
-    },
-    "./middleware/queryGiorniCommessaUtente": {
-      "paths": "/query_giorni_lav_commessa_utente_mese"
-    },
-    "./middleware/queryGiorniCommessa": {
-      "paths": "/query_giorni_lav_commessa_mese"
-    },
-    "./middleware/queryGiorni": {
+    "./middleware/ehourqueries/queryGiorni": {
       "paths": "/query_giorni_lav_mese"
     },
-    "./middleware/queryGiorniCliente": {
+    "./middleware/ehourqueries/queryGiorniCliente": {
       "paths": "/query_giorni_lav_cliente_mese"
     },
-    "./middleware/queryGiorniClienteProgetto": {
+    "./middleware/ehourqueries/queryGiorniClienteProgetto": {
       "paths": "/query_giorni_lav_cliente_progetto_mese"
+    },
+    "./middleware/ehourqueries/queryGiorniCommessa": {
+      "paths": "/query_giorni_lav_commessa_mese"
+    },
+    "./middleware/ehourqueries/queryGiorniCommessaUtente": {
+      "paths": "/query_giorni_lav_commessa_utente_mese"
+    },
+    "./middleware/ehourqueries/queryOreLavUtenteMese": {
+      "paths": "/query_ore_lav_utente_mese"
+    },
+    "./middleware/automigrate": {
+      "paths": "/automigrate"
+    },
+    "./middleware/log": {
+      "paths": "/log"
     },
     "./middleware/connMongoDb": {
       "paths": "/conn_mongo"
