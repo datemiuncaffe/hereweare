@@ -1,17 +1,10 @@
-var MongoSequences = function(db,name,opts) {
+var MongoSequence = function(db,name,opts) {
 	var seq = {
 		db : db,
 		name : name,
 		opts : opts,
 		getNext : function(cb) {
-			var collection = db.collection(seq.opts && seq.opts.collname ? seq.opts.collname : 'counters');
-			
-			var cursor = collection.find();
-			cursor.forEach(function(coll){
-				console.log('coll: ' + JSON.stringify(coll));
-			});
-			
-			console.log('collection' + collection + '; name: ' + name);
+			console.log('updating sequence...');
 			
 			collection.findAndModify(
 				{ _id: name },
@@ -27,8 +20,7 @@ var MongoSequences = function(db,name,opts) {
 						cb(null, obj.value.sequence)
 					} 
 				}
-			);
-			
+			);			
 		}
 	};
 	
@@ -47,4 +39,4 @@ var MongoSequences = function(db,name,opts) {
 	return seq;
 };
 
-module.exports = MongoSequences;
+module.exports = MongoSequence;

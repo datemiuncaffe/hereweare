@@ -1,7 +1,7 @@
 module.exports = function(app) {
 	console.log('add data on startup ...');
 	
-	var mongoSequence = require('./../lib/mongo-sequences');
+	var mongoSequence = require('./../lib/mongo-sequence');
 	
 	// data sources model	
 	var Customer = app.models.Customer;
