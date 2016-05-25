@@ -67,6 +67,9 @@
     "./middleware/local/connMongoDb": {
       "paths": "/conn_mongo"
     },
+    "./middleware/local/ehourmigrate": {
+      "paths": "/ehourmigrate"
+    },
     "./middleware/log": {
       "paths": "/log"
     }
