@@ -3,9 +3,7 @@ var MongoSequence = function(db,name,opts) {
 		db : db,
 		name : name,
 		opts : opts,
-		getNext : function(cb) {
-			console.log('updating sequence...');
-			
+		getNext : function(cb) {			
 			collection.findAndModify(
 				{ _id: name },
 				[],
