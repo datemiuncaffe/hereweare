@@ -30,6 +30,11 @@
       "type": "hasMany",
       "model": "Budget",
       "foreignKey": "projectId"
+    },
+    "costs": {
+      "type": "hasMany",
+      "model": "Budget",
+      "foreignKey": "projectId"
     }
   },
   "acls": [],

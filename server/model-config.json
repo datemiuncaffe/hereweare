@@ -24,5 +24,9 @@
   "Budget": {
     "dataSource": "mongoDs",
     "public": true
+  },
+  "Cost": {
+    "dataSource": "mongoDs",
+    "public": true
   }
 }
