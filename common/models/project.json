@@ -33,7 +33,7 @@
     },
     "costs": {
       "type": "hasMany",
-      "model": "Budget",
+      "model": "Cost",
       "foreignKey": "projectId"
     }
   },
