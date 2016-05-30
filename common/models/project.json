@@ -22,6 +22,9 @@
     },
     "budgettot": {
       "type": "number"
+    },
+    "daystot": {
+      "type": "number"
     }
   },
   "validations": [],
