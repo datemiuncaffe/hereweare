@@ -12,6 +12,9 @@
     "to": {
       "type": "date"
     },
+    "year": {
+      "type": "number"
+    },
     "month": {
       "type": "string"
     },
