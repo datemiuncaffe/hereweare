@@ -9,13 +9,13 @@ module.exports = function(options) {
 		});
 
 		var resList = {
-			giorni : []
+			giorniClienteProgetto : []
 		};
 		// parse query string parameters
 		var queryparams = req.query;
 		console.log('queryparams: ' + JSON.stringify(queryparams, null, '\t'));
 
-		var query = 'select c.NAME as nomeCliente, p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, round(sum(HOURS)/8,2) as giornateMese from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID join PROJECT p on a.PROJECT_ID = p.PROJECT_ID join USERS u on u.USER_ID = a.USER_ID join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID group by c.CUSTOMER_ID, p.PROJECT_ID order by c.CUSTOMER_ID, p.PROJECT_CODE';
+		var query = 'select c.NAME as nomeCliente, p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, round(sum(HOURS)/8,2) as giornateMese from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID join PROJECT p on a.PROJECT_ID = p.PROJECT_ID join USERS u on u.USER_ID = a.USER_ID join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID group by c.CUSTOMER_ID, p.PROJECT_ID';
 		if (queryparams != null && queryparams.filter != null) {
 			query += ' having ';
 			var keys = Object.keys(queryparams.filter);
@@ -26,17 +26,18 @@ module.exports = function(options) {
 				}
 			}
 		}
+		query += ' order by c.CUSTOMER_ID, p.PROJECT_CODE';
 		console.log('sql query: ' + JSON.stringify(query, null, '\t'));
 
-		con.query(query, function(err, giorni) {
+		con.query(query, function(err, giorniClienteProgetto) {
 			if (err) {
 				throw err;
 			}
 
 			console.log('queryGiorniClienteProgetto performed ...');
-			console.log('giorni cliente progetto: ' + JSON.stringify(giorni, null, '\t'));
+			console.log('giorni cliente progetto: ' + JSON.stringify(giorniClienteProgetto, null, '\t'));
 
-			resList['giorni'] = giorni;
+			resList['giorniClienteProgetto'] = giorniClienteProgetto;
 			console.log('resList: ' + JSON.stringify(resList));
 			res.json(resList);
 		});

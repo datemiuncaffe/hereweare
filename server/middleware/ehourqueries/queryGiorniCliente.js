@@ -9,7 +9,7 @@ module.exports = function(options) {
 		});
 
 		var resList = {
-			giorni : []
+			giorniCliente : []
 		};
 		// parse query string parameters
 		var queryparams = req.query;
@@ -30,15 +30,15 @@ module.exports = function(options) {
 		}
 		console.log('sql query: ' + JSON.stringify(query, null, '\t'));
 
-		con.query(query, function(err, giorni) {
+		con.query(query, function(err, giorniCliente) {
 			if (err) {
 				throw err;
 			}
 
 			console.log('queryGiorniCliente performed ...');
-			console.log('giorni: ' + JSON.stringify(giorni, null, '\t'));
+			console.log('giorniCliente: ' + JSON.stringify(giorniCliente, null, '\t'));
 
-			resList['giorni'] = giorni;
+			resList['giorniCliente'] = giorniCliente;
 			console.log('resList: ' + JSON.stringify(resList));
 			res.json(resList);
 		});
