@@ -50,7 +50,7 @@ module.exports = function(app) {
 		jp.apply(resFiltered, '$.projects[*].from', function(from) {
 			console.log('project from: ' + from + '; typeof: ' + typeof from);
 			if (from != null && from.length > 0) {
-				var formattedfrom = moment(from).format('DD MMM YYYY'); 
+				var formattedfrom = moment(from).format('YYYY-MM-DD'); 
 				console.log('formattedfrom: ' + formattedfrom);
 				return formattedfrom;
 			}
@@ -58,7 +58,7 @@ module.exports = function(app) {
 		jp.apply(resFiltered, '$.projects[*].to', function(to) {
 			console.log('project to: ' + to + '; typeof: ' + typeof to);
 			if (to != null && to.length > 0) {
-				var formattedto = moment(to).format('DD MMM YYYY'); 
+				var formattedto = moment(to).format('YYYY-MM-DD'); 
 				console.log('formattedto: ' + formattedto);
 				return formattedto;
 			}
@@ -67,7 +67,7 @@ module.exports = function(app) {
 		jp.apply(resFiltered, '$.projects[*].budgets[*].from', function(from) {
 			console.log('budget from: ' + from + '; typeof: ' + typeof from);
 			if (from != null && from.length > 0) {
-				var formattedfrom = moment(from).format('DD MMM YYYY'); 
+				var formattedfrom = moment(from).format('YYYY-MM-DD'); 
 				console.log('budget formattedfrom: ' + formattedfrom);
 				return formattedfrom;
 			}
@@ -75,7 +75,7 @@ module.exports = function(app) {
 		jp.apply(resFiltered, '$.projects[*].budgets[*].to', function(to) {
 			console.log('budget to: ' + to + '; typeof: ' + typeof to);
 			if (to != null && to.length > 0) {
-				var formattedto = moment(to).format('DD MMM YYYY'); 
+				var formattedto = moment(to).format('YYYY-MM-DD'); 
 				console.log('budget formattedto: ' + formattedto);
 				return formattedto;
 			}
