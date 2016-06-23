@@ -1,18 +1,40 @@
 module.exports = function(Budget) {
-	
+
 	Budget.updateAllByProjectId = function(project_id, newBudgets, cb) {
 		console.log('new budgets: ' + JSON.stringify(newBudgets, null, '\t') + ' for projectId: ' + project_id);
-		
-		if (project_id != null && project_id > 0) {
+
+		var mongoSequence = require('./../../server/lib/mongo-sequence');
+		var app = Budget.app;
+		// sequence
+		var connector = app.dataSources.mongoDs.connector;
+		var db = null;
+
+		connector.connect(function(err, dbase){
+			if (err) {
+				throw err;
+			}
+			db = dbase;
+
+			// update budgets
+			if (project_id != null && project_id.length > 0) {
+				update(project_id, newBudgets, cb);
+			} else {
+				cb(null, 'no projectId');
+			}
+
+		});
+
+		function update(project_id, newBudgets, cb) {
 			Budget.find({where: {projectId: parseInt(project_id)}}, function(err, oldBudgets){
 				if (err) {
 					throw err;
 				}
 				console.log('old budgets: ' + JSON.stringify(oldBudgets, null, '\t'));
-				
+
 				var newLength = newBudgets.length;
 				var oldLength = oldBudgets.length;
 				if (oldLength > newLength) {
+					console.log('case 1');
 					var diffLength = oldLength - newLength;
 					newBudgets.forEach(function(currentBudget, i){
 						var oldid = oldBudgets[i].id;
@@ -23,24 +45,46 @@ module.exports = function(Budget) {
 					console.log('old budgets to remove: ' + JSON.stringify(oldBudgetsToRemove, null, '\t'));
 					// remove old budgets
 					oldBudgetsToRemove.forEach(function(currentBudget, i){
-						Budget.destroyById(currentBudget.id);		
+						Budget.destroyById(currentBudget.id);
 					});
-					
+
 					oldBudgets.splice(newLength, diffLength);
 					console.log('spliced old budgets: ' + JSON.stringify(oldBudgets, null, '\t'));
 					// update old budgets
 					oldBudgets.forEach(function(currentBudget, i){
-						Budget.upsert(currentBudget);						
-					});					
+						Budget.upsert(currentBudget);
+					});
 				} else if (oldLength < newLength) {
+					console.log('case 2');
 					oldBudgets.forEach(function(currentBudget, i){
-						newBudgets[i].id = currentBudget.id;						
+						newBudgets[i].id = currentBudget.id;
 					});
 					// update new budgets + sequence
 					newBudgets.forEach(function(currentBudget, i){
-						Budget.upsert(currentBudget);						
-					});					
+						if (currentBudget.id != null && currentBudget.id.length > 0) {
+							Budget.upsert(currentBudget, function(err, updatedBudget) {
+								console.log('err: ' + err);
+								console.log('updatedBudget: ' + JSON.stringify(updatedBudget, null, '\t'));
+							});
+						} else {
+							var budgetseq = mongoSequence(db,'budgets');
+							budgetseq.getNext(function(err, sequence) {
+								console.log('budgetseq name: ' + budgetseq.name + '; no: ' + sequence);
+								if (err) {
+									callback(null, err, null, null);
+								} else {
+									console.log('insert Budget with name: ' + JSON.stringify(currentBudget, null, '\t'));
+									currentBudget.id = sequence;
+									Budget.upsert(currentBudget, function(err, updatedBudget) {
+										console.log('err: ' + err);
+										console.log('updatedBudget: ' + JSON.stringify(updatedBudget, null, '\t'));
+									});
+								}
+							});
+						}
+					});
 				} else {
+					console.log('case 3');
 					newBudgets.forEach(function(currentBudget, i){
 						var oldid = oldBudgets[i].id;
 						oldBudgets[i] = currentBudget;
@@ -48,18 +92,23 @@ module.exports = function(Budget) {
 					});
 					// update old budgets
 					oldBudgets.forEach(function(currentBudget, i){
-						Budget.upsert(currentBudget);						
+						Budget.upsert(currentBudget, function(err, updatedBudget) {
+							console.log('err: ' + err);
+							console.log('updatedBudget: ' + JSON.stringify(updatedBudget, null, '\t'));
+						});
 					});
-				}				
-				
+				}
+
 				cb(null, 'projectId ' + project_id);
-				
+
 			});
+
 		}
+
 	};
-	
+
 	Budget.remoteMethod(
-		'updateAllByProjectId', 
+		'updateAllByProjectId',
 		{
 		  accepts:	[{arg: 'projectId', type: 'string'},{arg: 'budgets', type: ['object']}],
 		  returns: {arg: 'budgets', type: 'string'},
