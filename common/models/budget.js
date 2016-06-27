@@ -57,11 +57,13 @@ module.exports = function(Budget) {
 				} else if (oldLength < newLength) {
 					console.log('case 2');
 					oldBudgets.forEach(function(currentBudget, i){
+						console.log('budget: ' + i + '; id = ' + newBudgets[i].id);
 						newBudgets[i].id = currentBudget.id;
+						console.log('budget: ' + i + '; id = ' + newBudgets[i].id);
 					});
 					// update new budgets + sequence
 					newBudgets.forEach(function(currentBudget, i){
-						if (currentBudget.id != null && currentBudget.id.length > 0) {
+						if (currentBudget.id != null && currentBudget.id > 0) {
 							Budget.upsert(currentBudget, function(err, updatedBudget) {
 								console.log('err: ' + err);
 								console.log('updatedBudget: ' + JSON.stringify(updatedBudget, null, '\t'));
