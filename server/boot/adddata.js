@@ -1,17 +1,56 @@
 module.exports = function(app) {
 	console.log('add data on startup ...');
-	
+
 	var async = require("async");
 	var moment = require("moment");
 	const crypto = require('crypto');
 	const hash = crypto.createHash('sha256');
 	var mongoSequence = require('./../lib/mongo-sequence');
 	var db = null;
-	// data sources model	
+	// data sources model
 	var Customer = app.models.Customer;
 	var Project = app.models.Project;
 	var Budget = app.models.Budget;
-	
+
+	function findLastMongoIdAndDestroy() {
+    Customer.find({ where:{name: 'Mongo'}, fields:{id: true} }, function(err, mongoids) {
+			if (err) {
+				throw err;
+			}
+			// console.log('mongoids: ' + JSON.stringify(mongoids, null, '\t'));
+      var mongoidsArray = mongoids.map(function(o) {
+        if (typeof o.id === 'number') {
+          return o.id;
+        }
+      }).filter(function(id) {
+        return id != null;
+      });
+      console.log('mongoidsArray: ' + JSON.stringify(mongoidsArray));
+      var max = Math.max.apply(null, mongoidsArray);
+      console.log('max: ' + max);
+
+			Customer.destroyById(max, function(err) {
+				console.log('Mongo customer ' + max + ' destroyed');
+			});
+    });
+  }
+
+	// check number of Mongo customers
+	var check = function(callback) {
+		Customer.count({name: 'Mongo'}, function(err, mongosnum) {
+			if (err) {
+				throw err;
+			}
+			console.log('mongo customers number: ' + JSON.stringify(mongosnum, null, '\t'));
+			if (mongosnum < 3) {
+				console.log('calling addCustomer');
+				callback(null);
+			} else {
+				findLastMongoIdAndDestroy();
+			}
+		});
+	};
+
 	// add Customer
 	var addCustomer = function(callback) {
 		var customerseq = mongoSequence(db,'customers');
@@ -30,11 +69,11 @@ module.exports = function(app) {
 					}
 					console.log('Customer created: \n', JSON.stringify(customer));
 					callback(null, null, sequence);
-				});				
-			}			
+				});
+			}
 		});
 	};
-	
+
 	// add Project
 	var addProject = function(err, customerId, callback) {
 		if (err) {
@@ -64,11 +103,11 @@ module.exports = function(app) {
 					}
 					console.log('Project created: \n', JSON.stringify(project));
 					callback(null, null, project);
-				});				
-			}			
+				});
+			}
 		});
 	};
-	
+
 	// add Budget
 	var addBudget = function(err, project, callback) {
 		if (err) {
@@ -96,10 +135,10 @@ module.exports = function(app) {
 					console.log('Budget created: \n', JSON.stringify(budget));
 				});
 				callback(null, 'done');
-			}			
+			}
 		});
 	};
-	
+
 	// sequence
 	var connector = app.dataSources.mongoDs.connector;
 	if (typeof connector.connect == 'function') {
@@ -109,11 +148,12 @@ module.exports = function(app) {
 				throw err;
 			}
 			db = dbase;
-			
-			async.waterfall([ 
-				addCustomer, 
-				addProject,
-				addBudget, 
+
+			async.waterfall([
+					check,
+					addCustomer,
+					addProject,
+					addBudget,
 				],
 				function(err, result) {
 					if (err) {
@@ -121,13 +161,13 @@ module.exports = function(app) {
 					}
 					console.log('end waterfall...' + result);
 				}
-			);						
-			
+			);
+
 		});
 	}
-	
-	
-			
+
+
+
 //	var _ = require('glutils');
 //	  //... within a fiber thread at this point
 //	  if (!err) {
@@ -137,6 +177,6 @@ module.exports = function(app) {
 //	        name: "Sarah C."
 //	      }
 //	    )
-//	  }	
-	
+//	  }
+
 };
