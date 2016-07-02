@@ -1,4 +1,5 @@
 module.exports = function(Project) {
+  var moment = require('moment');
 
   function findLastId() {
     Project.find({ fields: {id: true} }, function(err, ids) {
@@ -14,6 +15,13 @@ module.exports = function(Project) {
       var max = Math.max.apply(null, idsArray);
       console.log('max: ' + max);
     });
+  }
+
+  function toISODate(project) {
+    var from = moment(project.from, "DD/MM/YYYY");
+    var to = moment(project.to, "DD/MM/YYYY");
+    project.from = from.toDate();
+    project.to = to.toDate();
   }
 
   Project.createAndIncrementId = function(project, cb) {
@@ -39,6 +47,8 @@ module.exports = function(Project) {
           cb(null, err);
         } else {
           project.id = sequence;
+          console.log('insert Project with name: ' + JSON.stringify(project, null, '\t'));
+          toISODate(project);
           console.log('insert Project with name: ' + JSON.stringify(project, null, '\t'));
           Project.upsert(project, function(err, createdProject) {
             console.log('createdProject: ' + JSON.stringify(createdProject, null, '\t'));

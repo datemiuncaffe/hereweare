@@ -1,4 +1,5 @@
 module.exports = function(Budget) {
+	var moment = require('moment');
 
 	Budget.updateAllByProjectId = function(project_id, newBudgets, cb) {
 		console.log('new budgets: ' + JSON.stringify(newBudgets, null, '\t') + ' for projectId: ' + project_id);
@@ -23,6 +24,13 @@ module.exports = function(Budget) {
 			}
 
 		});
+
+		function toISODate(budget) {
+	    var from = moment(budget.from, "DD/MM/YYYY");
+	    var to = moment(budget.to, "DD/MM/YYYY");
+	    budget.from = from.toDate();
+	    budget.to = to.toDate();
+	  }
 
 		function update(project_id, newBudgets, cb) {
 			Budget.find({where: {projectId: parseInt(project_id)}}, function(err, oldBudgets){
@@ -52,6 +60,9 @@ module.exports = function(Budget) {
 					console.log('spliced old budgets: ' + JSON.stringify(oldBudgets, null, '\t'));
 					// update old budgets
 					oldBudgets.forEach(function(currentBudget, i){
+						console.log('insert budget: ' + JSON.stringify(currentBudget, null, '\t'));
+	          toISODate(currentBudget);
+	          console.log('insert budget: ' + JSON.stringify(currentBudget, null, '\t'));
 						Budget.upsert(currentBudget);
 					});
 				} else if (oldLength < newLength) {
@@ -63,6 +74,7 @@ module.exports = function(Budget) {
 					});
 					// update new budgets + sequence
 					newBudgets.forEach(function(currentBudget, i){
+	          toISODate(currentBudget);
 						if (currentBudget.id != null && currentBudget.id > 0) {
 							Budget.upsert(currentBudget, function(err, updatedBudget) {
 								console.log('err: ' + err);
@@ -94,6 +106,7 @@ module.exports = function(Budget) {
 					});
 					// update old budgets
 					oldBudgets.forEach(function(currentBudget, i){
+	          toISODate(currentBudget);
 						Budget.upsert(currentBudget, function(err, updatedBudget) {
 							console.log('err: ' + err);
 							console.log('updatedBudget: ' + JSON.stringify(updatedBudget, null, '\t'));
