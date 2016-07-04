@@ -21,9 +21,12 @@
     "days": {
       "type": "number"
     },
+    "businessdays": {
+      "type": "string"
+    },
     "amount": {
       "type": "number"
-    }    
+    }
   },
   "validations": [],
   "relations": {},
