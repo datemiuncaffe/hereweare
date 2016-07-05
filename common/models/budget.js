@@ -7,7 +7,7 @@ module.exports = function(Budget) {
 		var mongoSequence = require('./../../server/lib/mongo-sequence');
 		var app = Budget.app;
 		// sequence
-		var connector = app.dataSources.mongoDs.connector;
+		var connector = app.dataSources.mongoBudgets.connector;
 		var db = null;
 
 		connector.connect(function(err, dbase){

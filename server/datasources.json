@@ -7,5 +7,14 @@
     "name": "mongoDs",
     "user": "federico",
     "connector": "mongodb"
+  },
+  "mongoBudgets": {
+    "host": "localhost",
+    "port": 27017,
+    "database": "senseibudgets",
+    "password": "",
+    "name": "mongoBudgets",
+    "user": "federico",
+    "connector": "mongodb"
   }
 }

@@ -14,19 +14,19 @@
     ]
   },
   "Customer": {
-    "dataSource": "mongoDs",
+    "dataSource": "mongoBudgets",
     "public": true
   },
   "Project": {
-    "dataSource": "mongoDs",
+    "dataSource": "mongoBudgets",
     "public": true
   },
   "Budget": {
-    "dataSource": "mongoDs",
+    "dataSource": "mongoBudgets",
     "public": true
   },
   "Cost": {
-    "dataSource": "mongoDs",
+    "dataSource": "mongoBudgets",
     "public": true
   }
 }
