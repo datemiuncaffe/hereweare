@@ -86,6 +86,52 @@ module.exports = function(app) {
 		next();
 	});
 
+	remotes.after('Project.findById', function(ctx, next) {
+		var res = {
+			project: ctx.result
+		};
+		var resFiltered = JSON.parse(JSON.stringify(res));
+		console.log('project resFiltered: ' + JSON.stringify(res, null, '\t'));
+
+		jp.apply(resFiltered, '$.project.from', function(from) {
+			console.log('project from: ' + from + '; typeof: ' + typeof from);
+			if (from != null && from.length > 0) {
+				var formattedfrom = moment(from).format('DD/MM/YYYY');
+				console.log('formattedfrom: ' + formattedfrom);
+				return formattedfrom;
+			}
+		});
+		jp.apply(resFiltered, '$.project.to', function(to) {
+			console.log('project to: ' + to + '; typeof: ' + typeof to);
+			if (to != null && to.length > 0) {
+				var formattedto = moment(to).format('DD/MM/YYYY');
+				console.log('formattedto: ' + formattedto);
+				return formattedto;
+			}
+		});
+
+		jp.apply(resFiltered, '$.project.budgets[*].from', function(from) {
+			console.log('budget from: ' + from + '; typeof: ' + typeof from);
+			if (from != null && from.length > 0) {
+				var formattedfrom = moment(from).format('DD/MM/YYYY');
+				console.log('budget formattedfrom: ' + formattedfrom);
+				return formattedfrom;
+			}
+		});
+		jp.apply(resFiltered, '$.project.budgets[*].to', function(to) {
+			console.log('budget to: ' + to + '; typeof: ' + typeof to);
+			if (to != null && to.length > 0) {
+				var formattedto = moment(to).format('DD/MM/YYYY');
+				console.log('budget formattedto: ' + formattedto);
+				return formattedto;
+			}
+		});
+
+		ctx.result = resFiltered.project;
+
+		next();
+	});
+
 	remotes.before('Project.updateAll', function(ctx, next) {
 		var res = {
 			projects: ctx.result
