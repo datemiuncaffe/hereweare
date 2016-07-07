@@ -12,11 +12,11 @@ module.exports = function(options) {
 		var queryparams = req.query;
 		console.log('queryparams: ' + JSON.stringify(queryparams));
 
-		if (queryparams.projectCode != null && queryparams.projectCode.length > 0) {
-			console.log('project code: ' + queryparams.projectCode);
+		if (queryparams.projectId != null && queryparams.projectId > 0) {
+			console.log('project id: ' + queryparams.projectId);
 
-			con.query('select t.ASSIGNMENT_ID as id, year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, c.NAME as nomeCliente, p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, round(sum(HOURS)/8,2) as giornateMese from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID join PROJECT p on a.PROJECT_ID = p.PROJECT_ID join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID group by anno, mese, c.CUSTOMER_ID, p.PROJECT_ID having codiceProgetto = \''
-						+ queryparams.projectCode + '\' order by anno, mese;',
+			con.query('select t.ASSIGNMENT_ID as id, year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, c.NAME as nomeCliente, p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, round(sum(HOURS)/8,2) as giornateMese from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID join PROJECT p on a.PROJECT_ID = p.PROJECT_ID join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID group by anno, mese, c.CUSTOMER_ID, p.PROJECT_ID having p.PROJECT_ID = \''
+						+ queryparams.projectId + '\' order by anno, mese;',
 				function(err, costs) {
 					if (err) {
 						throw err;
