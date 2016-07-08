@@ -1,6 +1,6 @@
 module.exports = function (shipit) {
 	require('shipit-deploy')(shipit);
-	
+
   shipit.initConfig({
   default: {
       workspace: '/home/federico/Documents/ehour/projects/hereweare',
@@ -10,6 +10,7 @@ module.exports = function (shipit) {
 //      keepReleases: 2,
 //      deleteOnRollback: false,
       key: '/home/federico/.ssh/id_rsa_sensei'
+			branch: 'ehourcall'
 //      shallowClone: true
     },
     staging: {
