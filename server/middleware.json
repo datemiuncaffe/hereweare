@@ -48,6 +48,12 @@
     "./middleware/ehourqueries/queryProjectsByCustomerId": {
       "paths": "/query_projects_by_customer_id"
     },
+    "./middleware/ehourqueries/queryActiveCustomers": {
+      "paths": "/query_active_customers"
+    },
+    "./middleware/ehourqueries/queryActiveProjects": {
+      "paths": "/query_active_projects"
+    },
     "./middleware/ehourqueries/queryGiorni": {
       "paths": "/query_giorni_lav_mese"
     },
