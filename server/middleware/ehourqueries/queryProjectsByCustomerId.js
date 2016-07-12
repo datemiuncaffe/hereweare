@@ -14,33 +14,24 @@ module.exports = function(options) {
 
 		if (queryparams.customerId != null && queryparams.customerId > 0) {
 			console.log('customerId: ' + queryparams.customerId);
+			var query = 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId ' +
+									'FROM PROJECT p WHERE p.CUSTOMER_ID = \'' + queryparams.customerId + '\'';
+			if (queryparams.onlyActive != null && queryparams.onlyActive == 'Y') {
+				query += ' AND p.ACTIVE = \'y\';';
+			} else {
+				query += ';';
+			}
+			console.log('query: ' + query);
+			con.query(query, function(err, data) {
+				if (err) {
+					throw err;
+				}
 
-			con.query('select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p WHERE p.CUSTOMER_ID = \''
-						+ queryparams.customerId + '\';',
-				function(err, data) {
-					if (err) {
-						throw err;
-					}
+				console.log('queryProjectsByCustomerId performed ...');
+				console.log('data: ' + JSON.stringify(data, null, '\t'));
 
-					console.log('queryProjectsByCustomerId performed ...');
-					console.log('data: ' + JSON.stringify(data, null, '\t'));
-
-					// var projects = [];
-					// data.forEach(function(d){
-					// 	var project = {};
-					// 	project.id = d.id;
-					// 	project.name = d.name;
-					// 	project.code = d.code;
-					// 	project.from = null;
-					// 	project.to = null;
-					// 	project.budgettot = null;
-					// 	project.daystot = null;
-					// 	project.customerId = d.customerId;
-					// 	projects.push(project);
-					// });
-
-					res.json(data);
-				});
+				res.json(data);
+			});
 			return res;
 		} else {
 			res.json([]);
