@@ -19,9 +19,15 @@ module.exports = function(options) {
 						+ queryparams.projectId + '\' order by anno, mese;',
 				function(err, costs) {
 					if (err) {
+						con.end(function(err) {
+							console.log('ending connection queryCosts not performed. err = ' + err);
+						});
 						throw err;
 					}
 
+					con.end(function(err) {
+						console.log('ending connection after queryCosts. err = ' + err);
+					});
 					console.log('queryCosts performed ...');
 					console.log('costs: ' + JSON.stringify(costs, null, '\t'));
 

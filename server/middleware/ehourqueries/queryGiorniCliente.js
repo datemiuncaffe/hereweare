@@ -32,9 +32,15 @@ module.exports = function(options) {
 
 		con.query(query, function(err, giorniCliente) {
 			if (err) {
+				con.end(function(err) {
+					console.log('ending connection queryGiorniCliente not performed. err = ' + err);
+				});
 				throw err;
 			}
 
+			con.end(function(err) {
+				console.log('ending connection after queryGiorniCliente. err = ' + err);
+			});
 			console.log('queryGiorniCliente performed ...');
 			console.log('giorniCliente: ' + JSON.stringify(giorniCliente, null, '\t'));
 

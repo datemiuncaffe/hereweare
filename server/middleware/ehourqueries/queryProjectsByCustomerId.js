@@ -24,9 +24,15 @@ module.exports = function(options) {
 			console.log('query: ' + query);
 			con.query(query, function(err, data) {
 				if (err) {
+					con.end(function(err) {
+					  console.log('ending connection queryProjectsByCustomerId not performed. err = ' + err);
+					});
 					throw err;
 				}
 
+				con.end(function(err) {
+					console.log('ending connection after queryProjectsByCustomerId. err = ' + err);
+				});
 				console.log('queryProjectsByCustomerId performed ...');
 				console.log('data: ' + JSON.stringify(data, null, '\t'));
 

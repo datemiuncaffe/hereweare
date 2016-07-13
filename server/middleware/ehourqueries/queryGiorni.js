@@ -14,26 +14,32 @@ module.exports = function(options) {
 		// parse query string parameters
 		var queryparams = req.query;
 		console.log('queryparams: ' + JSON.stringify(queryparams, null, '\t'));
-		
+
 		var query = 'select year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, round(sum(HOURS)/8,2) as giornateMese from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID join PROJECT p on a.PROJECT_ID = p.PROJECT_ID join USERS u on u.USER_ID = a.USER_ID join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID group by anno, mese';
 		if (queryparams != null && queryparams.filter != null) {
 			query += ' having ';
 			var keys = Object.keys(queryparams.filter);
 			for (var i = 0; i < keys.length; i++) {
-				query += keys[i] + ' like \'%' + queryparams.filter[keys[i]] + '%\''; 
+				query += keys[i] + ' like \'%' + queryparams.filter[keys[i]] + '%\'';
 				if (i != (keys.length - 1)) {
 					query += ' and ';
 				}
 			}
 		}
 		console.log('sql query: ' + JSON.stringify(query, null, '\t'));
-			
+
 		con.query(query,
 			function(err, giorni) {
 				if (err) {
+					con.end(function(err) {
+						console.log('ending connection queryGiorni not performed. err = ' + err);
+					});
 					throw err;
-				}					
+				}
 
+				con.end(function(err) {
+					console.log('ending connection after queryGiorni. err = ' + err);
+				});
 				console.log('queryGiorni performed ...');
 				console.log('giorni: ' + JSON.stringify(giorni, null, '\t'));
 
@@ -41,7 +47,7 @@ module.exports = function(options) {
 				console.log('resList: '	+ JSON.stringify(resList));
 				res.json(resList);
 			});
-		
+
 		return res;
 
 	};

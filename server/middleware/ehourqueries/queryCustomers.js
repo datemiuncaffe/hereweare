@@ -11,9 +11,15 @@ module.exports = function(options) {
 		con.query('select c.NAME as name, c.CUSTOMER_ID as id FROM CUSTOMER c order by name;',
 			function(err, customers) {
 				if (err) {
+					con.end(function(err) {
+						console.log('ending connection queryCustomers not performed. err = ' + err);
+					});
 					throw err;
 				}
 
+				con.end(function(err) {
+					console.log('ending connection after queryCustomers. err = ' + err);
+				});
 				console.log('queryCustomers performed ...');
 				console.log('customers: ' + JSON.stringify(customers, null, '\t'));
 

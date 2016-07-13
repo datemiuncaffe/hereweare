@@ -13,15 +13,21 @@ module.exports = function(options) {
 			if (err) {
 				console.log('err: ' + JSON.stringify(err));
 				results.error = JSON.stringify(err);
+				con.end(function(err) {
+					console.log('ending connection queryActiveProjects not performed. err = ' + err);
+				});
 				res.json(results);
 			}
 
+			con.end(function(err) {
+				console.log('ending connection after queryActiveProjects. err = ' + err);
+			});
 			console.log('queryActiveProjects performed ...');
 			console.log('data: ' + JSON.stringify(data, null, '\t'));
 			if (data != null && data.length > 0) {
 				results.customers = data;
 			}
-			
+
 			res.json(results);
 		});
 		return res;

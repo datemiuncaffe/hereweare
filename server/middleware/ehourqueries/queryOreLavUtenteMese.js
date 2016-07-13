@@ -34,9 +34,15 @@ module.exports = function(options) {
 
 		con.query(query, function(err, oreLav) {
 			if (err) {
+				con.end(function(err) {
+					console.log('ending connection queryOreLavUtenteMese not performed. err = ' + err);
+				});
 				throw err;
 			}
 
+			con.end(function(err) {
+				console.log('ending connection after queryOreLavUtenteMese. err = ' + err);
+			});
 			console.log('queryOreLavUtenteMese performed ...');
 			console.log('oreLav: ' + JSON.stringify(oreLav, null, '\t'));
 
