@@ -9,7 +9,7 @@ module.exports = function (shipit) {
 //      ignores: ['.git', 'node_modules'],
 //      keepReleases: 2,
 //      deleteOnRollback: false,
-      key: '/home/federico/.ssh/id_rsa_sensei'
+      key: '/home/federico/.ssh/id_rsa_sensei',
 			branch: 'nuovolayout'
 //      shallowClone: true
     },
