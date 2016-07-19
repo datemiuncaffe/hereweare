@@ -8,23 +8,37 @@ module.exports = function(options) {
 			database : "ehour"
 		});
 
-		con.query('select c.NAME as name, c.CUSTOMER_ID as id FROM CUSTOMER c order by name;',
-			function(err, customers) {
-				if (err) {
-					con.end(function(err) {
-						console.log('ending connection queryCustomers not performed. err = ' + err);
-					});
-					throw err;
-				}
+		// parse query string parameters
+		var queryparams = req.query;
+		console.log('queryparams: ' + JSON.stringify(queryparams));
 
+		var query = 'SELECT c.NAME as name, c.CODE as code, c.CUSTOMER_ID as id FROM CUSTOMER c';
+		if (queryparams.customerGroup != null) {
+			if (queryparams.customerGroup == 'INT') {
+				query += ' WHERE code IN (\'ASS\',\'SEN\')';
+			}
+			if (queryparams.customerGroup == 'EXT') {
+				query += ' WHERE code NOT IN (\'ASS\',\'SEN\')';
+			}
+		}
+		query += ' ORDER BY name;';
+
+		con.query(query, function(err, customers) {
+			if (err) {
 				con.end(function(err) {
-					console.log('ending connection after queryCustomers. err = ' + err);
+					console.log('ending connection queryCustomers not performed. err = ' + err);
 				});
-				console.log('queryCustomers performed ...');
-				console.log('customers: ' + JSON.stringify(customers, null, '\t'));
+				throw err;
+			}
 
-				res.json(customers);
+			con.end(function(err) {
+				console.log('ending connection after queryCustomers. err = ' + err);
 			});
+			console.log('queryCustomers performed ...');
+			console.log('customers: ' + JSON.stringify(customers, null, '\t'));
+
+			res.json(customers);
+		});
 		return res;
 
 	};
