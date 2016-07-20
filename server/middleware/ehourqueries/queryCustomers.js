@@ -8,20 +8,33 @@ module.exports = function(options) {
 			database : "ehour"
 		});
 
+		var queries = {
+			ALL: 'SELECT c.NAME as name, c.CODE as code, c.CUSTOMER_ID as id FROM CUSTOMER c ORDER BY name;',
+			INT: 'SELECT c.NAME as name, c.CODE as code, c.CUSTOMER_ID as id FROM CUSTOMER c WHERE code IN (\'ASS\',\'SEN\') ORDER BY name;',
+			EXT: 'SELECT c.NAME as name, c.CODE as code, c.CUSTOMER_ID as id FROM CUSTOMER c WHERE code NOT IN (\'ASS\',\'SEN\') ORDER BY name;',
+			NOTACTIVE: '',
+			ACTIVE: 'select DISTINCT p.CUSTOMER_ID as customerId FROM PROJECT p join PROJECT_ASSIGNMENT a on p.PROJECT_ID = a.PROJECT_ID join TIMESHEET_ENTRY t on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID WHERE t.ENTRY_DATE > \'2016-05-01\' AND p.CUSTOMER_ID NOT IN (4,8) ORDER BY customerId;',
+			NEW: 'select DISTINCT p.CUSTOMER_ID as customerId FROM PROJECT p join PROJECT_ASSIGNMENT a on p.PROJECT_ID = a.PROJECT_ID WHERE a.DATE_START > \'2016-05-01\' AND p.CUSTOMER_ID NOT IN (4,8) ORDER BY customerId;'
+		};
+
 		// parse query string parameters
 		var queryparams = req.query;
 		console.log('queryparams: ' + JSON.stringify(queryparams));
 
-		var query = 'SELECT c.NAME as name, c.CODE as code, c.CUSTOMER_ID as id FROM CUSTOMER c';
+		var query = queries.ALL;
 		if (queryparams.customerGroup != null) {
 			if (queryparams.customerGroup == 'INT') {
-				query += ' WHERE code IN (\'ASS\',\'SEN\')';
-			}
-			if (queryparams.customerGroup == 'EXT') {
-				query += ' WHERE code NOT IN (\'ASS\',\'SEN\')';
+				query = queries.INT;
+			} else if (queryparams.customerGroup == 'EXT') {
+				query = queries.EXT;
+			} else if (queryparams.customerGroup == 'ACTIVE') {
+				query = queries.ACTIVE;
+			} else if (queryparams.customerGroup == 'NOTACTIVE') {
+				query = queries.NOTACTIVE;
+			} else if (queryparams.customerGroup == 'NEW') {
+				query = queries.NEW;
 			}
 		}
-		query += ' ORDER BY name;';
 
 		con.query(query, function(err, customers) {
 			if (err) {
