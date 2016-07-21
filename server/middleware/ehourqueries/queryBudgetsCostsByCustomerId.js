@@ -1,6 +1,7 @@
 module.exports = function(options) {
 	var mysql = require("mysql");
 	var async = require("async");
+	var moment = require('moment');
 	var MongoClient = require('mongodb').MongoClient;
 
 	var months = ['Gennaio','Febbraio','Marzo','Aprile','Maggio',
@@ -132,13 +133,35 @@ module.exports = function(options) {
 
 		if (queryparams.customerId != null && queryparams.customerId > 0) {
 			console.log('customerId: ' + queryparams.customerId);
-			var query = 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId ' +
-									'FROM PROJECT p WHERE p.CUSTOMER_ID = \'' + queryparams.customerId + '\'';
-			if (queryparams.onlyActive != null && queryparams.onlyActive == 'Y') {
-				query += ' AND p.ACTIVE = \'y\';';
-			} else {
-				query += ';';
+
+			var now = moment();
+			var lowdatelimit = now.subtract(2, 'months').format('YYYY-MM-DD');
+			console.log('lowdatelimit for active and new projects: ' + lowdatelimit);
+
+			var queries = {
+				ALL: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p WHERE p.CUSTOMER_ID = \'' + queryparams.customerId + '\' ORDER BY name;',
+				INT: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p WHERE p.CUSTOMER_ID = \'' + queryparams.customerId + '\' ORDER BY name;',
+				EXT: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p WHERE p.CUSTOMER_ID = \'' + queryparams.customerId + '\' ORDER BY name;',
+				NOTACTIVE: '',
+				ACTIVE: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p join PROJECT_ASSIGNMENT a on p.PROJECT_ID = a.PROJECT_ID join TIMESHEET_ENTRY t on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID WHERE t.ENTRY_DATE IS NOT NULL AND t.ENTRY_DATE > \'' + lowdatelimit + '\' AND p.CUSTOMER_ID = \'' + queryparams.customerId + '\' ORDER BY name;',
+				NEW: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p join PROJECT_ASSIGNMENT a on p.PROJECT_ID = a.PROJECT_ID WHERE a.DATE_START IS NOT NULL AND a.DATE_START > \'' + lowdatelimit + '\' AND p.CUSTOMER_ID = \'' + queryparams.customerId + '\' ORDER BY name;'
+			};
+
+			var query = queries.ALL;
+			if (queryparams.projectGroup != null) {
+				if (queryparams.projectGroup == 'INT') {
+					query = queries.INT;
+				} else if (queryparams.projectGroup == 'EXT') {
+					query = queries.EXT;
+				} else if (queryparams.projectGroup == 'ACTIVE') {
+					query = queries.ACTIVE;
+				} else if (queryparams.projectGroup == 'NOTACTIVE') {
+					query = queries.NOTACTIVE;
+				} else if (queryparams.projectGroup == 'NEW') {
+					query = queries.NEW;
+				}
 			}
+
 			console.log('query: ' + query);
 			con.query(query, function(err, activeprojects) {
 				if (err) {
