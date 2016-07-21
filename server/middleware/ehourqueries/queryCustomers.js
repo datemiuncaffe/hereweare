@@ -1,13 +1,15 @@
 module.exports = function(options) {
 	var mysql = require("mysql");
 	var moment = require('moment');
+	var MysqlPool = require('./../../lib/mysql-pool').pool();
+
 	return function queryCustomers(req, res, next) {
 		// First you need to create a connection to the db
-		var con = mysql.createConnection({
-			host : "192.168.88.158",
-			user : "centos",
-			database : "ehour"
-		});
+		// var con = mysql.createConnection({
+		// 	host : "192.168.88.158",
+		// 	user : "centos",
+		// 	database : "ehour"
+		// });
 
 		var now = moment();
 		var lowdatelimit = now.subtract(2, 'months').format('YYYY-MM-DD');
@@ -41,22 +43,31 @@ module.exports = function(options) {
 			}
 		}
 
-		con.query(query, function(err, customers) {
-			if (err) {
-				con.end(function(err) {
-					console.log('ending connection queryCustomers not performed. err = ' + err);
-				});
-				throw err;
-			}
+		MysqlPool.getConnection(getData, query);
 
-			con.end(function(err) {
-				console.log('ending connection after queryCustomers. err = ' + err);
+		function getData(connection, query) {
+			connection.query(query, function(err, customers) {
+				if (err) {
+					// con.end(function(err) {
+					// 	console.log('ending connection queryCustomers not performed. err = ' + err);
+					// });
+					console.log('err: ' + JSON.stringify(err));
+					MysqlPool.releaseConnection(connection);
+					throw err;
+				}
+
+				// con.end(function(err) {
+				// 	console.log('ending connection after queryCustomers. err = ' + err);
+				// });
+				MysqlPool.releaseConnection(connection);
+				
+				console.log('queryCustomers performed ...');
+				console.log('customers: ' + JSON.stringify(customers, null, '\t'));
+
+				res.json(customers);
 			});
-			console.log('queryCustomers performed ...');
-			console.log('customers: ' + JSON.stringify(customers, null, '\t'));
+		};
 
-			res.json(customers);
-		});
 		return res;
 
 	};

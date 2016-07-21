@@ -3,12 +3,12 @@ var MongoSequence = function(db,name,opts) {
 		db : db,
 		name : name,
 		opts : opts,
-		getNext : function(cb) {			
+		getNext : function(cb) {
 			collection.findAndModify(
 				{ _id: name },
 				[],
-				{ $inc: { sequence: 1 } },      
-				{upsert : true,	new: true}, 
+				{ $inc: { sequence: 1 } },
+				{upsert : true,	new: true},
 				function(err, obj) {
 					console.log('err: ' + err + '; obj sequence: '+ obj.sequence + '; obj: ' + JSON.stringify(obj));
 					if (err) {
@@ -16,12 +16,12 @@ var MongoSequence = function(db,name,opts) {
 					}
 					else {
 						cb(null, obj.value.sequence)
-					} 
+					}
 				}
-			);			
+			);
 		}
 	};
-	
+
 	var collection = db.collection(seq.opts && seq.opts.collname ? seq.opts.collname : 'counters');
 	collection.insert({_id : name, sequence : 0 }, function(err){
 		console.log('inserting sequence...');
@@ -33,8 +33,8 @@ var MongoSequence = function(db,name,opts) {
 			throw err;
 		}
 	});
-	
+
 	return seq;
 };
 
-module.exports = MongoSequence;
+exports.MongoSequence = MongoSequence;

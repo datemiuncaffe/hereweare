@@ -1,5 +1,6 @@
 module.exports = function(options) {
-	var mysql = require("mysql");
+	// var mysql = require("mysql");
+	var MysqlPool = require('./../../lib/mysql-pool').pool();
 	var async = require("async");
 	var moment = require('moment');
 	var MongoClient = require('mongodb').MongoClient;
@@ -121,11 +122,14 @@ module.exports = function(options) {
 
 	return function queryBudgetsCostsByCustomerId(req, res, next) {
 		// First you need to create a connection to the db
-		var con = mysql.createConnection({
-			host : "192.168.88.158",
-			user : "centos",
-			database : "ehour"
-		});
+		// var con = mysql.createConnection({
+		// 	host : "192.168.88.158",
+		// 	user : "centos",
+		// 	database : "ehour"
+		// });
+
+		console.log('MysqlPool: ' + JSON.stringify(MysqlPool));
+		MysqlPool.checklog();
 
 		// parse query string parameters
 		var queryparams = req.query;
@@ -163,79 +167,92 @@ module.exports = function(options) {
 			}
 
 			console.log('query: ' + query);
-			con.query(query, function(err, activeprojects) {
-				if (err) {
-					con.end(function(err) {
-					  console.log('ending connection queryBudgetsCostsByCustomerId not performed. err = ' + err);
-					});
-					throw err;
-				}
+			MysqlPool.getConnection(getData, query);
+			function getData(connection, query) {
+				console.log('connection: ' + connection + '; query: ' + query);
+				connection.query(query, function(err, activeprojects) {
+					if (err) {
+						// con.end(function(err) {
+						//   console.log('ending connection queryBudgetsCostsByCustomerId not performed. err = ' + err);
+						// });
+						console.log('err: ' + JSON.stringify(err));
+						MysqlPool.releaseConnection(connection);
+						throw err;
+					}
 
-				console.log('queryBudgetsCostsByCustomerId performed ...');
-				console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
+					console.log('queryBudgetsCostsByCustomerId performed ...');
+					console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
 
-				var datatable = [];
-				async.each(activeprojects, function(activeproject, callback) {
-					async.parallel([
-				    function(callb) {
-							// Connect to the db
-							MongoClient.connect("mongodb://localhost:27017/senseibudgets", function(err, db) {
-							  if(err) {
-									console.log('mongo db connection failed. err: ' + err);
-								}
+					var datatable = [];
+					async.each(activeprojects, function(activeproject, callback) {
+						async.parallel([
+							// function(callb) {
+							// 	// Connect to the db
+							// 	MongoClient.connect("mongodb://localhost:27017/senseibudgets", function(err, db) {
+							// 		if(err) {
+							// 			console.log('mongo db connection failed. err: ' + err);
+							// 		}
+							//
+							// 		db.collection('Budget', function(err, collection) {
+							// 			collection.find({projectId:activeproject.id}).toArray(function(err, budgets) {
+							// 				console.log('activeproject' + activeproject.id + ' budgets : ' +
+							// 										JSON.stringify(budgets, null, '\t'));
+							// 				activeproject.budgets = budgets;
+							// 				db.close();
+							// 				callb();
+							// 			});
+							// 		});
+							// 	});
+							// },
+							function(callb) {
+								MysqlPool.getConnection(getCosts);
+								function getCosts(connection) {
+									connection.query('select t.ASSIGNMENT_ID as id, year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, ' +
+														'c.NAME as nomeCliente, p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, ' +
+														'round(sum(HOURS)/8,2) as giornateMese, sum(HOURS) as oreMese ' +
+														'from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID ' +
+														'join PROJECT p on a.PROJECT_ID = p.PROJECT_ID join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID ' +
+														'group by anno, mese, c.CUSTOMER_ID, p.PROJECT_ID having p.PROJECT_ID = \''	+
+														activeproject.id + '\' order by anno, mese;',
+										function(err, costs) {
+											if (err) {
+												// con.end(function(err) {
+												// 	console.log('ending connection queryCosts not performed. err = ' + err);
+												// });
+												MysqlPool.releaseConnection(connection);
+												throw err;
+											}
 
-							  db.collection('Budget', function(err, collection) {
-									collection.find({projectId:activeproject.id}).toArray(function(err, budgets) {
-										console.log('activeproject' + activeproject.id + ' budgets : ' +
-																JSON.stringify(budgets, null, '\t'));
-										activeproject.budgets = budgets;
-						        db.close();
-										callb();
-						    	});
-								});
-							});
-				    },
-				    function(callb) {
-							con.query('select t.ASSIGNMENT_ID as id, year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, ' +
-												'c.NAME as nomeCliente, p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, ' +
-												'round(sum(HOURS)/8,2) as giornateMese, sum(HOURS) as oreMese ' +
-												'from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID ' +
-												'join PROJECT p on a.PROJECT_ID = p.PROJECT_ID join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID ' +
-												'group by anno, mese, c.CUSTOMER_ID, p.PROJECT_ID having p.PROJECT_ID = \''	+
-												activeproject.id + '\' order by anno, mese;',
-								function(err, costs) {
-									if (err) {
-										con.end(function(err) {
-											console.log('ending connection queryCosts not performed. err = ' + err);
+											MysqlPool.releaseConnection(connection);
+											console.log('queryCosts performed ...');
+											console.log('activeproject' + activeproject.id + ' costs : ' + JSON.stringify(costs, null, '\t'));
+											activeproject.costs = costs;
+											callb();
 										});
-										throw err;
-									}
-
-									console.log('queryCosts performed ...');
-									console.log('activeproject' + activeproject.id + ' costs : ' + JSON.stringify(costs, null, '\t'));
-									activeproject.costs = costs;
-									callb();
-								});
-				    }
-					], function(err, results) {
-					  callback();
+								};
+							}
+						], function(err, results) {
+							callback();
+						});
+					}, function(err) {
+							if( err ) {
+								console.log('error: ' + JSON.stringify(err, null, '\t'));
+								res.json({error: err});
+							} else {
+								console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
+								datatable = getDataTable(activeprojects);
+								res.json(datatable);
+							}
 					});
-				}, function(err) {
-				    if( err ) {
-				      console.log('error: ' + JSON.stringify(err, null, '\t'));
-							res.json({error: err});
-				    } else {
-							console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
-							datatable = getDataTable(activeprojects);
-							res.json(datatable);
-				    }
-				});
 
-				con.end(function(err) {
-					console.log('ending connection after queryBudgetsCostsByCustomerId. err = ' + err);
-				});
+					// con.end(function(err) {
+					// 	console.log('ending connection after queryBudgetsCostsByCustomerId. err = ' + err);
+					// });
+					MysqlPool.releaseConnection(connection);
 
-			});
+				});
+			};
+
 			return res;
 		} else {
 			res.json([]);
