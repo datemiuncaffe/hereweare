@@ -48,8 +48,8 @@
     "./middleware/ehourqueries/queryProjectsByCustomerId": {
       "paths": "/query_projects_by_customer_id"
     },
-    "./middleware/ehourqueries/queryBudgetsCostsByCustomerId": {
-      "paths": "/query_budgets_costs_by_customer_id"
+    "./middleware/ehourqueries/queryBudgetsCostsByCustomerIds": {
+      "paths": "/query_budgets_costs_by_customer_ids"
     },
     "./middleware/ehourqueries/queryActiveCustomers": {
       "paths": "/query_active_customers"

@@ -1,5 +1,4 @@
 module.exports = function(options) {
-	// var mysql = require("mysql");
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
 	var async = require("async");
 	var moment = require('moment');
@@ -233,13 +232,32 @@ module.exports = function(options) {
 		}
 	};
 
-	return function queryBudgetsCostsByCustomerId(req, res, next) {
+	return function queryBudgetsCostsByCustomerIds(req, res, next) {
 		// parse query string parameters
 		var queryparams = req.query;
 		console.log('queryparams: ' + JSON.stringify(queryparams));
 
-		getDataByCustomerId(queryparams.customerId, queryparams.projectGroup, function(result) {
-			return res.json(result);
-		});
+		var results = [];
+		if (queryparams.customerIds != null && queryparams.customerIds.length > 0) {
+			var customerIds = queryparams.customerIds.split(',');
+			console.log('customerIds: ' + JSON.stringify(customerIds));
+			async.each(customerIds, function(custId, callback) {
+				getDataByCustomerId(custId, queryparams.projectGroup, function(res) {
+					var result = {customerId:custId,datatable:res};
+					results.push(result);
+					callback();
+				});
+			}, function(err) {
+					if( err ) {
+						console.log('error: ' + JSON.stringify(err, null, '\t'));
+						results.push({error: err});
+					}
+					res.json(results);
+			});
+			return res;
+		} else {
+			res.json(results);
+			return res;
+		}
 	};
 };
