@@ -1,13 +1,8 @@
 module.exports = function(options) {
 	var mysql = require("mysql");
-	return function queryGiorni(req, res, next) {
-		// First you need to create a connection to the db
-		var con = mysql.createConnection({
-			host : "192.168.88.158",
-			user : "centos",
-			database : "ehour"
-		});
+	var MysqlPool = require('./../../lib/mysql-pool').pool();
 
+	return function queryGiorni(req, res, next) {
 		var resList = {
 			giorni : []
 		};
@@ -28,18 +23,17 @@ module.exports = function(options) {
 		}
 		console.log('sql query: ' + JSON.stringify(query, null, '\t'));
 
-		con.query(query,
-			function(err, giorni) {
+		MysqlPool.getConnection(getData, query);
+
+		function getData(connection, query) {
+			connection.query(query, function(err, giorni) {
 				if (err) {
-					con.end(function(err) {
-						console.log('ending connection queryGiorni not performed. err = ' + err);
-					});
+					console.log('err: ' + JSON.stringify(err));
+					MysqlPool.releaseConnection(connection);
 					throw err;
 				}
 
-				con.end(function(err) {
-					console.log('ending connection after queryGiorni. err = ' + err);
-				});
+				MysqlPool.releaseConnection(connection);
 				console.log('queryGiorni performed ...');
 				console.log('giorni: ' + JSON.stringify(giorni, null, '\t'));
 
@@ -47,6 +41,7 @@ module.exports = function(options) {
 				console.log('resList: '	+ JSON.stringify(resList));
 				res.json(resList);
 			});
+		};
 
 		return res;
 

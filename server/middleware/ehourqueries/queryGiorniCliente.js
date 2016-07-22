@@ -1,13 +1,8 @@
 module.exports = function(options) {
 	var mysql = require("mysql");
-	return function queryGiorniCliente(req, res, next) {
-		// First you need to create a connection to the db
-		var con = mysql.createConnection({
-			host : "192.168.88.158",
-			user : "centos",
-			database : "ehour"
-		});
+	var MysqlPool = require('./../../lib/mysql-pool').pool();
 
+	return function queryGiorniCliente(req, res, next) {
 		var resList = {
 			giorniCliente : []
 		};
@@ -30,24 +25,25 @@ module.exports = function(options) {
 		}
 		console.log('sql query: ' + JSON.stringify(query, null, '\t'));
 
-		con.query(query, function(err, giorniCliente) {
-			if (err) {
-				con.end(function(err) {
-					console.log('ending connection queryGiorniCliente not performed. err = ' + err);
-				});
-				throw err;
-			}
+		MysqlPool.getConnection(getData, query);
 
-			con.end(function(err) {
-				console.log('ending connection after queryGiorniCliente. err = ' + err);
+		function getData(connection, query) {
+			connection.query(query, function(err, giorniCliente) {
+				if (err) {
+					console.log('err: ' + JSON.stringify(err));
+					MysqlPool.releaseConnection(connection);
+					throw err;
+				}
+
+				MysqlPool.releaseConnection(connection);
+				console.log('queryGiorniCliente performed ...');
+				console.log('giorniCliente: ' + JSON.stringify(giorniCliente, null, '\t'));
+
+				resList['giorniCliente'] = giorniCliente;
+				console.log('resList: ' + JSON.stringify(resList));
+				res.json(resList);
 			});
-			console.log('queryGiorniCliente performed ...');
-			console.log('giorniCliente: ' + JSON.stringify(giorniCliente, null, '\t'));
-
-			resList['giorniCliente'] = giorniCliente;
-			console.log('resList: ' + JSON.stringify(resList));
-			res.json(resList);
-		});
+		};
 
 		return res;
 	};

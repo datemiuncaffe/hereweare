@@ -1,13 +1,8 @@
 module.exports = function(options) {
 	var mysql = require("mysql");
-	return function queryGiorniCommessaUtente(req, res, next) {
-		// First you need to create a connection to the db
-		var con = mysql.createConnection({
-			host : "192.168.88.158",
-			user : "centos",
-			database : "ehour"
-		});
+	var MysqlPool = require('./../../lib/mysql-pool').pool();
 
+	return function queryGiorniCommessaUtente(req, res, next) {
 		var resList = {
 			giorniCommessaUtente : []
 		};
@@ -32,25 +27,26 @@ module.exports = function(options) {
 		query += ' order by c.CUSTOMER_ID, p.PROJECT_ID, u.LAST_NAME, anno, mese';
 		console.log('sql query: ' + JSON.stringify(query, null, '\t'));
 
-		con.query(query, function(err, giorniCommessaUtente) {
-			if (err) {
-				con.end(function(err) {
-					console.log('ending connection queryGiorniCommessaUtente not performed. err = ' + err);
-				});
-				throw err;
-			}
+		MysqlPool.getConnection(getData, query);
 
-			con.end(function(err) {
-				console.log('ending connection after queryGiorniCommessaUtente. err = ' + err);
+		function getData(connection, query) {
+			connection.query(query, function(err, giorniCommessaUtente) {
+				if (err) {
+					console.log('err: ' + JSON.stringify(err));
+					MysqlPool.releaseConnection(connection);
+					throw err;
+				}
+
+				MysqlPool.releaseConnection(connection);
+				console.log('queryGiorniCommessaUtente performed ...');
+				console.log('giorniCommessaUtente: ' + JSON.stringify(giorniCommessaUtente, null, '\t'));
+
+				resList['giorniCommessaUtente'] = giorniCommessaUtente;
+				console.log('resList: ' + JSON.stringify(resList));
+				res.json(resList);
 			});
-			console.log('queryGiorniCommessaUtente performed ...');
-			console.log('giorniCommessaUtente: ' + JSON.stringify(giorniCommessaUtente, null, '\t'));
-
-			resList['giorniCommessaUtente'] = giorniCommessaUtente;
-			console.log('resList: ' + JSON.stringify(resList));
-			res.json(resList);
-		});
-
+		};
+		
 		return res;
 
 	};

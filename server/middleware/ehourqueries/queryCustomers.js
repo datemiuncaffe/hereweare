@@ -4,13 +4,6 @@ module.exports = function(options) {
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
 
 	return function queryCustomers(req, res, next) {
-		// First you need to create a connection to the db
-		// var con = mysql.createConnection({
-		// 	host : "192.168.88.158",
-		// 	user : "centos",
-		// 	database : "ehour"
-		// });
-
 		var now = moment();
 		var lowdatelimit = now.subtract(2, 'months').format('YYYY-MM-DD');
 		console.log('lowdatelimit for active and new projects: ' + lowdatelimit);
@@ -60,7 +53,7 @@ module.exports = function(options) {
 				// 	console.log('ending connection after queryCustomers. err = ' + err);
 				// });
 				MysqlPool.releaseConnection(connection);
-				
+
 				console.log('queryCustomers performed ...');
 				console.log('customers: ' + JSON.stringify(customers, null, '\t'));
 

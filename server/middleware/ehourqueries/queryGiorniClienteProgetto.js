@@ -1,13 +1,8 @@
 module.exports = function(options) {
 	var mysql = require("mysql");
-	return function queryGiorniClienteProgetto(req, res, next) {
-		// First you need to create a connection to the db
-		var con = mysql.createConnection({
-			host : "192.168.88.158",
-			user : "centos",
-			database : "ehour"
-		});
+	var MysqlPool = require('./../../lib/mysql-pool').pool();
 
+	return function queryGiorniClienteProgetto(req, res, next) {
 		var resList = {
 			giorniClienteProgetto : []
 		};
@@ -29,25 +24,26 @@ module.exports = function(options) {
 		query += ' order by c.CUSTOMER_ID, p.PROJECT_CODE';
 		console.log('sql query: ' + JSON.stringify(query, null, '\t'));
 
-		con.query(query, function(err, giorniClienteProgetto) {
-			if (err) {
-				con.end(function(err) {
-					console.log('ending connection queryGiorniClienteProgetto not performed. err = ' + err);
-				});
-				throw err;
-			}
+		MysqlPool.getConnection(getData, query);
 
-			con.end(function(err) {
-				console.log('ending connection after queryGiorniClienteProgetto. err = ' + err);
+		function getData(connection, query) {
+			connection.query(query, function(err, giorniClienteProgetto) {
+				if (err) {
+					console.log('err: ' + JSON.stringify(err));
+					MysqlPool.releaseConnection(connection);
+					throw err;
+				}
+
+				MysqlPool.releaseConnection(connection);
+				console.log('queryGiorniClienteProgetto performed ...');
+				console.log('giorni cliente progetto: ' + JSON.stringify(giorniClienteProgetto, null, '\t'));
+
+				resList['giorniClienteProgetto'] = giorniClienteProgetto;
+				console.log('resList: ' + JSON.stringify(resList));
+				res.json(resList);
 			});
-			console.log('queryGiorniClienteProgetto performed ...');
-			console.log('giorni cliente progetto: ' + JSON.stringify(giorniClienteProgetto, null, '\t'));
-
-			resList['giorniClienteProgetto'] = giorniClienteProgetto;
-			console.log('resList: ' + JSON.stringify(resList));
-			res.json(resList);
-		});
-
+		};
+		
 		return res;
 
 	};

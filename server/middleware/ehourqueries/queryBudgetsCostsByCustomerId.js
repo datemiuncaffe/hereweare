@@ -120,48 +120,34 @@ module.exports = function(options) {
 		return datatable;
 	};
 
-	return function queryBudgetsCostsByCustomerId(req, res, next) {
-		// First you need to create a connection to the db
-		// var con = mysql.createConnection({
-		// 	host : "192.168.88.158",
-		// 	user : "centos",
-		// 	database : "ehour"
-		// });
-
-		console.log('MysqlPool: ' + JSON.stringify(MysqlPool));
-		MysqlPool.checklog();
-
-		// parse query string parameters
-		var queryparams = req.query;
-		console.log('queryparams: ' + JSON.stringify(queryparams));
-
-		if (queryparams.customerId != null && queryparams.customerId > 0) {
-			console.log('customerId: ' + queryparams.customerId);
+	function getDataByCustomerId(customerId, projectGroup, cb) {
+		if (customerId != null && customerId > 0) {
+			console.log('customerId: ' + customerId);
 
 			var now = moment();
 			var lowdatelimit = now.subtract(2, 'months').format('YYYY-MM-DD');
 			console.log('lowdatelimit for active and new projects: ' + lowdatelimit);
 
 			var queries = {
-				ALL: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p WHERE p.CUSTOMER_ID = \'' + queryparams.customerId + '\' ORDER BY name;',
-				INT: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p WHERE p.CUSTOMER_ID = \'' + queryparams.customerId + '\' ORDER BY name;',
-				EXT: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p WHERE p.CUSTOMER_ID = \'' + queryparams.customerId + '\' ORDER BY name;',
+				ALL: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p WHERE p.CUSTOMER_ID = \'' + customerId + '\' ORDER BY name;',
+				INT: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p WHERE p.CUSTOMER_ID = \'' + customerId + '\' ORDER BY name;',
+				EXT: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p WHERE p.CUSTOMER_ID = \'' + customerId + '\' ORDER BY name;',
 				NOTACTIVE: '',
-				ACTIVE: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p join PROJECT_ASSIGNMENT a on p.PROJECT_ID = a.PROJECT_ID join TIMESHEET_ENTRY t on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID WHERE t.ENTRY_DATE IS NOT NULL AND t.ENTRY_DATE > \'' + lowdatelimit + '\' AND p.CUSTOMER_ID = \'' + queryparams.customerId + '\' ORDER BY name;',
-				NEW: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p join PROJECT_ASSIGNMENT a on p.PROJECT_ID = a.PROJECT_ID WHERE a.DATE_START IS NOT NULL AND a.DATE_START > \'' + lowdatelimit + '\' AND p.CUSTOMER_ID = \'' + queryparams.customerId + '\' ORDER BY name;'
+				ACTIVE: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p join PROJECT_ASSIGNMENT a on p.PROJECT_ID = a.PROJECT_ID join TIMESHEET_ENTRY t on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID WHERE t.ENTRY_DATE IS NOT NULL AND t.ENTRY_DATE > \'' + lowdatelimit + '\' AND p.CUSTOMER_ID = \'' + customerId + '\' ORDER BY name;',
+				NEW: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p join PROJECT_ASSIGNMENT a on p.PROJECT_ID = a.PROJECT_ID WHERE a.DATE_START IS NOT NULL AND a.DATE_START > \'' + lowdatelimit + '\' AND p.CUSTOMER_ID = \'' + customerId + '\' ORDER BY name;'
 			};
 
 			var query = queries.ALL;
-			if (queryparams.projectGroup != null) {
-				if (queryparams.projectGroup == 'INT') {
+			if (projectGroup != null) {
+				if (projectGroup == 'INT') {
 					query = queries.INT;
-				} else if (queryparams.projectGroup == 'EXT') {
+				} else if (projectGroup == 'EXT') {
 					query = queries.EXT;
-				} else if (queryparams.projectGroup == 'ACTIVE') {
+				} else if (projectGroup == 'ACTIVE') {
 					query = queries.ACTIVE;
-				} else if (queryparams.projectGroup == 'NOTACTIVE') {
+				} else if (projectGroup == 'NOTACTIVE') {
 					query = queries.NOTACTIVE;
-				} else if (queryparams.projectGroup == 'NEW') {
+				} else if (projectGroup == 'NEW') {
 					query = queries.NEW;
 				}
 			}
@@ -172,38 +158,36 @@ module.exports = function(options) {
 				console.log('connection: ' + connection + '; query: ' + query);
 				connection.query(query, function(err, activeprojects) {
 					if (err) {
-						// con.end(function(err) {
-						//   console.log('ending connection queryBudgetsCostsByCustomerId not performed. err = ' + err);
-						// });
 						console.log('err: ' + JSON.stringify(err));
 						MysqlPool.releaseConnection(connection);
 						throw err;
 					}
 
+					MysqlPool.releaseConnection(connection);
 					console.log('queryBudgetsCostsByCustomerId performed ...');
 					console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
 
 					var datatable = [];
 					async.each(activeprojects, function(activeproject, callback) {
 						async.parallel([
-							// function(callb) {
-							// 	// Connect to the db
-							// 	MongoClient.connect("mongodb://localhost:27017/senseibudgets", function(err, db) {
-							// 		if(err) {
-							// 			console.log('mongo db connection failed. err: ' + err);
-							// 		}
-							//
-							// 		db.collection('Budget', function(err, collection) {
-							// 			collection.find({projectId:activeproject.id}).toArray(function(err, budgets) {
-							// 				console.log('activeproject' + activeproject.id + ' budgets : ' +
-							// 										JSON.stringify(budgets, null, '\t'));
-							// 				activeproject.budgets = budgets;
-							// 				db.close();
-							// 				callb();
-							// 			});
-							// 		});
-							// 	});
-							// },
+							function(callb) {
+								// Connect to the db
+								MongoClient.connect("mongodb://localhost:27017/senseibudgets", function(err, db) {
+									if(err) {
+										console.log('mongo db connection failed. err: ' + err);
+									}
+
+									db.collection('Budget', function(err, collection) {
+										collection.find({projectId:activeproject.id}).toArray(function(err, budgets) {
+											console.log('activeproject' + activeproject.id + ' budgets : ' +
+																	JSON.stringify(budgets, null, '\t'));
+											activeproject.budgets = budgets;
+											db.close();
+											callb();
+										});
+									});
+								});
+							},
 							function(callb) {
 								MysqlPool.getConnection(getCosts);
 								function getCosts(connection) {
@@ -216,9 +200,6 @@ module.exports = function(options) {
 														activeproject.id + '\' order by anno, mese;',
 										function(err, costs) {
 											if (err) {
-												// con.end(function(err) {
-												// 	console.log('ending connection queryCosts not performed. err = ' + err);
-												// });
 												MysqlPool.releaseConnection(connection);
 												throw err;
 											}
@@ -237,27 +218,28 @@ module.exports = function(options) {
 					}, function(err) {
 							if( err ) {
 								console.log('error: ' + JSON.stringify(err, null, '\t'));
-								res.json({error: err});
+								cb({error: err});
 							} else {
 								console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
 								datatable = getDataTable(activeprojects);
-								res.json(datatable);
+								cb(datatable);
 							}
 					});
 
-					// con.end(function(err) {
-					// 	console.log('ending connection after queryBudgetsCostsByCustomerId. err = ' + err);
-					// });
-					MysqlPool.releaseConnection(connection);
-
 				});
 			};
-
-			return res;
 		} else {
-			res.json([]);
-			return res;
+			cb([]);
 		}
+	};
 
+	return function queryBudgetsCostsByCustomerId(req, res, next) {
+		// parse query string parameters
+		var queryparams = req.query;
+		console.log('queryparams: ' + JSON.stringify(queryparams));
+
+		getDataByCustomerId(queryparams.customerId, queryparams.projectGroup, function(result) {
+			return res.json(result);
+		});
 	};
 };
