@@ -12,7 +12,7 @@ var MysqlPool = function() {
 		checklog: function() {
 			console.log('simple check');
 		},
-		getConnection: function(cb, query) {
+		getConnection: function(cb, options) {
 			console.log('pool: ' + pool);
 			pool.getConnection(function(err, connection) {
 				if (err) {
@@ -20,7 +20,7 @@ var MysqlPool = function() {
 					throw err;
 				}
 				console.log('acquired connection');
-				cb(connection, query);
+				cb(connection, options);
 			});
 		},
 		releaseConnection: function(connection) {
