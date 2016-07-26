@@ -25,7 +25,7 @@ module.exports = function(options) {
 
 		MysqlPool.getConnection(getData, query);
 
-		function getData(connection, query) {
+		function getData(err, connection, query) {
 			connection.query(query, function(err, giorni) {
 				if (err) {
 					console.log('err: ' + JSON.stringify(err));

@@ -1,122 +1,131 @@
 module.exports = function(options) {
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
+	var MongoPool = require('./../../lib/mongo-pool').pool();
 	var async = require("async");
 	var moment = require('moment');
-	var MongoClient = require('mongodb').MongoClient;
+	// var MongoClient = require('mongodb').MongoClient;
 
 	var months = ['Gennaio','Febbraio','Marzo','Aprile','Maggio',
 								'Giugno','Luglio','Agosto','Settembre','Ottobre',
 								'Novembre','Dicembre'];
 
-	function Padder(len, pad) {
-		if (len === undefined) {
-			len = 1;
-		} else if (pad === undefined) {
-			pad = '0';
-		}
+	// function Padder(len, pad) {
+	// 	if (len === undefined) {
+	// 		len = 1;
+	// 	} else if (pad === undefined) {
+	// 		pad = '0';
+	// 	}
+	//
+	// 	var pads = '';
+	// 	while (pads.length < len) {
+	// 		pads += pad;
+	// 	}
+	//
+	// 	this.pad = function(what) {
+	// 		var s = what.toString();
+	// 		return pads.substring(0, pads.length - s.length) + s;
+	// 	};
+	// };
 
-		var pads = '';
-		while (pads.length < len) {
-			pads += pad;
-		}
+	// function getDataFromActiveProject(activeproject) {
+	// 	var budgets = [];
+	// 	var costs = [];
+	// 	if (activeproject != null) {
+	// 		if (activeproject.budgets != null) {
+	// 			budgets = activeproject.budgets;
+	// 		}
+	// 		if (activeproject.costs != null) {
+	// 			costs = activeproject.costs;
+	// 		}
+	// 	}
+	//
+	// 	// prepare data for table
+	// 	var datatable = [];
+	// 	if (budgets.length > 0 || costs.length > 0) {
+	// 		var zero2 = new Padder(2);
+	// 		var map = new Map();
+	// 		budgets.forEach(function(budget){
+	// 			var value = {
+	// 				id: budget.id,
+	// 				projectId: activeproject.id,
+	// 				projectname: activeproject.name,
+	// 				projectcode: activeproject.code,
+	// 				year: budget.year,
+	// 				month: budget.month,
+	// 				budgetfrom: budget.from,
+	// 				budgetto: budget.to,
+	// 				budgetamount: budget.amount,
+	// 				budgetdays: budget.days,
+	// 				costdays: null,
+	// 				costhours: null,
+	// 			};
+	// 			// var key = budget.year + '-' + zero2.pad((moment(budget.month, "MMMM").month() + 1));
+	// 			var key = activeproject.name + '-' + activeproject.id + '-' +
+	// 								budget.year + '-' + zero2.pad((months.indexOf(budget.month) + 1));
+	// 			map.set(key, value);
+	// 		});
+	// 		costs.forEach(function(cost){
+	// 			var key = activeproject.name + '-' + activeproject.id + '-' +
+	// 								cost.anno + '-' + zero2.pad(cost.mese);
+	// 			var value = {};
+	// 			if (map.has(key)) {
+	// 				value = map.get(key);
+	// 				value.id += '-' + cost.id + '-' + cost.mese;
+	// 				value.costdays = cost.giornateMese;
+	// 				value.costhours = cost.oreMese;
+	// 			} else {
+	// 				value = {
+	// 					id: '-' + cost.id + '-' + cost.mese,
+	// 					projectId: activeproject.id,
+	// 					projectname: activeproject.name,
+	// 					projectcode: activeproject.code,
+	// 					year: cost.anno,
+	// 					month: months[cost.mese - 1],
+	// 					budgetfrom: null,
+	// 					budgetto: null,
+	// 					budgetamount: null,
+	// 					budgetdays: null,
+	// 					costdays: cost.giornateMese,
+	// 					costhours: cost.oreMese
+	// 				};
+	// 				map.set(key, value);
+	// 			}
+	// 		});
+	//
+	// 		var keys = Array.from(map.keys());
+	// 		console.log('keys: ' + keys);
+	// 		var firstobj = map.get(keys[0]);
+	// 		for (var field in firstobj) {
+	// 			console.log('typeof field: ' + typeof firstobj[field]);
+	// 		}
+	// 		var sortedKeys = keys.sort();
+	// 		console.log('sortedKeys: ' + sortedKeys);
+	// 		sortedKeys.forEach(function(key){
+	// 			var value = map.get(key);
+	// 			console.log('m[' + key + '] = ' + JSON.stringify(value));
+	// 			datatable.push(value);
+	// 		});
+	// 	}
+	// 	return datatable;
+	// };
 
-		this.pad = function(what) {
-			var s = what.toString();
-			return pads.substring(0, pads.length - s.length) + s;
-		};
-	};
+	// function getDataTable(activeprojects) {
+	// 	console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
+	// 	var datatable = [];
+	// 	activeprojects.forEach(function(activeproject){
+	// 		var datafromproject = getDataFromActiveProject(activeproject);
+	// 		datatable = datatable.concat(datafromproject);
+	// 	});
+	// 	console.log('datatable: ' + JSON.stringify(datatable, null, '\t'));
+	// 	return datatable;
+	// };
 
-	function getDataFromActiveProject(activeproject) {
-		var budgets = [];
-		var costs = [];
-		if (activeproject != null) {
-			if (activeproject.budgets != null) {
-				budgets = activeproject.budgets;
-			}
-			if (activeproject.costs != null) {
-				costs = activeproject.costs;
-			}
-		}
-
-		// prepare data for table
-		var datatable = [];
-		if (budgets.length > 0 || costs.length > 0) {
-			var zero2 = new Padder(2);
-			var map = new Map();
-			budgets.forEach(function(budget){
-				var value = {
-					id: budget.id,
-					projectId: activeproject.id,
-					projectname: activeproject.name,
-					projectcode: activeproject.code,
-					year: budget.year,
-					month: budget.month,
-					budgetfrom: budget.from,
-					budgetto: budget.to,
-					budgetamount: budget.amount,
-					budgetdays: budget.days,
-					costdays: null,
-					costhours: null,
-				};
-				// var key = budget.year + '-' + zero2.pad((moment(budget.month, "MMMM").month() + 1));
-				var key = activeproject.name + '-' + activeproject.id + '-' +
-									budget.year + '-' + zero2.pad((months.indexOf(budget.month) + 1));
-				map.set(key, value);
-			});
-			costs.forEach(function(cost){
-				var key = activeproject.name + '-' + activeproject.id + '-' +
-									cost.anno + '-' + zero2.pad(cost.mese);
-				var value = {};
-				if (map.has(key)) {
-					value = map.get(key);
-					value.id += '-' + cost.id + '-' + cost.mese;
-					value.costdays = cost.giornateMese;
-					value.costhours = cost.oreMese;
-				} else {
-					value = {
-						id: '-' + cost.id + '-' + cost.mese,
-						projectId: activeproject.id,
-						projectname: activeproject.name,
-						projectcode: activeproject.code,
-						year: cost.anno,
-						month: months[cost.mese - 1],
-						budgetfrom: null,
-						budgetto: null,
-						budgetamount: null,
-						budgetdays: null,
-						costdays: cost.giornateMese,
-						costhours: cost.oreMese
-					};
-					map.set(key, value);
-				}
-			});
-
-			var keys = Array.from(map.keys());
-			console.log('keys: ' + keys);
-			var firstobj = map.get(keys[0]);
-			for (var field in firstobj) {
-				console.log('typeof field: ' + typeof firstobj[field]);
-			}
-			var sortedKeys = keys.sort();
-			console.log('sortedKeys: ' + sortedKeys);
-			sortedKeys.forEach(function(key){
-				var value = map.get(key);
-				console.log('m[' + key + '] = ' + JSON.stringify(value));
-				datatable.push(value);
-			});
-		}
-		return datatable;
-	};
-
-	function getDataTable(activeprojects) {
-		console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
-		var datatable = [];
-		activeprojects.forEach(function(activeproject){
-			var datafromproject = getDataFromActiveProject(activeproject);
-			datatable = datatable.concat(datafromproject);
+	function getDataTable(data) {
+		data.forEach(function(datum){
+			datum.id = '-' + datum.projectId + '-' + datum.year + '-' + datum.month;
+			datum.month = months[datum.month - 1];
 		});
-		console.log('datatable: ' + JSON.stringify(datatable, null, '\t'));
-		return datatable;
+		return data;
 	};
 
 	function getDataByCustomerId(connection, customerId, projectGroup, cb) {
@@ -127,13 +136,22 @@ module.exports = function(options) {
 			var lowdatelimit = now.subtract(2, 'months').format('YYYY-MM-DD');
 			console.log('lowdatelimit for active and new projects: ' + lowdatelimit);
 
+			var baseqry = 'select p.PROJECT_ID as projectId, p.NAME as projectname, p.PROJECT_CODE as projectcode,'
+				+ ' year(ENTRY_DATE) as year, month(ENTRY_DATE) as month, round(sum(HOURS)/8,2) as costdays,'
+				+ ' sum(HOURS) as costhours'
+				+ ' from TIMESHEET_ENTRY t'
+				+ ' join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID'
+				+ ' join PROJECT p on a.PROJECT_ID = p.PROJECT_ID'
+				+ ' join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID';
+			var postqry = ' group by projectId, projectname, year, month order by projectname, projectcode, year, month;';
+
 			var queries = {
-				ALL: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p WHERE p.CUSTOMER_ID = \'' + customerId + '\' ORDER BY name;',
-				INT: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p WHERE p.CUSTOMER_ID = \'' + customerId + '\' ORDER BY name;',
-				EXT: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p WHERE p.CUSTOMER_ID = \'' + customerId + '\' ORDER BY name;',
+				ALL: baseqry + ' WHERE c.CUSTOMER_ID = \'' + customerId + '\'' + postqry,
+				INT: baseqry + ' WHERE c.CUSTOMER_ID = \'' + customerId + '\'' + postqry,
+				EXT: baseqry + ' WHERE c.CUSTOMER_ID = \'' + customerId + '\'' + postqry,
 				NOTACTIVE: '',
-				ACTIVE: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p join PROJECT_ASSIGNMENT a on p.PROJECT_ID = a.PROJECT_ID join TIMESHEET_ENTRY t on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID WHERE t.ENTRY_DATE IS NOT NULL AND t.ENTRY_DATE > \'' + lowdatelimit + '\' AND p.CUSTOMER_ID = \'' + customerId + '\' ORDER BY name;',
-				NEW: 'select p.NAME as name, p.PROJECT_CODE as code, p.PROJECT_ID as id, p.CUSTOMER_ID as customerId FROM PROJECT p join PROJECT_ASSIGNMENT a on p.PROJECT_ID = a.PROJECT_ID WHERE a.DATE_START IS NOT NULL AND a.DATE_START > \'' + lowdatelimit + '\' AND p.CUSTOMER_ID = \'' + customerId + '\' ORDER BY name;'
+				ACTIVE: baseqry + ' WHERE t.ENTRY_DATE IS NOT NULL AND t.ENTRY_DATE > \'' + lowdatelimit + '\' AND c.CUSTOMER_ID = \'' + customerId + '\'' + postqry,
+				NEW: baseqry + ' WHERE a.DATE_START IS NOT NULL AND a.DATE_START > \'' + lowdatelimit + '\' AND c.CUSTOMER_ID = \'' + customerId + '\'' + postqry
 			};
 
 			var query = queries.ALL;
@@ -153,70 +171,86 @@ module.exports = function(options) {
 
 			console.log('query: ' + query);
 			console.log('connection: ' + connection + '; query: ' + query);
-			connection.query(query, function(err, activeprojects) {
+
+			connection.query(query, function(err, data) {
 				if (err) {
 					console.log('err: ' + JSON.stringify(err));
 					throw err;
 				}
 
 				console.log('queryBudgetsCostsByCustomerId performed ...');
-				console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
-
-				var datatable = [];
-				async.each(activeprojects, function(activeproject, callback) {
-					async.parallel([
-						// function(callb) {
-						// 	// Connect to the db
-						// 	MongoClient.connect("mongodb://localhost:27017/senseibudgets", function(err, db) {
-						// 		if(err) {
-						// 			console.log('mongo db connection failed. err: ' + err);
-						// 		}
-						//
-						// 		db.collection('Budget', function(err, collection) {
-						// 			collection.find({projectId:activeproject.id}).toArray(function(err, budgets) {
-						// 				console.log('activeproject' + activeproject.id + ' budgets : ' +
-						// 										JSON.stringify(budgets, null, '\t'));
-						// 				activeproject.budgets = budgets;
-						// 				db.close();
-						// 				callb();
-						// 			});
-						// 		});
-						// 	});
-						// },
-						function(callb) {
-							connection.query('select t.ASSIGNMENT_ID as id, year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, ' +
-												'c.NAME as nomeCliente, p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, ' +
-												'round(sum(HOURS)/8,2) as giornateMese, sum(HOURS) as oreMese ' +
-												'from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID ' +
-												'join PROJECT p on a.PROJECT_ID = p.PROJECT_ID join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID ' +
-												'group by anno, mese, c.CUSTOMER_ID, p.PROJECT_ID having p.PROJECT_ID = \''	+
-												activeproject.id + '\' order by anno, mese;',
-								function(err, costs) {
-									if (err) {
-										throw err;
-									}
-
-									console.log('queryCosts performed ...');
-									console.log('activeproject' + activeproject.id + ' costs : ' + JSON.stringify(costs, null, '\t'));
-									activeproject.costs = costs;
-									callb();
-								});
-						}
-					], function(err, results) {
-						callback();
-					});
-				}, function(err) {
-						if( err ) {
-							console.log('error: ' + JSON.stringify(err, null, '\t'));
-							cb({error: err});
-						} else {
-							console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
-							datatable = getDataTable(activeprojects);
-							cb(datatable);
-						}
-				});
-
+				console.log('data: ' + JSON.stringify(data, null, '\t'));
+				var datatable = getDataTable(data);
+				cb(datatable);
 			});
+
+
+
+			// connection.query(query, function(err, activeprojects) {
+			// 	if (err) {
+			// 		console.log('err: ' + JSON.stringify(err));
+			// 		throw err;
+			// 	}
+			//
+			// 	console.log('queryBudgetsCostsByCustomerId performed ...');
+			// 	console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
+			//
+			// 	var datatable = [];
+			// 	async.each(activeprojects, function(activeproject, callback) {
+			// 		async.parallel([
+			// 			// function(callb) {
+			// 			// 	// Connect to the db
+			// 			// 	MongoClient.connect("mongodb://localhost:27017/senseibudgets", function(err, db) {
+			// 			// 		if(err) {
+			// 			// 			console.log('mongo db connection failed. err: ' + err);
+			// 			// 		}
+			// 			//
+			// 			// 		db.collection('Budget', function(err, collection) {
+			// 			// 			collection.find({projectId:activeproject.id}).toArray(function(err, budgets) {
+			// 			// 				console.log('activeproject' + activeproject.id + ' budgets : ' +
+			// 			// 										JSON.stringify(budgets, null, '\t'));
+			// 			// 				activeproject.budgets = budgets;
+			// 			// 				db.close();
+			// 			// 				callb();
+			// 			// 			});
+			// 			// 		});
+			// 			// 	});
+			// 			// },
+			// 			function(callb) {
+			// 				connection.query('select t.ASSIGNMENT_ID as id, year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, ' +
+			// 									'c.NAME as nomeCliente, p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, ' +
+			// 									'round(sum(HOURS)/8,2) as giornateMese, sum(HOURS) as oreMese ' +
+			// 									'from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID ' +
+			// 									'join PROJECT p on a.PROJECT_ID = p.PROJECT_ID join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID ' +
+			// 									'group by anno, mese, c.CUSTOMER_ID, p.PROJECT_ID having p.PROJECT_ID = \''	+
+			// 									activeproject.id + '\' order by anno, mese;',
+			// 					function(err, costs) {
+			// 						if (err) {
+			// 							throw err;
+			// 						}
+			//
+			// 						console.log('queryCosts performed ...');
+			// 						console.log('activeproject' + activeproject.id + ' costs : ' + JSON.stringify(costs, null, '\t'));
+			// 						activeproject.costs = costs;
+			// 						callb();
+			// 					});
+			// 			}
+			// 		], function(err, results) {
+			// 			callback();
+			// 		});
+			// 	}, function(err) {
+			// 			if( err ) {
+			// 				console.log('error: ' + JSON.stringify(err, null, '\t'));
+			// 				cb({error: err});
+			// 			} else {
+			// 				console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
+			// 				datatable = getDataTable(activeprojects);
+			// 				cb(datatable);
+			// 			}
+			// 	});
+			//
+			// });
+
 		} else {
 			cb([]);
 		}
@@ -227,31 +261,47 @@ module.exports = function(options) {
 		var queryparams = req.query;
 		console.log('queryparams: ' + JSON.stringify(queryparams));
 
-		var results = [];
 		if (queryparams.customerIds != null && queryparams.customerIds.length > 0) {
 			var customerIds = queryparams.customerIds.split(',');
 			console.log('customerIds: ' + JSON.stringify(customerIds));
-			MysqlPool.getConnection(getData, customerIds);
-			function getData(connection, customerIds) {
-				async.each(customerIds, function(custId, callback) {
-					getDataByCustomerId(connection, custId, queryparams.projectGroup, function(res) {
-						var result = {customerId:custId,datatable:res};
-						results.push(result);
-						callback();
-					});
-				}, function(err) {
-						if( err ) {
-							console.log('error: ' + JSON.stringify(err, null, '\t'));
-							results.push({error: err});
-						}
-						MysqlPool.releaseConnection(connection);
-						res.json(results);
-				});
-			};
+
+			async.parallel([
+		    function(callback) {
+					MysqlPool.getConnection(getData, customerIds);
+					function getData(err, connection, customerIds) {
+						var costsresults = [];
+						async.each(customerIds, function(custId, callback) {
+							getDataByCustomerId(connection, custId, queryparams.projectGroup, function(res) {
+								var result = {customerId:custId,datatable:res};
+								costsresults.push(result);
+								callback();
+							});
+						}, function(err) {
+								if( err ) {
+									console.log('error: ' + JSON.stringify(err, null, '\t'));
+									costsresults.push({error: err});
+								}
+								MysqlPool.releaseConnection(connection);
+								callback(null, costsresults);
+						});
+					};
+		    },
+		    function(callback) {
+					// MongoPool.getConnection(callback);
+					setTimeout(function() {
+	            callback(null, 'two');
+	        }, 4000);
+		    }
+			], function(err, results) {
+		    console.log('results: ' + JSON.stringify(results, null, '\t'));
+
+				res.json(results[0]);
+			});
 			return res;
 		} else {
 			res.json(results);
 			return res;
 		}
+
 	};
 };

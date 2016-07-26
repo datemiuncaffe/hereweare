@@ -1,7 +1,7 @@
 module.exports = function(options) {
 	var mysql = require("mysql");
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
-	
+
 	return function queryGiorniCommessa(req, res, next) {
 		var resList = {
 			giorniCommessa : []
@@ -28,7 +28,7 @@ module.exports = function(options) {
 
 		MysqlPool.getConnection(getData, query);
 
-		function getData(connection, query) {
+		function getData(err, connection, query) {
 			connection.query(query, function(err, giorniCommessa) {
 				if (err) {
 					console.log('err: ' + JSON.stringify(err));

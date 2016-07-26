@@ -20,7 +20,7 @@ var MysqlPool = function() {
 					throw err;
 				}
 				console.log('acquired connection');
-				cb(connection, options);
+				cb(err, connection, options);
 			});
 		},
 		releaseConnection: function(connection) {

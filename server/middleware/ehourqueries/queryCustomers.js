@@ -38,7 +38,7 @@ module.exports = function(options) {
 
 		MysqlPool.getConnection(getData, query);
 
-		function getData(connection, query) {
+		function getData(err, connection, query) {
 			connection.query(query, function(err, customers) {
 				if (err) {
 					// con.end(function(err) {
