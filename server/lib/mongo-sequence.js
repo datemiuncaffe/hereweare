@@ -37,4 +37,4 @@ var MongoSequence = function(db,name,opts) {
 	return seq;
 };
 
-exports.MongoSequence = MongoSequence;
+module.exports = MongoSequence;

@@ -184,73 +184,6 @@ module.exports = function(options) {
 				cb(datatable);
 			});
 
-
-
-			// connection.query(query, function(err, activeprojects) {
-			// 	if (err) {
-			// 		console.log('err: ' + JSON.stringify(err));
-			// 		throw err;
-			// 	}
-			//
-			// 	console.log('queryBudgetsCostsByCustomerId performed ...');
-			// 	console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
-			//
-			// 	var datatable = [];
-			// 	async.each(activeprojects, function(activeproject, callback) {
-			// 		async.parallel([
-			// 			// function(callb) {
-			// 			// 	// Connect to the db
-			// 			// 	MongoClient.connect("mongodb://localhost:27017/senseibudgets", function(err, db) {
-			// 			// 		if(err) {
-			// 			// 			console.log('mongo db connection failed. err: ' + err);
-			// 			// 		}
-			// 			//
-			// 			// 		db.collection('Budget', function(err, collection) {
-			// 			// 			collection.find({projectId:activeproject.id}).toArray(function(err, budgets) {
-			// 			// 				console.log('activeproject' + activeproject.id + ' budgets : ' +
-			// 			// 										JSON.stringify(budgets, null, '\t'));
-			// 			// 				activeproject.budgets = budgets;
-			// 			// 				db.close();
-			// 			// 				callb();
-			// 			// 			});
-			// 			// 		});
-			// 			// 	});
-			// 			// },
-			// 			function(callb) {
-			// 				connection.query('select t.ASSIGNMENT_ID as id, year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, ' +
-			// 									'c.NAME as nomeCliente, p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, ' +
-			// 									'round(sum(HOURS)/8,2) as giornateMese, sum(HOURS) as oreMese ' +
-			// 									'from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID ' +
-			// 									'join PROJECT p on a.PROJECT_ID = p.PROJECT_ID join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID ' +
-			// 									'group by anno, mese, c.CUSTOMER_ID, p.PROJECT_ID having p.PROJECT_ID = \''	+
-			// 									activeproject.id + '\' order by anno, mese;',
-			// 					function(err, costs) {
-			// 						if (err) {
-			// 							throw err;
-			// 						}
-			//
-			// 						console.log('queryCosts performed ...');
-			// 						console.log('activeproject' + activeproject.id + ' costs : ' + JSON.stringify(costs, null, '\t'));
-			// 						activeproject.costs = costs;
-			// 						callb();
-			// 					});
-			// 			}
-			// 		], function(err, results) {
-			// 			callback();
-			// 		});
-			// 	}, function(err) {
-			// 			if( err ) {
-			// 				console.log('error: ' + JSON.stringify(err, null, '\t'));
-			// 				cb({error: err});
-			// 			} else {
-			// 				console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
-			// 				datatable = getDataTable(activeprojects);
-			// 				cb(datatable);
-			// 			}
-			// 	});
-			//
-			// });
-
 		} else {
 			cb([]);
 		}
@@ -270,11 +203,11 @@ module.exports = function(options) {
 					MysqlPool.getConnection(getData, customerIds);
 					function getData(err, connection, customerIds) {
 						var costsresults = [];
-						async.each(customerIds, function(custId, callback) {
+						async.each(customerIds, function(custId, callbk) {
 							getDataByCustomerId(connection, custId, queryparams.projectGroup, function(res) {
 								var result = {customerId:custId,datatable:res};
 								costsresults.push(result);
-								callback();
+								callbk();
 							});
 						}, function(err) {
 								if( err ) {
@@ -287,10 +220,58 @@ module.exports = function(options) {
 					};
 		    },
 		    function(callback) {
-					// MongoPool.getConnection(callback);
-					setTimeout(function() {
-	            callback(null, 'two');
-	        }, 4000);
+					MongoPool.getConnection(getData, customerIds);
+					function getData(err, db, customerIds) {
+						var budgetsresults = [];
+						async.each(customerIds, function(custId, callbk) {
+							db.collection('Project', function(err, collection) {
+								collection.aggregate([
+									{
+										$match: {customerId:parseInt(custId)}
+									},
+									{
+										$lookup: {
+											from: "Budget",
+											localField: "_id",
+											foreignField: "projectId",
+											as: "budgets"
+										}
+									},
+									{
+										$unwind : "$budgets"
+									},
+									{
+							     	$project: {
+											_id: 0,
+											projectId: "$_id",
+											projectname: "$name",
+											projectcode: "$code",
+											year: "$budgets.year",
+											month: "$budgets.month",
+											budgetfrom: "$budgets.from",
+											budgetto: "$budgets.to",
+											budgetamount: "$budgets.amount",
+											budgetdays: "$budgets.days",
+											id: "$budgets._id"
+							      }
+									}
+								], function(err, projects) {
+									console.log('customer ' + custId + ' projects : ' + JSON.stringify(projects, null, '\t'));
+									var result = {customerId:custId,datatable:projects};
+									budgetsresults.push(result);
+									callbk();
+								});
+
+							});
+						}, function(err) {
+								if( err ) {
+									console.log('error: ' + JSON.stringify(err, null, '\t'));
+									budgetsresults.push({error: err});
+								}
+								MongoPool.releaseConnection(db);
+								callback(null, budgetsresults);
+						});
+					};
 		    }
 			], function(err, results) {
 		    console.log('results: ' + JSON.stringify(results, null, '\t'));
