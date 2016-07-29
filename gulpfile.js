@@ -42,17 +42,17 @@ function buildCompleteTestFn() {
 function modifyLocalFn() {
 	gutil.log('modify mongo-pool.js file in local...');
 	gulp.src(['/home/federico/Documents/ehour/projects/hereweare/server/lib/mongo-pool.js'])
-    .pipe(replace('$mongodbport$', '27017'))
+    .pipe(replace('$mongodbport$', '27018'))
     .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare/build/local/server/lib'));
 
 	gutil.log('modify connMongoDb file in local...');
 	gulp.src(['/home/federico/Documents/ehour/projects/hereweare/server/middleware/local/connMongoDb.js'])
-    .pipe(replace('$mongodbport$', '27017'))
+    .pipe(replace('$mongodbport$', '27018'))
     .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare/build/local/server/middleware/local'));
 
 	gutil.log('modify datasources.json file in local...');
 	gulp.src(['/home/federico/Documents/ehour/projects/hereweare/server/datasources.json'])
-    .pipe(replace('$mongodbport$', '27017'))
+    .pipe(replace('$mongodbport$', '27018'))
     .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare/build/local/server'));
 }
 
@@ -60,17 +60,17 @@ function modifyLocalFn() {
 function modifyTestFn() {
 	gutil.log('modify mongo-pool.js file in local...');
 	gulp.src(['/home/federico/Documents/ehour/projects/hereweare/server/lib/mongo-pool.js'])
-    .pipe(replace('$mongodbport$', '27018'))
+    .pipe(replace('$mongodbport$', '27017'))
     .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare/build/test/server/lib'));
 
 	gutil.log('modify connMongoDb file in local...');
 	gulp.src(['/home/federico/Documents/ehour/projects/hereweare/server/middleware/local/connMongoDb.js'])
-    .pipe(replace('$mongodbport$', '27018'))
+    .pipe(replace('$mongodbport$', '27017'))
     .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare/build/test/server/middleware/local'));
 
 	gutil.log('modify datasources.json file in local...');
 	gulp.src(['/home/federico/Documents/ehour/projects/hereweare/server/datasources.json'])
-    .pipe(replace('$mongodbport$', '27018'))
+    .pipe(replace('$mongodbport$', '27017'))
     .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare/build/test/server'));
 }
 
