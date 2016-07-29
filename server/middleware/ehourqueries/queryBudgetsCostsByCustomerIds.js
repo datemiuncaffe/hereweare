@@ -3,129 +3,80 @@ module.exports = function(options) {
 	var MongoPool = require('./../../lib/mongo-pool').pool();
 	var async = require("async");
 	var moment = require('moment');
-	// var MongoClient = require('mongodb').MongoClient;
 
 	var months = ['Gennaio','Febbraio','Marzo','Aprile','Maggio',
 								'Giugno','Luglio','Agosto','Settembre','Ottobre',
 								'Novembre','Dicembre'];
 
-	// function Padder(len, pad) {
-	// 	if (len === undefined) {
-	// 		len = 1;
-	// 	} else if (pad === undefined) {
-	// 		pad = '0';
-	// 	}
-	//
-	// 	var pads = '';
-	// 	while (pads.length < len) {
-	// 		pads += pad;
-	// 	}
-	//
-	// 	this.pad = function(what) {
-	// 		var s = what.toString();
-	// 		return pads.substring(0, pads.length - s.length) + s;
-	// 	};
-	// };
+	function Padder(len, pad) {
+		if (len === undefined) {
+			len = 1;
+		} else if (pad === undefined) {
+			pad = '0';
+		}
 
-	// function getDataFromActiveProject(activeproject) {
-	// 	var budgets = [];
-	// 	var costs = [];
-	// 	if (activeproject != null) {
-	// 		if (activeproject.budgets != null) {
-	// 			budgets = activeproject.budgets;
-	// 		}
-	// 		if (activeproject.costs != null) {
-	// 			costs = activeproject.costs;
-	// 		}
-	// 	}
-	//
-	// 	// prepare data for table
-	// 	var datatable = [];
-	// 	if (budgets.length > 0 || costs.length > 0) {
-	// 		var zero2 = new Padder(2);
-	// 		var map = new Map();
-	// 		budgets.forEach(function(budget){
-	// 			var value = {
-	// 				id: budget.id,
-	// 				projectId: activeproject.id,
-	// 				projectname: activeproject.name,
-	// 				projectcode: activeproject.code,
-	// 				year: budget.year,
-	// 				month: budget.month,
-	// 				budgetfrom: budget.from,
-	// 				budgetto: budget.to,
-	// 				budgetamount: budget.amount,
-	// 				budgetdays: budget.days,
-	// 				costdays: null,
-	// 				costhours: null,
-	// 			};
-	// 			// var key = budget.year + '-' + zero2.pad((moment(budget.month, "MMMM").month() + 1));
-	// 			var key = activeproject.name + '-' + activeproject.id + '-' +
-	// 								budget.year + '-' + zero2.pad((months.indexOf(budget.month) + 1));
-	// 			map.set(key, value);
-	// 		});
-	// 		costs.forEach(function(cost){
-	// 			var key = activeproject.name + '-' + activeproject.id + '-' +
-	// 								cost.anno + '-' + zero2.pad(cost.mese);
-	// 			var value = {};
-	// 			if (map.has(key)) {
-	// 				value = map.get(key);
-	// 				value.id += '-' + cost.id + '-' + cost.mese;
-	// 				value.costdays = cost.giornateMese;
-	// 				value.costhours = cost.oreMese;
-	// 			} else {
-	// 				value = {
-	// 					id: '-' + cost.id + '-' + cost.mese,
-	// 					projectId: activeproject.id,
-	// 					projectname: activeproject.name,
-	// 					projectcode: activeproject.code,
-	// 					year: cost.anno,
-	// 					month: months[cost.mese - 1],
-	// 					budgetfrom: null,
-	// 					budgetto: null,
-	// 					budgetamount: null,
-	// 					budgetdays: null,
-	// 					costdays: cost.giornateMese,
-	// 					costhours: cost.oreMese
-	// 				};
-	// 				map.set(key, value);
-	// 			}
-	// 		});
-	//
-	// 		var keys = Array.from(map.keys());
-	// 		console.log('keys: ' + keys);
-	// 		var firstobj = map.get(keys[0]);
-	// 		for (var field in firstobj) {
-	// 			console.log('typeof field: ' + typeof firstobj[field]);
-	// 		}
-	// 		var sortedKeys = keys.sort();
-	// 		console.log('sortedKeys: ' + sortedKeys);
-	// 		sortedKeys.forEach(function(key){
-	// 			var value = map.get(key);
-	// 			console.log('m[' + key + '] = ' + JSON.stringify(value));
-	// 			datatable.push(value);
-	// 		});
-	// 	}
-	// 	return datatable;
-	// };
+		var pads = '';
+		while (pads.length < len) {
+			pads += pad;
+		}
 
-	// function getDataTable(activeprojects) {
-	// 	console.log('activeprojects: ' + JSON.stringify(activeprojects, null, '\t'));
-	// 	var datatable = [];
-	// 	activeprojects.forEach(function(activeproject){
-	// 		var datafromproject = getDataFromActiveProject(activeproject);
-	// 		datatable = datatable.concat(datafromproject);
-	// 	});
-	// 	console.log('datatable: ' + JSON.stringify(datatable, null, '\t'));
-	// 	return datatable;
-	// };
+		this.pad = function(what) {
+			var s = what.toString();
+			return pads.substring(0, pads.length - s.length) + s;
+		};
+	};
 
-	function getDataTable(data) {
-		data.forEach(function(datum){
-			datum.id = '-' + datum.projectId + '-' + datum.year + '-' + datum.month;
-			datum.month = months[datum.month - 1];
+	function processData(data) {
+		var results = [];
+		var dataCosts = data[0];
+		var dataBudgets = data[1];
+		var zero2 = new Padder(2);
+
+		dataBudgets.forEach(function(customerBudgets) {
+			var customerId = customerBudgets.customerId;
+			console.log('customerId: ' + customerId);
+			var budgets = customerBudgets.datatable;
+			console.log('budgets: ' + JSON.stringify(budgets, null, '\t'));
+
+			var customerCosts = dataCosts.filter(function(dataCost) {
+				return (dataCost.customerId == customerId);
+			});
+			var costs = customerCosts[0].datatable;
+			console.log('costs: ' + JSON.stringify(costs, null, '\t'));
+
+			var result = customerBudgets;
+			if ((budgets != null && budgets.length > 0) ||
+					(costs != null && costs.length > 0)) {
+				costs.forEach(function(cost) {
+					var corrbudget = budgets.filter(function(budget) {
+						return (budget.projectId == cost.projectId &&
+										budget.projectname == cost.projectname &&
+										budget.year == cost.year &&
+										budget.month == months[cost.month - 1]);
+					});
+					console.log('corrbudget: ' + JSON.stringify(corrbudget, null, '\t'));
+					if (corrbudget.length == 1) {
+						corrbudget[0].id += '-' + cost.projectId + '-' + cost.year + '-' + zero2.pad(cost.month);
+						corrbudget[0].costdays = cost.costdays;
+						corrbudget[0].costhours = cost.costhours;
+						console.log('corrbudget MODIFIED: ' + JSON.stringify(corrbudget, null, '\t'));
+					} else if (corrbudget.length == 0) {
+						cost.id = '-' + cost.projectId + '-' + cost.year + '-' + zero2.pad(cost.month);
+						cost.month = months[cost.month - 1];
+						cost.budgetfrom = null;
+						cost.budgetto = null;
+						cost.budgetamount = null;
+						cost.budgetdays = null;
+						result.datatable.push(cost);
+					}
+				});
+				console.log('result: ' + JSON.stringify(result, null, '\t'));
+				results.push(result);
+			}
 		});
-		return data;
+
+		console.log("results: " + JSON.stringify(results, null, '\t'));
+		return results;
 	};
 
 	function getDataByCustomerId(connection, customerId, projectGroup, cb) {
@@ -180,8 +131,7 @@ module.exports = function(options) {
 
 				console.log('queryBudgetsCostsByCustomerId performed ...');
 				console.log('data: ' + JSON.stringify(data, null, '\t'));
-				var datatable = getDataTable(data);
-				cb(datatable);
+				cb(data);
 			});
 
 		} else {
@@ -252,6 +202,8 @@ module.exports = function(options) {
 											budgetto: "$budgets.to",
 											budgetamount: "$budgets.amount",
 											budgetdays: "$budgets.days",
+											costdays: { $literal: null },
+											costhours: { $literal: null },
 											id: "$budgets._id"
 							      }
 									}
@@ -273,10 +225,10 @@ module.exports = function(options) {
 						});
 					};
 		    }
-			], function(err, results) {
-		    console.log('results: ' + JSON.stringify(results, null, '\t'));
-
-				res.json(results[0]);
+			], function(err, data) {
+		    console.log('data: ' + JSON.stringify(data, null, '\t'));
+				var datatable = processData(data);
+				res.json(datatable);
 			});
 			return res;
 		} else {
