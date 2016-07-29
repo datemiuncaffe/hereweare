@@ -1,0 +1,105 @@
+{
+  "initial:before": {
+    "loopback#favicon": {}
+  },
+  "initial": {
+    "compression": {},
+    "cors": {
+      "params": {
+        "origin": true,
+        "credentials": true,
+        "maxAge": 86400
+      }
+    },
+    "helmet#xssFilter": {},
+    "helmet#frameguard": {
+      "params": [
+        "deny"
+      ]
+    },
+    "helmet#hsts": {
+      "params": {
+        "maxAge": 0,
+        "includeSubdomains": true
+      }
+    },
+    "helmet#hidePoweredBy": {},
+    "helmet#ieNoOpen": {},
+    "helmet#noSniff": {},
+    "helmet#noCache": {
+      "enabled": false
+    }
+  },
+  "session": {},
+  "auth": {},
+  "parse": {},
+  "routes": {
+    "loopback#rest": {
+      "paths": [
+        "${restApiRoot}"
+      ]
+    },
+    "./middleware/ehourqueries/queryCosts": {
+      "paths": "/query_costs"
+    },
+    "./middleware/ehourqueries/queryCustomers": {
+      "paths": "/query_customers"
+    },
+    "./middleware/ehourqueries/queryProjectsByCustomerId": {
+      "paths": "/query_projects_by_customer_id"
+    },
+    "./middleware/ehourqueries/queryBudgetsCostsByCustomerIds": {
+      "paths": "/query_budgets_costs_by_customer_ids"
+    },
+    "./middleware/ehourqueries/queryActiveCustomers": {
+      "paths": "/query_active_customers"
+    },
+    "./middleware/ehourqueries/queryActiveProjects": {
+      "paths": "/query_active_projects"
+    },
+    "./middleware/ehourqueries/queryGiorni": {
+      "paths": "/query_giorni_lav_mese"
+    },
+    "./middleware/ehourqueries/queryGiorniCliente": {
+      "paths": "/query_giorni_lav_cliente_mese"
+    },
+    "./middleware/ehourqueries/queryGiorniClienteProgetto": {
+      "paths": "/query_giorni_lav_cliente_progetto_mese"
+    },
+    "./middleware/ehourqueries/queryGiorniCommessa": {
+      "paths": "/query_giorni_lav_commessa_mese"
+    },
+    "./middleware/ehourqueries/queryGiorniCommessaUtente": {
+      "paths": "/query_giorni_lav_commessa_utente_mese"
+    },
+    "./middleware/ehourqueries/queryOreLavUtenteMese": {
+      "paths": "/query_ore_lav_utente_mese"
+    },
+    "./middleware/local/automigrate": {
+      "paths": "/automigrate"
+    },
+    "./middleware/local/clear": {
+      "paths": "/clear",
+      "params": {"name": "customer"}
+    },
+    "./middleware/local/connMongoDb": {
+      "paths": "/conn_mongo"
+    },
+    "./middleware/local/ehourmigrate": {
+      "paths": "/ehourmigrate"
+    },
+    "./middleware/local/ehourmigratecosts": {
+      "paths": "/ehourmigratecosts"
+    },
+    "./middleware/log": {
+      "paths": "/log"
+    }
+  },
+  "files": {},
+  "final": {
+    "loopback#urlNotFound": {}
+  },
+  "final:after": {
+    "loopback#errorHandler": {}
+  }
+}

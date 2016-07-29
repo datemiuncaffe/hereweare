@@ -1,6 +1,6 @@
 var MongoPool = function() {
 	var MongoClient = require('mongodb').MongoClient;
-	var url = "mongodb://localhost:$mongodbport$/senseibudgets";
+	var url = "mongodb://localhost:27018/senseibudgets";
 	var mongoParams  = {
 	  poolSize: 10
 	};

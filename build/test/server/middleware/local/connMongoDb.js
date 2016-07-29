@@ -6,7 +6,7 @@ module.exports = function(options) {
 		var MongoClient = mongodb.MongoClient;
 
 		// Connection URL. This is where your mongodb server is running.
-		var url = 'mongodb://localhost:$mongodbport$/test2';
+		var url = 'mongodb://localhost:27018/test2';
 
 		// Use connect method to connect to the Server
 		MongoClient.connect(url, function (err, db) {

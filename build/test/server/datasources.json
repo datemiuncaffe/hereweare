@@ -1,7 +1,7 @@
 {
   "mongoDs": {
     "host": "localhost",
-    "port": $mongodbport$,
+    "port": 27018,
     "database": "hereweare",
     "password": "",
     "name": "mongoDs",
@@ -10,7 +10,7 @@
   },
   "mongoBudgets": {
     "host": "localhost",
-    "port": $mongodbport$,
+    "port": 27018,
     "database": "senseibudgets",
     "password": "",
     "name": "mongoBudgets",

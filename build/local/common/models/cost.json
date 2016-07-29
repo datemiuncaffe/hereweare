@@ -1,0 +1,23 @@
+{
+  "name": "Cost",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+  	"year": {
+      "type": "number"
+    },
+    "month": {
+      "type": "number"
+    },
+    "days": {
+      "type": "number"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
