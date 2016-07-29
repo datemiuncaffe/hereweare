@@ -10,7 +10,7 @@ module.exports = function (shipit) {
 //      keepReleases: 2,
 //      deleteOnRollback: false,
       key: '/home/federico/.ssh/id_rsa_sensei',
-			branch: 'speed'
+			branch: 'nuovolayout'
 //      shallowClone: true
     },
     staging: {
