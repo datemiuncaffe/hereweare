@@ -16,5 +16,5 @@
 .strong-pm
 build
 coverage
-node_modules_temp
+node_modules
 npm-debug.log
