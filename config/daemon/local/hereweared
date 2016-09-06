@@ -17,14 +17,14 @@ DAEMON=/usr/local/bin/node
 DESC=senseiapplicationforreporting
 
 # Default defaults.  Can be overridden by the /etc/default/$NAME
-NAME=hereweare
+NAME=hereweared
 #CONF=
 RUNDIR=/home/federico/Documents/ehour/projects/hereweare/build/local
-PIDFILE=$RUNDIR/$NAME.pid
-LOGFILE=/var/log/hereweare/hereweare.log
+PIDFILE=/var/run/hereweare/$NAME.pid
+LOGFILE=/var/log/hereweare/$NAME.log
 ENABLE_HEREWEARE=yes
 
-# Include mongodb defaults if available
+# Include hereweare defaults if available
 if [ -f /etc/default/$NAME ] ; then
 	. /etc/default/$NAME
 fi
@@ -81,35 +81,74 @@ running() {
     log_daemon_msg "pid: " "$pid"
     # log_daemon_msg "running_pid: " "$(running_pid $pid $DAEMON)"
     running_pid $pid $DAEMON || return 1
-    log_daemon_msg "after running_pid" 
+    log_daemon_msg "after running_pid"
     return 0
 }
 
 start_server() {
-    test -e "$RUNDIR" || install -m 755 -o mongodb -g mongodb -d "$RUNDIR"
+    test -e "$RUNDIR" || install -m 755 -o $DAEMONUSER -g $DAEMONUSER -d "$RUNDIR"
     # Start the process using the wrapper
     #        start-stop-daemon --background --start --quiet --pidfile $PIDFILE \
     #                    --make-pidfile --chuid $DAEMONUSER \
     #                    --exec $DAEMON -- $DAEMON_OPTS
-   
-    start-stop-daemon --background --start --quiet --pidfile $PIDFILE \
-                      --make-pidfile \
-                      --exec $DAEMON -- $DAEMON_OPTS
- 
-    #$DAEMON $RUNDIR >> $LOGFILE &
-    #echo $! > $PIDFILE 
-    
+
+    # make sure it doesn't core dump anywhere unless requested
+    corelimit="ulimit -S -c ${DAEMON_COREFILE_LIMIT:-0}"
+
+    su -s /bin/bash -c "$corelimit >/dev/null 2>&1 ; $DAEMON $DAEMON_OPTS >> $LOGFILE 2>&1 & echo \$! > $PIDFILE" $DAEMONUSER
+
     errcode=$?
-    return $errcode 
+    return $errcode
 }
 
 stop_server() {
-    # Stop the process using the wrapper
-    start-stop-daemon --stop --quiet --pidfile $PIDFILE --exec $DAEMON
-    #                    --user $DAEMONUSER \
-    #--exec $DAEMON
-    errcode=$?
-    return $errcode
+    echo -n $"Stopping hereweared: "
+  	echo "calling killproc"
+  	echo "pidfile: $PIDFILE; process: $DAEMON"
+  	mongo_killproc "$PIDFILE" $DAEMON
+  	errcode=$?
+  	return $errcode
+}
+
+# Check if any of $pid (could be plural) are running
+checkpid() {
+    local i
+    for i in $* ; do
+      [ -d "/proc/$i" ] && return 0
+    done
+    return 1
+}
+
+# Send TERM signal to process and wait up to 300 seconds for process to go away.
+# If process is still alive after 300 seconds, send KILL signal.
+# Built-in killproc() (found in /etc/init.d/functions) is on certain versions of Linux
+# where it sleeps for the full $delay seconds if process does not respond fast enough to
+# the initial TERM signal.
+mongo_killproc() {
+  local pid_file=$1
+  local procname=$2
+  local -i delay=300
+  local -i duration=10
+  local pid=`pidofproc -p "${pid_file}" ${procname}`
+
+  echo "pid: $pid"
+
+  kill -TERM $pid >/dev/null 2>&1
+  usleep 100000
+  local -i x=0
+  while [ $x -le $delay ] && checkpid $pid; do
+    sleep $duration
+    x=$(( $x + $duration))
+  done
+
+  kill -KILL $pid >/dev/null 2>&1
+  usleep 100000
+
+  checkpid $pid # returns 0 only if the process exists
+  local RC=$?
+  [ "$RC" -eq 0 ] && failure "${procname} shutdown" || rm -f "${pid_file}"; success "${procname} shutdown"
+  RC=$((! $RC)) # invert return code so we return 0 when process is dead.
+  return $RC
 }
 
 force_stop() {
