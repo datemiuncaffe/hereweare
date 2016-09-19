@@ -29,7 +29,8 @@
     "mongojs": "^2.4.0",
     "run-sequence": "^1.2.2",
     "serve-favicon": "^2.0.1",
-    "shipit-captain": "^0.4.3"
+    "shipit-captain": "^0.4.3",
+    "winston": "^2.2.0"
   },
   "devDependencies": {
     "jshint": "^2.5.6",

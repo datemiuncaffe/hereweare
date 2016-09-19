@@ -21,7 +21,6 @@ NAME=hereweared
 #CONF=
 RUNDIR=/home/federico/Documents/ehour/projects/hereweare/build/local
 PIDFILE=/var/run/hereweare/$NAME.pid
-LOGFILE=/var/log/hereweare/$NAME.log
 ENABLE_HEREWEARE=yes
 
 # Include hereweare defaults if available
@@ -134,7 +133,7 @@ start_server() {
     # make sure it doesn't core dump anywhere unless requested
     corelimit="ulimit -S -c ${DAEMON_COREFILE_LIMIT:-0}"
 
-    su -s /bin/bash -c "$corelimit >/dev/null 2>&1 ; $DAEMON $DAEMON_OPTS >> $LOGFILE 2>&1 & echo \$! > $PIDFILE" $DAEMONUSER
+    su -s /bin/bash -c "$corelimit >/dev/null 2>&1 ; $DAEMON $DAEMON_OPTS & echo \$! > $PIDFILE" $DAEMONUSER
 
     errcode=$?
     return $errcode
@@ -167,6 +166,7 @@ mongo_killproc() {
   local pid_file=$1
   local procname=$2
   local -i delay=300
+  echo "delay: $delay"
   local -i duration=10
   local pid=`pidofproc -p "${pid_file}" ${procname}`
 
@@ -174,7 +174,7 @@ mongo_killproc() {
 
   kill -TERM $pid >/dev/null 2>&1
   #usleep 100000
-	sleep 0.1
+  sleep 0.1
   local -i x=0
   while [ $x -le $delay ] && checkpid $pid; do
     sleep $duration
@@ -183,7 +183,7 @@ mongo_killproc() {
 
   kill -KILL $pid >/dev/null 2>&1
   #usleep 100000
-	sleep 0.1
+  sleep 0.1
 
   checkpid $pid # returns 0 only if the process exists
   local RC=$?

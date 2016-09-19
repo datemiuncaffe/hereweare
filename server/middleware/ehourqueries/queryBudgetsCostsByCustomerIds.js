@@ -3,6 +3,7 @@ module.exports = function(options) {
 	var MongoPool = require('./../../lib/mongo-pool').pool();
 	var async = require("async");
 	var moment = require('moment');
+	var logger = require('./../../lib/logger');
 
 	var months = ['Gennaio','Febbraio','Marzo','Aprile','Maggio',
 								'Giugno','Luglio','Agosto','Settembre','Ottobre',
@@ -34,15 +35,15 @@ module.exports = function(options) {
 
 		dataBudgets.forEach(function(customerBudgets) {
 			var customerId = customerBudgets.customerId;
-			console.log('customerId: ' + customerId);
+			logger.info('customerId: ' + customerId);
 			var budgets = customerBudgets.datatable;
-			console.log('budgets: ' + JSON.stringify(budgets, null, '\t'));
+			logger.info('budgets: ' + JSON.stringify(budgets, null, '\t'));
 
 			var customerCosts = dataCosts.filter(function(dataCost) {
 				return (dataCost.customerId == customerId);
 			});
 			var costs = customerCosts[0].datatable;
-			console.log('costs: ' + JSON.stringify(costs, null, '\t'));
+			logger.info('costs: ' + JSON.stringify(costs, null, '\t'));
 
 			var result = customerBudgets;
 			if ((budgets != null && budgets.length > 0) ||
@@ -54,12 +55,12 @@ module.exports = function(options) {
 										budget.year == cost.year &&
 										budget.month == months[cost.month - 1]);
 					});
-					console.log('corrbudget: ' + JSON.stringify(corrbudget, null, '\t'));
+					logger.info('corrbudget: ' + JSON.stringify(corrbudget, null, '\t'));
 					if (corrbudget.length == 1) {
 						corrbudget[0].id += '-' + cost.projectId + '-' + cost.year + '-' + zero2.pad(cost.month);
 						corrbudget[0].costdays = cost.costdays;
 						corrbudget[0].costhours = cost.costhours;
-						console.log('corrbudget MODIFIED: ' + JSON.stringify(corrbudget, null, '\t'));
+						logger.info('corrbudget MODIFIED: ' + JSON.stringify(corrbudget, null, '\t'));
 					} else if (corrbudget.length == 0) {
 						cost.id = '-' + cost.projectId + '-' + cost.year + '-' + zero2.pad(cost.month);
 						cost.month = months[cost.month - 1];
@@ -70,22 +71,22 @@ module.exports = function(options) {
 						result.datatable.push(cost);
 					}
 				});
-				console.log('result: ' + JSON.stringify(result, null, '\t'));
+				logger.info('result: ' + JSON.stringify(result, null, '\t'));
 				results.push(result);
 			}
 		});
 
-		console.log("results: " + JSON.stringify(results, null, '\t'));
+		logger.info("results: " + JSON.stringify(results, null, '\t'));
 		return results;
 	};
 
 	function getDataByCustomerId(connection, customerId, projectGroup, cb) {
 		if (customerId != null && customerId > 0) {
-			console.log('customerId: ' + customerId);
+			logger.info('customerId: ' + customerId);
 
 			var now = moment();
 			var lowdatelimit = now.subtract(2, 'months').format('YYYY-MM-DD');
-			console.log('lowdatelimit for active and new projects: ' + lowdatelimit);
+			logger.info('lowdatelimit for active and new projects: ' + lowdatelimit);
 
 			var baseqry = 'select p.PROJECT_ID as projectId, p.NAME as projectname, p.PROJECT_CODE as projectcode,'
 				+ ' year(ENTRY_DATE) as year, month(ENTRY_DATE) as month, round(sum(HOURS)/8,2) as costdays,'
@@ -120,17 +121,17 @@ module.exports = function(options) {
 				}
 			}
 
-			console.log('query: ' + query);
-			console.log('connection: ' + connection + '; query: ' + query);
+			logger.info('query: ' + query);
+			logger.info('connection: ' + connection + '; query: ' + query);
 
 			connection.query(query, function(err, data) {
 				if (err) {
-					console.log('err: ' + JSON.stringify(err));
+					logger.info('err: ' + JSON.stringify(err));
 					throw err;
 				}
 
-				console.log('queryBudgetsCostsByCustomerId performed ...');
-				console.log('data: ' + JSON.stringify(data, null, '\t'));
+				logger.info('queryBudgetsCostsByCustomerId performed ...');
+				logger.info('data: ' + JSON.stringify(data, null, '\t'));
 				cb(data);
 			});
 
@@ -142,11 +143,11 @@ module.exports = function(options) {
 	return function queryBudgetsCostsByCustomerIds(req, res, next) {
 		// parse query string parameters
 		var queryparams = req.query;
-		console.log('queryparams: ' + JSON.stringify(queryparams));
+		logger.info('queryparams: ' + JSON.stringify(queryparams));
 
 		if (queryparams.customerIds != null && queryparams.customerIds.length > 0) {
 			var customerIds = queryparams.customerIds.split(',');
-			console.log('customerIds: ' + JSON.stringify(customerIds));
+			logger.info('customerIds: ' + JSON.stringify(customerIds));
 
 			async.parallel([
 		    function(callback) {
@@ -161,7 +162,7 @@ module.exports = function(options) {
 							});
 						}, function(err) {
 								if( err ) {
-									console.log('error: ' + JSON.stringify(err, null, '\t'));
+									logger.info('error: ' + JSON.stringify(err, null, '\t'));
 									costsresults.push({error: err});
 								}
 								MysqlPool.releaseConnection(connection);
@@ -208,7 +209,7 @@ module.exports = function(options) {
 							      }
 									}
 								], function(err, projects) {
-									console.log('customer ' + custId + ' projects : ' + JSON.stringify(projects, null, '\t'));
+									logger.info('customer ' + custId + ' projects : ' + JSON.stringify(projects, null, '\t'));
 									var result = {customerId:custId,datatable:projects};
 									budgetsresults.push(result);
 									callbk();
@@ -217,7 +218,7 @@ module.exports = function(options) {
 							});
 						}, function(err) {
 								if( err ) {
-									console.log('error: ' + JSON.stringify(err, null, '\t'));
+									logger.info('error: ' + JSON.stringify(err, null, '\t'));
 									budgetsresults.push({error: err});
 								}
 								MongoPool.releaseConnection(db);
@@ -226,7 +227,7 @@ module.exports = function(options) {
 					};
 		    }
 			], function(err, data) {
-		    console.log('data: ' + JSON.stringify(data, null, '\t'));
+		    logger.info('data: ' + JSON.stringify(data, null, '\t'));
 				var datatable = processData(data);
 				res.json(datatable);
 			});

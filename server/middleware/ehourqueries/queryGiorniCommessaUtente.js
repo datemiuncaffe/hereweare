@@ -1,6 +1,7 @@
 module.exports = function(options) {
 	var mysql = require("mysql");
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
+	var logger = require('./../../lib/logger');
 
 	return function queryGiorniCommessaUtente(req, res, next) {
 		var resList = {
@@ -8,7 +9,7 @@ module.exports = function(options) {
 		};
 		// parse query string parameters
 		var queryparams = req.query;
-		console.log('queryparams: ' + JSON.stringify(queryparams, null, '\t'));
+		logger.info('queryparams: ' + JSON.stringify(queryparams, null, '\t'));
 
 		var query = 'select year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, ' +
 			'c.NAME as nomeCliente, concat(c.CODE, \' - \', c.NAME) as codiceNomeCliente, ' +
@@ -34,24 +35,24 @@ module.exports = function(options) {
 			query += ' having anno = year(now()) and mese = month(now()) - 1';
 		}
 		query += ' order by c.CUSTOMER_ID, p.PROJECT_ID, u.LAST_NAME, anno, mese';
-		console.log('sql query: ' + JSON.stringify(query, null, '\t'));
+		logger.info('sql query: ' + JSON.stringify(query, null, '\t'));
 
 		MysqlPool.getConnection(getData, query);
 
 		function getData(err, connection, query) {
 			connection.query(query, function(err, giorniCommessaUtente) {
 				if (err) {
-					console.log('err: ' + JSON.stringify(err));
+					logger.info('err: ' + JSON.stringify(err));
 					MysqlPool.releaseConnection(connection);
 					throw err;
 				}
 
 				MysqlPool.releaseConnection(connection);
-				console.log('queryGiorniCommessaUtente performed ...');
-				console.log('giorniCommessaUtente: ' + JSON.stringify(giorniCommessaUtente, null, '\t'));
+				logger.info('queryGiorniCommessaUtente performed ...');
+				logger.info('giorniCommessaUtente: ' + JSON.stringify(giorniCommessaUtente, null, '\t'));
 
 				resList['giorniCommessaUtente'] = giorniCommessaUtente;
-				console.log('resList: ' + JSON.stringify(resList));
+				logger.info('resList: ' + JSON.stringify(resList));
 				res.json(resList);
 			});
 		};

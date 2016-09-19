@@ -2,11 +2,12 @@ module.exports = function(options) {
 	var mysql = require("mysql");
 	var moment = require('moment');
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
+	var logger = require('./../../lib/logger');
 
 	return function queryCustomers(req, res, next) {
 		var now = moment();
 		var lowdatelimit = now.subtract(2, 'months').format('YYYY-MM-DD');
-		console.log('lowdatelimit for active and new projects: ' + lowdatelimit);
+		logger.info('lowdatelimit for active and new projects: ' + lowdatelimit);
 
 		var queries = {
 			ALL: 'SELECT c.NAME as name, c.CODE as code, c.CUSTOMER_ID as id FROM CUSTOMER c ORDER BY name;',
@@ -19,7 +20,7 @@ module.exports = function(options) {
 
 		// parse query string parameters
 		var queryparams = req.query;
-		console.log('queryparams: ' + JSON.stringify(queryparams));
+		logger.info('queryparams: ' + JSON.stringify(queryparams));
 
 		var query = queries.ALL;
 		if (queryparams.customerGroup != null) {
@@ -42,20 +43,20 @@ module.exports = function(options) {
 			connection.query(query, function(err, customers) {
 				if (err) {
 					// con.end(function(err) {
-					// 	console.log('ending connection queryCustomers not performed. err = ' + err);
+					// 	logger.info('ending connection queryCustomers not performed. err = ' + err);
 					// });
-					console.log('err: ' + JSON.stringify(err));
+					logger.info('err: ' + JSON.stringify(err));
 					MysqlPool.releaseConnection(connection);
 					throw err;
 				}
 
 				// con.end(function(err) {
-				// 	console.log('ending connection after queryCustomers. err = ' + err);
+				// 	logger.info('ending connection after queryCustomers. err = ' + err);
 				// });
 				MysqlPool.releaseConnection(connection);
 
-				console.log('queryCustomers performed ...');
-				console.log('customers: ' + JSON.stringify(customers, null, '\t'));
+				logger.info('queryCustomers performed ...');
+				logger.info('customers: ' + JSON.stringify(customers, null, '\t'));
 
 				res.json(customers);
 			});
