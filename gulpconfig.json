@@ -45,7 +45,7 @@
 		],
 		"dest": "build/test",
 		"logger": {
-			"logpath": "/var/log/hereweare",
+			"logpath": "'/var/log/hereweare'",
 			"src": "/home/federico/Documents/ehour/projects/hereweare/server/lib/logger.js",
 			"dest": "/home/federico/Documents/ehour/projects/hereweare/build/test/server/lib"
 		}
