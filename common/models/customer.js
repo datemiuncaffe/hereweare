@@ -1,33 +1,34 @@
 module.exports = function(Customer) {
 
 //	Customer.observe('loaded', function(ctx, next) {
-//		console.log('customer name: ', ctx.Customer.name);
+//		logger.info('customer name: ', ctx.Customer.name);
 //		next();
 //	});
-	
+	var logger = require('./../../server/lib/logger');
+
 	Customer.autocompleteByName = function(name, cb) {
-		console.log('name: ' + name);		
+		logger.info('name: ' + name);
 		if (name != null && name.length > 0) {
-			console.log('autocomplete. name parameter = ' + name);
-			
+			logger.info('autocomplete. name parameter = ' + name);
+
 			Customer.find({where: {name: {like: '^' + name}}}, function (err, customers) {
-				console.log('err: ' + err);
+				logger.info('err: ' + err);
 				if (err) {
-					console.log('err: ' + err);
+					logger.info('err: ' + err);
 				}
-				console.log('customers: ' + customers);
+				logger.info('customers: ' + customers);
 				cb(null, customers);
 			});
-		}		
+		}
 	};
-	
+
 	Customer.remoteMethod(
-		'autocompleteByName', 
+		'autocompleteByName',
 		{
 		  accepts:	[{arg: 'name', type: 'string'}],
 		  returns: {arg: 'customers', type: ['object']},
 		  http: {path: '/autocompleteByName', verb: 'get'}
 		}
 	);
-	
+
 };

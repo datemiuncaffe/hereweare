@@ -1,6 +1,8 @@
 module.exports = function(options) {
 	//lets require/import the mongodb native drivers.
 	var mongodb = require('mongodb');
+	var logger = require('./../../lib/logger');
+
 	return function connMongoDb(req, res, next) {
 		//We need to work with "MongoClient" interface in order to connect to a mongodb server.
 		var MongoClient = mongodb.MongoClient;
@@ -11,19 +13,19 @@ module.exports = function(options) {
 		// Use connect method to connect to the Server
 		MongoClient.connect(url, function (err, db) {
 		  if (err) {
-		    console.log('Unable to connect to the mongoDB server. Error:', err);
+		    logger.info('Unable to connect to the mongoDB server. Error:', err);
 		  } else {
 		    //HURRAY!! We are connected. :)
-		    console.log('Connection established to', url);
+		    logger.info('Connection established to', url);
 
 		    // do some work here with the database.
-//		    console.log('queryGiorni performed ...');
-//		    console.log(rows);
+//		    logger.info('queryGiorni performed ...');
+//		    logger.info(rows);
 //
 //		    var string = JSON.stringify(rows);
-//		    console.log('string: ' + string);
+//		    logger.info('string: ' + string);
 //		    resList['results'] = JSON.parse(string);
-//		    console.log('resList: ' + JSON.stringify(resList));
+//		    logger.info('resList: ' + JSON.stringify(resList));
 //		    res.json(resList);
 
 		    // Get the documents collection
@@ -37,13 +39,13 @@ module.exports = function(options) {
 		    // Insert some users
 		    collection.insert([user1, user2, user3], function (err, result) {
 		      if (err) {
-		        console.log(err);
+		        logger.info(err);
 		      } else {
-		        console.log('Inserted %d documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
+		        logger.info('Inserted %d documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
 		      }
 		      //Close connection
 		      db.close();
-		      console.log('connection closed');
+		      logger.info('connection closed');
 		    });
 		    res.json({msg : 'ok'});
 		  }

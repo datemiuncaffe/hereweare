@@ -1,9 +1,10 @@
 module.exports = function(Project) {
   var moment = require('moment');
+  var logger = require('./../../server/lib/logger');
 
   function findLastId() {
     Project.find({ fields: {id: true} }, function(err, ids) {
-      console.log('ids: ' + JSON.stringify(ids, null, '\t'));
+      logger.info('ids: ' + JSON.stringify(ids, null, '\t'));
       var idsArray = ids.map(function(o) {
         if (typeof o.id === 'number') {
           return o.id;
@@ -11,9 +12,9 @@ module.exports = function(Project) {
       }).filter(function(id) {
         return id != null;
       });
-      console.log('idsArray: ' + JSON.stringify(idsArray));
+      logger.info('idsArray: ' + JSON.stringify(idsArray));
       var max = Math.max.apply(null, idsArray);
-      console.log('max: ' + max);
+      logger.info('max: ' + max);
     });
   }
 
@@ -25,7 +26,7 @@ module.exports = function(Project) {
   }
 
   Project.createAndIncrementId = function(project, cb) {
-    console.log('new project: ' + JSON.stringify(project, null, '\t'));
+    logger.info('new project: ' + JSON.stringify(project, null, '\t'));
 
     var mongoSequence = require('./../../server/lib/mongo-sequence');
 		var app = Project.app;
@@ -42,16 +43,16 @@ module.exports = function(Project) {
 			// create project
       var projectseq = mongoSequence(db,'projects');
       projectseq.getNext(function(err, sequence) {
-        console.log('projectseq name: ' + projectseq.name + '; no: ' + sequence);
+        logger.info('projectseq name: ' + projectseq.name + '; no: ' + sequence);
         if (err) {
           cb(null, err);
         } else {
           project.id = sequence;
-          console.log('insert Project with name: ' + JSON.stringify(project, null, '\t'));
+          logger.info('insert Project with name: ' + JSON.stringify(project, null, '\t'));
           toISODate(project);
-          console.log('insert Project with name: ' + JSON.stringify(project, null, '\t'));
+          logger.info('insert Project with name: ' + JSON.stringify(project, null, '\t'));
           Project.upsert(project, function(err, createdProject) {
-            console.log('createdProject: ' + JSON.stringify(createdProject, null, '\t'));
+            logger.info('createdProject: ' + JSON.stringify(createdProject, null, '\t'));
             cb(null, createdProject);
           });
         }

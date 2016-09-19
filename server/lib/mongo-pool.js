@@ -1,4 +1,5 @@
 var MongoPool = function() {
+	var logger = require('./logger');
 	var MongoClient = require('mongodb').MongoClient;
 	var url = "mongodb://localhost:$mongodbport$/senseibudgets";
 	var mongoParams  = {
@@ -7,15 +8,15 @@ var MongoPool = function() {
 
 	var res = {
 		checklog: function() {
-			console.log('simple check');
+			logger.info('simple check');
 		},
 		getConnection: function(cb, options) {
 			MongoClient.connect(url, mongoParams, function(err, db) {
 				if (err) {
-					console.log('mongo db connection failed. err: ' + err);
+					logger.info('mongo db connection failed. err: ' + err);
 					throw err;
 				}
-				console.log('acquired connection');
+				logger.info('acquired connection');
 				cb(err, db, options);
 			});
 		},

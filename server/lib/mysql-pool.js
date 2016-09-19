@@ -1,4 +1,5 @@
 var MysqlPool = function() {
+	var logger = require('./logger');
 	var mysql = require('mysql');
 	var pool  = mysql.createPool({
 	  connectionLimit : 30,
@@ -10,16 +11,16 @@ var MysqlPool = function() {
 	var res = {
 		connectionLimit : 10,
 		checklog: function() {
-			console.log('simple check');
+			logger.info('simple check');
 		},
 		getConnection: function(cb, options) {
-			console.log('pool: ' + pool);
+			logger.info('pool: ' + pool);
 			pool.getConnection(function(err, connection) {
 				if (err) {
-					console.log('err: ' + err);
+					logger.info('err: ' + err);
 					throw err;
 				}
-				console.log('acquired connection');
+				logger.info('acquired connection');
 				cb(err, connection, options);
 			});
 		},

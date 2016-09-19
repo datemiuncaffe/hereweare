@@ -1,9 +1,11 @@
 var async = require('async');
 module.exports = function(options) {
+	var logger = require('./../../lib/logger');
+
 	return function automigrate(req, res, next) {
-		console.log('init automigrate for generating models...');
+		logger.info('init automigrate for generating models...');
 		var app = req.app;
-		// data sources		
+		// data sources
 		var mongoDs = app.dataSources.mongoDs;
 
 		// create all models
@@ -13,28 +15,27 @@ module.exports = function(options) {
 			if (err) {
 				throw err;
 			}
-			console.log('Results: \n', results);
+			logger.info('Results: \n', results);
 			var customer = results.customers[0];
-			console.log('customer: ' + customer);
+			logger.info('customer: ' + customer);
 			createProjects(customer, function(err, projects) {
 				if (err) {
 					throw err;
 				}
-				console.log('Projects created: \n', projects);
-				console.log('project: ' + JSON.stringify(projects[0]));
+				logger.info('Projects created: \n', projects);
+				logger.info('project: ' + JSON.stringify(projects[0]));
 				var project = projects[0];
 				createBudgets(project, function(err, budgets) {
 					if (err) {
 						throw err;
 					}
-					console.log('Budgets created: \n', budgets);
+					logger.info('Budgets created: \n', budgets);
 					var insertedData = {
 						customer : customer,
 						project : project,
 						budgets : budgets
 					};
-					console
-							.log('insertedData: '
+					logger.info('insertedData: '
 									+ JSON.stringify(insertedData));
 					return res.json(insertedData);
 				});
@@ -64,7 +65,7 @@ module.exports = function(options) {
 		}
 		// create budgets
 		function createBudgets(project, cb) {
-			console.log('createBudgets...');
+			logger.info('createBudgets...');
 			mongoDs.automigrate('Budget', function(err) {
 				if (err) {
 					return cb(err);
@@ -128,6 +129,6 @@ module.exports = function(options) {
 					customerId : customer.id
 				} ], cb);
 			});
-		}	   
-	}  
+		}
+	}
 };

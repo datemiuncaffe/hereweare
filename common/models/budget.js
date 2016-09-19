@@ -1,8 +1,9 @@
 module.exports = function(Budget) {
 	var moment = require('moment');
+	var logger = require('./../../server/lib/logger');
 
 	Budget.updateAllByProjectId = function(project_id, newBudgets, cb) {
-		console.log('new budgets: ' + JSON.stringify(newBudgets, null, '\t') + ' for projectId: ' + project_id);
+		logger.info('new budgets: ' + JSON.stringify(newBudgets, null, '\t') + ' for projectId: ' + project_id);
 
 		var mongoSequence = require('./../../server/lib/mongo-sequence');
 		var app = Budget.app;
@@ -37,12 +38,12 @@ module.exports = function(Budget) {
 				if (err) {
 					throw err;
 				}
-				console.log('old budgets: ' + JSON.stringify(oldBudgets, null, '\t'));
+				logger.info('old budgets: ' + JSON.stringify(oldBudgets, null, '\t'));
 
 				var newLength = newBudgets.length;
 				var oldLength = oldBudgets.length;
 				if (oldLength > newLength) {
-					console.log('case 1');
+					logger.info('case 1');
 					var diffLength = oldLength - newLength;
 					newBudgets.forEach(function(currentBudget, i){
 						var oldid = oldBudgets[i].id;
@@ -50,55 +51,55 @@ module.exports = function(Budget) {
 						oldBudgets[i].id = oldid;
 					});
 					var oldBudgetsToRemove = oldBudgets.slice(newLength, oldLength);
-					console.log('old budgets to remove: ' + JSON.stringify(oldBudgetsToRemove, null, '\t'));
+					logger.info('old budgets to remove: ' + JSON.stringify(oldBudgetsToRemove, null, '\t'));
 					// remove old budgets
 					oldBudgetsToRemove.forEach(function(currentBudget, i){
 						Budget.destroyById(currentBudget.id);
 					});
 
 					oldBudgets.splice(newLength, diffLength);
-					console.log('spliced old budgets: ' + JSON.stringify(oldBudgets, null, '\t'));
+					logger.info('spliced old budgets: ' + JSON.stringify(oldBudgets, null, '\t'));
 					// update old budgets
 					oldBudgets.forEach(function(currentBudget, i){
-						console.log('insert budget: ' + JSON.stringify(currentBudget, null, '\t'));
+						logger.info('insert budget: ' + JSON.stringify(currentBudget, null, '\t'));
 	          toISODate(currentBudget);
-	          console.log('insert budget: ' + JSON.stringify(currentBudget, null, '\t'));
+	          logger.info('insert budget: ' + JSON.stringify(currentBudget, null, '\t'));
 						Budget.upsert(currentBudget);
 					});
 				} else if (oldLength < newLength) {
-					console.log('case 2');
+					logger.info('case 2');
 					oldBudgets.forEach(function(currentBudget, i){
-						console.log('budget: ' + i + '; id = ' + newBudgets[i].id);
+						logger.info('budget: ' + i + '; id = ' + newBudgets[i].id);
 						newBudgets[i].id = currentBudget.id;
-						console.log('budget: ' + i + '; id = ' + newBudgets[i].id);
+						logger.info('budget: ' + i + '; id = ' + newBudgets[i].id);
 					});
 					// update new budgets + sequence
 					newBudgets.forEach(function(currentBudget, i){
 	          toISODate(currentBudget);
 						if (currentBudget.id != null && currentBudget.id > 0) {
 							Budget.upsert(currentBudget, function(err, updatedBudget) {
-								console.log('err: ' + err);
-								console.log('updatedBudget: ' + JSON.stringify(updatedBudget, null, '\t'));
+								logger.info('err: ' + err);
+								logger.info('updatedBudget: ' + JSON.stringify(updatedBudget, null, '\t'));
 							});
 						} else {
 							var budgetseq = mongoSequence(db,'budgets');
 							budgetseq.getNext(function(err, sequence) {
-								console.log('budgetseq name: ' + budgetseq.name + '; no: ' + sequence);
+								logger.info('budgetseq name: ' + budgetseq.name + '; no: ' + sequence);
 								if (err) {
 									callback(null, err, null, null);
 								} else {
-									console.log('insert Budget with name: ' + JSON.stringify(currentBudget, null, '\t'));
+									logger.info('insert Budget with name: ' + JSON.stringify(currentBudget, null, '\t'));
 									currentBudget.id = sequence;
 									Budget.upsert(currentBudget, function(err, updatedBudget) {
-										console.log('err: ' + err);
-										console.log('updatedBudget: ' + JSON.stringify(updatedBudget, null, '\t'));
+										logger.info('err: ' + err);
+										logger.info('updatedBudget: ' + JSON.stringify(updatedBudget, null, '\t'));
 									});
 								}
 							});
 						}
 					});
 				} else {
-					console.log('case 3');
+					logger.info('case 3');
 					newBudgets.forEach(function(currentBudget, i){
 						var oldid = oldBudgets[i].id;
 						oldBudgets[i] = currentBudget;
@@ -108,8 +109,8 @@ module.exports = function(Budget) {
 					oldBudgets.forEach(function(currentBudget, i){
 	          toISODate(currentBudget);
 						Budget.upsert(currentBudget, function(err, updatedBudget) {
-							console.log('err: ' + err);
-							console.log('updatedBudget: ' + JSON.stringify(updatedBudget, null, '\t'));
+							logger.info('err: ' + err);
+							logger.info('updatedBudget: ' + JSON.stringify(updatedBudget, null, '\t'));
 						});
 					});
 				}

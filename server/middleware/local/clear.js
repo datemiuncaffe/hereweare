@@ -1,12 +1,14 @@
 module.exports = function(options) {
+	var logger = require('./../../lib/logger');
+
 	return function clear(req, res, next) {
-		console.log('clear selected models... - options = ' + JSON.stringify(options));
-		console.log('req query params: ' + JSON.stringify(req.query));
+		logger.info('clear selected models... - options = ' + JSON.stringify(options));
+		logger.info('req query params: ' + JSON.stringify(req.query));
 		var app = req.app;
-		
-		// data sources	
+
+		// data sources
 		var mongoDs = app.dataSources.mongoDs;
-		
+
 		// parse query string parameters
 		var queryparams = req.query;
 		if (queryparams.classname != null && queryparams.classname.length > 0) {
@@ -19,10 +21,10 @@ module.exports = function(options) {
 					classname: queryparams.classname,
 					info: info
 				};
-				console.log('destroy operation : ' + JSON.stringify(details));
+				logger.info('destroy operation : ' + JSON.stringify(details));
 				return res.json(details);
 			});
 		}
-		
+
 	};
 };

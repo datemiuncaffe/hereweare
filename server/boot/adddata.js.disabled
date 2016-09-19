@@ -1,6 +1,6 @@
 module.exports = function(app) {
-	console.log('add data on startup ...');
-
+	logger.info('add data on startup ...');
+	var logger = require('./../lib/logger');
 	var async = require("async");
 	var moment = require("moment");
 	const crypto = require('crypto');
@@ -17,7 +17,7 @@ module.exports = function(app) {
 			if (err) {
 				throw err;
 			}
-			// console.log('mongoids: ' + JSON.stringify(mongoids, null, '\t'));
+			// logger.info('mongoids: ' + JSON.stringify(mongoids, null, '\t'));
       var mongoidsArray = mongoids.map(function(o) {
         if (typeof o.id === 'number') {
           return o.id;
@@ -25,12 +25,12 @@ module.exports = function(app) {
       }).filter(function(id) {
         return id != null;
       });
-      console.log('mongoidsArray: ' + JSON.stringify(mongoidsArray));
+      logger.info('mongoidsArray: ' + JSON.stringify(mongoidsArray));
       var max = Math.max.apply(null, mongoidsArray);
-      console.log('max: ' + max);
+      logger.info('max: ' + max);
 
 			Customer.destroyById(max, function(err) {
-				console.log('Mongo customer ' + max + ' destroyed');
+				logger.info('Mongo customer ' + max + ' destroyed');
 			});
     });
   }
@@ -41,9 +41,9 @@ module.exports = function(app) {
 			if (err) {
 				throw err;
 			}
-			console.log('mongo customers number: ' + JSON.stringify(mongosnum, null, '\t'));
+			logger.info('mongo customers number: ' + JSON.stringify(mongosnum, null, '\t'));
 			if (mongosnum < 3) {
-				console.log('calling addCustomer');
+				logger.info('calling addCustomer');
 				callback(null);
 			} else {
 				findLastMongoIdAndDestroy();
@@ -55,11 +55,11 @@ module.exports = function(app) {
 	var addCustomer = function(callback) {
 		var customerseq = mongoSequence(db,'customers');
 		customerseq.getNext(function(err, sequence) {
-			console.log('customerseq name: ' + customerseq.name + '; no: ' + sequence);
+			logger.info('customerseq name: ' + customerseq.name + '; no: ' + sequence);
 			if (err) {
 				callback(null, err, sequence);
 			} else {
-				console.log('insert customer Mongo');
+				logger.info('insert customer Mongo');
 				Customer.create({
 					id : sequence,
 					name : 'Mongo'
@@ -67,7 +67,7 @@ module.exports = function(app) {
 					if (err) {
 						throw err;
 					}
-					console.log('Customer created: \n', JSON.stringify(customer));
+					logger.info('Customer created: \n', JSON.stringify(customer));
 					callback(null, null, sequence);
 				});
 			}
@@ -81,11 +81,11 @@ module.exports = function(app) {
 		}
 		var projectseq = mongoSequence(db,'projects');
 		projectseq.getNext(function(err, sequence) {
-			console.log('projectseq name: ' + projectseq.name + '; no: ' + sequence);
+			logger.info('projectseq name: ' + projectseq.name + '; no: ' + sequence);
 			if (err) {
 				callback(null, err, sequence);
 			} else {
-				console.log('insert project START');
+				logger.info('insert project START');
 				var today = moment();
 				var nextMonth = today.clone().add(1, 'months');
 				hash.update('START' + today.valueOf());
@@ -101,7 +101,7 @@ module.exports = function(app) {
 					if (err) {
 						throw err;
 					}
-					console.log('Project created: \n', JSON.stringify(project));
+					logger.info('Project created: \n', JSON.stringify(project));
 					callback(null, null, project);
 				});
 			}
@@ -115,11 +115,11 @@ module.exports = function(app) {
 		}
 		var budgetseq = mongoSequence(db,'budgets');
 		budgetseq.getNext(function(err, sequence) {
-			console.log('budgetseq name: ' + budgetseq.name + '; no: ' + sequence);
+			logger.info('budgetseq name: ' + budgetseq.name + '; no: ' + sequence);
 			if (err) {
 				callback(err, 'error');
 			} else {
-				console.log('insert budget');
+				logger.info('insert budget');
 				Budget.create({
 					id : sequence,
 					from : project.from,
@@ -132,7 +132,7 @@ module.exports = function(app) {
 					if (err) {
 						throw err;
 					}
-					console.log('Budget created: \n', JSON.stringify(budget));
+					logger.info('Budget created: \n', JSON.stringify(budget));
 				});
 				callback(null, 'done');
 			}
@@ -142,7 +142,7 @@ module.exports = function(app) {
 	// sequence
 	var connector = app.dataSources.mongoDs.connector;
 	if (typeof connector.connect == 'function') {
-		console.log('connector: ' + JSON.stringify(connector.connect));
+		logger.info('connector: ' + JSON.stringify(connector.connect));
 		connector.connect(function(err, dbase){
 			if (err) {
 				throw err;
@@ -159,7 +159,7 @@ module.exports = function(app) {
 					if (err) {
 						throw err;
 					}
-					console.log('end waterfall...' + result);
+					logger.info('end waterfall...' + result);
 				}
 			);
 
