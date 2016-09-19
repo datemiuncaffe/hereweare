@@ -17,7 +17,12 @@
 			"!**/node_modules/**",
 			"!**/build/**"
 		],
-		"dest": "build/local"
+		"dest": "build/local",
+		"logger": {
+			"logpath": "'/var/log/hereweare'",
+			"src": "/home/federico/Documents/ehour/projects/hereweare/server/lib/logger.js",
+			"dest": "/home/federico/Documents/ehour/projects/hereweare/build/local/server/lib"
+		}
 	},
 
 	"test":
@@ -38,6 +43,11 @@
 			"!**/node_modules/**",
 			"!**/build/**"
 		],
-		"dest": "build/test"
+		"dest": "build/test",
+		"logger": {
+			"logpath": "/var/log/hereweare",
+			"src": "/home/federico/Documents/ehour/projects/hereweare/server/lib/logger.js",
+			"dest": "/home/federico/Documents/ehour/projects/hereweare/build/test/server/lib"
+		}
 	}
 }

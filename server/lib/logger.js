@@ -1,6 +1,6 @@
 var winston = require('winston');
 
-var logdir = '/var/log/hereweare';
+var logdir = $logpath$;
 var logpath = logdir + '/hereweare.log';
 var exceptionslogpath = logdir + '/hereweare-exceptions.log';
 
