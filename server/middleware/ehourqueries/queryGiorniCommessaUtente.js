@@ -14,7 +14,8 @@ module.exports = function(options) {
 		var query = 'select year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, ' +
 			'c.NAME as nomeCliente, concat(c.CODE, \' - \', c.NAME) as codiceNomeCliente, ' +
 			'p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, ' +
-			'u.LAST_NAME as nomeDipendente, concat(u.LAST_NAME, \', \', u.FIRST_NAME) as cognomeNomeDipendente, ' +
+			'u.FIRST_NAME as nomeDipendente, u.LAST_NAME as cognomeDipendente, ' + 
+			'concat(u.LAST_NAME, \', \', u.FIRST_NAME) as cognomeNomeDipendente, ' +
 			'round(sum(HOURS)/8,2) as giornateMese, sum(HOURS) as oreMese ' +
 			'from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID ' +
 			'join PROJECT p on a.PROJECT_ID = p.PROJECT_ID ' +

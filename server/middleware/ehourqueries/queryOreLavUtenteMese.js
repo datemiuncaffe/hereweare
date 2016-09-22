@@ -11,7 +11,7 @@ module.exports = function(options) {
 		var queryparams = req.query;
 		logger.info('queryparams: ' + JSON.stringify(queryparams, null, '\t'));
 
-		var query = 'select year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, u.LAST_NAME as nomeDipendente, sum(HOURS) as oreMese from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID join PROJECT p on a.PROJECT_ID = p.PROJECT_ID join USERS u on u.USER_ID = a.USER_ID join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID group by anno, mese, u.USER_ID';
+		var query = 'select year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, u.FIRST_NAME as nomeDipendente, u.LAST_NAME as cognomeDipendente, sum(HOURS) as oreMese from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID join PROJECT p on a.PROJECT_ID = p.PROJECT_ID join USERS u on u.USER_ID = a.USER_ID join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID group by anno, mese, u.USER_ID';
 		if (queryparams != null && queryparams.filter != null) {
 			query += ' having ';
 			var keys = Object.keys(queryparams.filter);
