@@ -1,4 +1,5 @@
 module.exports = function(options) {
+	var jp = require('jsonpath');
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
 	var MongoPool = require('./../../lib/mongo-pool').pool();
 	var async = require("async");
@@ -229,6 +230,42 @@ module.exports = function(options) {
 			], function(err, data) {
 		    logger.info('data: ' + JSON.stringify(data, null, '\t'));
 				var datatable = processData(data);
+				jp.apply(datatable, '$[*].datatable[*].costdays', function(item) {
+					logger.info('costdays: ' + item +
+						'; typeof: ' + typeof item);
+					if (item != null && typeof item == 'number') {
+						var formattedItem = item.toString().replace(".", ",");
+						logger.info('costdays formatted: ' + formattedItem);
+						return formattedItem;
+					}
+				});
+				jp.apply(datatable, '$[*].datatable[*].costhours', function(item) {
+					logger.info('costhours: ' + item +
+						'; typeof: ' + typeof item);
+					if (item != null && typeof item == 'number') {
+						var formattedItem = item.toString().replace(".", ",");
+						logger.info('costhours formatted: ' + formattedItem);
+						return formattedItem;
+					}
+				});
+				jp.apply(datatable, '$[*].datatable[*].budgetamount', function(item) {
+					logger.info('budgetamount: ' + item +
+						'; typeof: ' + typeof item);
+					if (item != null && typeof item == 'number') {
+						var formattedItem = item.toString().replace(".", ",");
+						logger.info('budgetamount formatted: ' + formattedItem);
+						return formattedItem;
+					}
+				});
+				jp.apply(datatable, '$[*].datatable[*].budgetdays', function(item) {
+					logger.info('budgetdays: ' + item +
+						'; typeof: ' + typeof item);
+					if (item != null && typeof item == 'number') {
+						var formattedItem = item.toString().replace(".", ",");
+						logger.info('budgetdays formatted: ' + formattedItem);
+						return formattedItem;
+					}
+				});
 				res.json(datatable);
 			});
 			return res;

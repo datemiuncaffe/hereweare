@@ -1,4 +1,5 @@
 module.exports = function(options) {
+	var jp = require('jsonpath');
 	var mysql = require("mysql");
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
 	var logger = require('./../../lib/logger');
@@ -14,7 +15,7 @@ module.exports = function(options) {
 		var query = 'select year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, ' +
 			'c.NAME as nomeCliente, concat(c.CODE, \' - \', c.NAME) as codiceNomeCliente, ' +
 			'p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, ' +
-			'u.FIRST_NAME as nomeDipendente, u.LAST_NAME as cognomeDipendente, ' + 
+			'u.FIRST_NAME as nomeDipendente, u.LAST_NAME as cognomeDipendente, ' +
 			'concat(u.LAST_NAME, \', \', u.FIRST_NAME) as cognomeNomeDipendente, ' +
 			'round(sum(HOURS)/8,2) as giornateMese, sum(HOURS) as oreMese ' +
 			'from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID ' +
@@ -54,6 +55,24 @@ module.exports = function(options) {
 
 				resList['giorniCommessaUtente'] = giorniCommessaUtente;
 				logger.info('resList: ' + JSON.stringify(resList));
+				jp.apply(resList, '$.giorniCommessaUtente[*].giornateMese', function(item) {
+					logger.info('giornateMese: ' + item +
+						'; typeof: ' + typeof item);
+					if (item != null && typeof item == 'number') {
+						var formattedItem = item.toString().replace(".", ",");
+						logger.info('giornateMese formatted: ' + formattedItem);
+						return formattedItem;
+					}
+				});
+				jp.apply(resList, '$.giorniCommessaUtente[*].oreMese', function(item) {
+					logger.info('oreMese: ' + item +
+						'; typeof: ' + typeof item);
+					if (item != null && typeof item == 'number') {
+						var formattedItem = item.toString().replace(".", ",");
+						logger.info('oreMese formatted: ' + formattedItem);
+						return formattedItem;
+					}
+				});
 				res.json(resList);
 			});
 		};

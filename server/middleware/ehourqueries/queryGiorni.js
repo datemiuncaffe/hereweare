@@ -1,4 +1,5 @@
 module.exports = function(options) {
+	var jp = require('jsonpath');
 	var mysql = require("mysql");
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
 	var logger = require('./../../lib/logger');
@@ -40,6 +41,15 @@ module.exports = function(options) {
 
 				resList['giorni'] = giorni;
 				logger.info('resList: '	+ JSON.stringify(resList));
+				jp.apply(resList, '$.giorni[*].giornateMese', function(item) {
+					logger.info('giornateMese: ' + item +
+						'; typeof: ' + typeof item);
+					if (item != null && typeof item == 'number') {
+						var formattedItem = item.toString().replace(".", ",");
+						logger.info('giornateMese formatted: ' + formattedItem);
+						return formattedItem;
+					}
+				});
 				res.json(resList);
 			});
 		};

@@ -1,7 +1,8 @@
 module.exports = function(options) {
+	var jp = require('jsonpath');
 	var mysql = require("mysql");
 	var logger = require('./../../lib/logger');
-	
+
 	return function queryCosts(req, res, next) {
 		// First you need to create a connection to the db
 		var con = mysql.createConnection({
@@ -32,7 +33,24 @@ module.exports = function(options) {
 					});
 					logger.info('queryCosts performed ...');
 					logger.info('costs: ' + JSON.stringify(costs, null, '\t'));
-
+					jp.apply(costs, '$[*].giornateMese', function(item) {
+						logger.info('giornateMese: ' + item +
+							'; typeof: ' + typeof item);
+						if (item != null && typeof item == 'number') {
+							var formattedItem = item.toString().replace(".", ",");
+							logger.info('giornateMese formatted: ' + formattedItem);
+							return formattedItem;
+						}
+					});
+					jp.apply(costs, '$[*].oreMese', function(item) {
+						logger.info('oreMese: ' + item +
+							'; typeof: ' + typeof item);
+						if (item != null && typeof item == 'number') {
+							var formattedItem = item.toString().replace(".", ",");
+							logger.info('oreMese formatted: ' + formattedItem);
+							return formattedItem;
+						}
+					});
 					res.json(costs);
 				});
 			return res;

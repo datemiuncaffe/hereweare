@@ -1,4 +1,5 @@
 module.exports = function(options) {
+	var jp = require('jsonpath');
 	var mysql = require("mysql");
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
 	var logger = require('./../../lib/logger');
@@ -44,6 +45,15 @@ module.exports = function(options) {
 
 				resList['oreLav'] = oreLav;
 				logger.info('resList: ' + JSON.stringify(resList));
+				jp.apply(resList, '$.oreLav[*].oreMese', function(item) {
+					logger.info('oreMese: ' + item +
+						'; typeof: ' + typeof item);
+					if (item != null && typeof item == 'number') {
+						var formattedItem = item.toString().replace(".", ",");
+						logger.info('oreMese formatted: ' + formattedItem);
+						return formattedItem;
+					}
+				});
 				res.json(resList);
 			});
 		};
