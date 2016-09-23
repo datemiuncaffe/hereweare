@@ -36,7 +36,29 @@ module.exports = function(options) {
 		} else {
 			query += ' having anno = year(now()) and mese = month(now()) - 1';
 		}
-		query += ' order by c.CUSTOMER_ID, p.PROJECT_ID, u.LAST_NAME, anno, mese';
+		// ordering
+		var sorting = {
+			anno: 'ASC',
+			mese: 'ASC'
+		};
+		if (queryparams != null && queryparams.sorting != null) {
+			var sortingParamskeys = Object.keys(queryparams.sorting);
+			sortingParamskeys.forEach(function(key) {
+				sorting[key] = queryparams.sorting[key];
+			});
+		}
+		if (Object.keys(sorting).length == 2) {
+			sorting.cognomeDipendente = 'ASC';
+		}
+		logger.info('sorting: ' + JSON.stringify(sorting, null, '\t'));
+		query += ' order by ';
+		var sortingkeys = Object.keys(sorting);
+		for (var i = 0; i < sortingkeys.length; i++) {
+			query += sortingkeys[i] + ' ' + sorting[sortingkeys[i]];
+			if (i !== (sortingkeys.length - 1)) {
+				query += ', ';
+			}
+		}
 		logger.info('sql query: ' + JSON.stringify(query, null, '\t'));
 
 		MysqlPool.getConnection(getData, query);
