@@ -11,7 +11,10 @@ module.exports = function(options) {
 		});
 
 		con.query('select u.FIRST_NAME as nomeDipendente, ' +
-							'u.LAST_NAME as cognomeDipendente, u.ACTIVE as active ' +
+							'u.LAST_NAME as cognomeDipendente, ' +
+							'concat(u.LAST_NAME, \' - \', u.FIRST_NAME) ' +
+							'as cognomeNomeDipendente, ' +
+							'u.ACTIVE as active ' +
 							'from USERS u where active = \'Y\' ORDER BY cognomeDipendente;',
 							function(err, data) {
 			var results = {activeEmployees: []};
