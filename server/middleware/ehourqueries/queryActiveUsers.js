@@ -3,7 +3,7 @@ module.exports = function(options) {
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
 	var logger = require('./../../lib/logger');
 
-	return function queryActiveEmployees(req, res, next) {
+	return function queryActiveUsers(req, res, next) {
 		var query = 'select u.FIRST_NAME as nomeDipendente, ' +
 				'u.LAST_NAME as cognomeDipendente, ' +
 				'concat(u.LAST_NAME, \' - \', u.FIRST_NAME) ' +
@@ -15,7 +15,7 @@ module.exports = function(options) {
 		MysqlPool.getConnection(getData, query);
 
 		function getData(err, connection, query) {
-			connection.query(query, function(err, activeEmployees) {
+			connection.query(query, function(err, activeUsers) {
 				if (err) {
 					logger.info('err: ' + JSON.stringify(err));
 					MysqlPool.releaseConnection(connection);
@@ -23,11 +23,11 @@ module.exports = function(options) {
 				}
 
 				MysqlPool.releaseConnection(connection);
-				logger.info('queryActiveEmployees performed ...');
-				logger.info('activeEmployees: ' +
-					JSON.stringify(activeEmployees, null, '\t'));
+				logger.info('queryActiveUsers performed ...');
+				logger.info('activeUsers: ' +
+					JSON.stringify(activeUsers, null, '\t'));
 
-				res.json(activeEmployees);
+				res.json(activeUsers);
 			});
 		};
 
