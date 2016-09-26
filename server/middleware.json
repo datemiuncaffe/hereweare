@@ -57,6 +57,9 @@
     "./middleware/ehourqueries/queryActiveProjects": {
       "paths": "/query_active_projects"
     },
+    "./middleware/ehourqueries/queryActiveEmployees": {
+      "paths": "/query_active_employees"
+    },
     "./middleware/ehourqueries/queryGiorni": {
       "paths": "/query_giorni_lav_mese"
     },
