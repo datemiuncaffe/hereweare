@@ -1,45 +1,37 @@
 module.exports = function(options) {
 	var mysql = require("mysql");
+	var MysqlPool = require('./../../lib/mysql-pool').pool();
 	var logger = require('./../../lib/logger');
 
 	return function queryActiveEmployees(req, res, next) {
-		// First you need to create a connection to the db
-		var con = mysql.createConnection({
-			host : "192.168.88.158",
-			user : "centos",
-			database : "ehour"
-		});
+		var query = 'select u.FIRST_NAME as nomeDipendente, ' +
+				'u.LAST_NAME as cognomeDipendente, ' +
+				'concat(u.LAST_NAME, \' - \', u.FIRST_NAME) ' +
+				'as cognomeNomeDipendente, ' +
+				'u.ACTIVE as active ' +
+				'from USERS u where active = \'Y\' ORDER BY cognomeDipendente;'
+		logger.info('sql query: ' + JSON.stringify(query, null, '\t'));
 
-		con.query('select u.FIRST_NAME as nomeDipendente, ' +
-							'u.LAST_NAME as cognomeDipendente, ' +
-							'concat(u.LAST_NAME, \' - \', u.FIRST_NAME) ' +
-							'as cognomeNomeDipendente, ' +
-							'u.ACTIVE as active ' +
-							'from USERS u where active = \'Y\' ORDER BY cognomeDipendente;',
-							function(err, data) {
-			var results = {activeEmployees: []};
-			if (err) {
-				logger.info('err: ' + JSON.stringify(err));
-				results.error = JSON.stringify(err);
-				con.end(function(err) {
-					logger.info('ending connection' +
-						' queryActiveEmployees not performed. err = ' + err);
-				});
-				res.json(results);
-			}
+		MysqlPool.getConnection(getData, query);
 
-			con.end(function(err) {
-				logger.info('ending connection' +
-					' after queryActiveEmployees. err = ' + err);
+		function getData(err, connection, query) {
+			connection.query(query, function(err, activeEmployees) {
+				if (err) {
+					logger.info('err: ' + JSON.stringify(err));
+					MysqlPool.releaseConnection(connection);
+					throw err;
+				}
+
+				MysqlPool.releaseConnection(connection);
+				logger.info('queryActiveEmployees performed ...');
+				logger.info('activeEmployees: ' +
+					JSON.stringify(activeEmployees, null, '\t'));
+
+				res.json(activeEmployees);
 			});
-			logger.info('queryActiveEmployees performed ...');
-			logger.info('data: ' + JSON.stringify(data, null, '\t'));
-			if (data != null && data.length > 0) {
-				results.activeEmployees = data;
-			}
+		};
 
-			res.json(results);
-		});
 		return res;
+
 	};
 };
