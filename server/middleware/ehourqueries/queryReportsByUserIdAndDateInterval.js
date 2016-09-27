@@ -4,11 +4,11 @@ module.exports = function(options) {
 	var logger = require('./../../lib/logger');
 
 	return function queryReportsByUserIdAndDateInterval(req, res, next) {
-		var query = 'select t.ENTRY_DATE as entrydate, ' +
-				'c.NAME as nomeCliente, ' +
-				'p.NAME as nomeProgetto, p.PROJECT_CODE as codiceProgetto, ' +
+		var query = 'select t.ENTRY_DATE as data, ' +
+				'c.NAME as cliente, ' +
+				'p.NAME as progetto, p.PROJECT_CODE as codiceProgetto, ' +
 				'concat(u.LAST_NAME, \' - \', u.FIRST_NAME) as dipendente, ' +
-				's.ROLE as role, t.COMMENT as Commento, t.HOURS as ore ' +
+				's.ROLE as ruolo, t.COMMENT as commento, t.HOURS as ore ' +
 				'from TIMESHEET_ENTRY t ' +
 				'join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID ' +
 				'join PROJECT p on a.PROJECT_ID = p.PROJECT_ID ' +
