@@ -3,7 +3,7 @@ module.exports = function(options) {
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
 	var logger = require('./../../lib/logger');
 
-	return function queryReportsByUserIdAndDateInterval(req, res, next) {
+	return function queryReportsByUserNameAndDateInterval(req, res, next) {
 		var query = 'select t.ENTRY_DATE as data, ' +
 				'c.NAME as cliente, ' +
 				'p.NAME as progetto, p.PROJECT_CODE as codiceProgetto, ' +
@@ -44,7 +44,7 @@ module.exports = function(options) {
 				}
 
 				MysqlPool.releaseConnection(connection);
-				logger.info('queryReportsByUserIdAndDateInterval performed ...');
+				logger.info('queryReportsByUserNameAndDateInterval performed ...');
 				logger.info('reports: ' +
 					JSON.stringify(reports, null, '\t'));
 

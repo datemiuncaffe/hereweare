@@ -78,7 +78,7 @@
     "./middleware/ehourqueries/queryOreLavUtenteMese": {
       "paths": "/query_ore_lav_utente_mese"
     },
-    "./middleware/ehourqueries/queryReportsByUserIdAndDateInterval": {
+    "./middleware/ehourqueries/queryReportsByUserNameAndDateInterval": {
       "paths": "/query_reports_by_userid_dateinterval"
     },
     "./middleware/local/automigrate": {
