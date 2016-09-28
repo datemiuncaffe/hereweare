@@ -36,7 +36,7 @@ module.exports = function(options) {
 		}
 
 		function getData(err, connection, query) {
-			connection.query(query, function(err, reports) {
+			connection.query(query, function(err, report) {
 				if (err) {
 					logger.info('err: ' + JSON.stringify(err));
 					MysqlPool.releaseConnection(connection);
@@ -45,10 +45,26 @@ module.exports = function(options) {
 
 				MysqlPool.releaseConnection(connection);
 				logger.info('queryReportsByUserNameAndDateInterval performed ...');
-				logger.info('reports: ' +
-					JSON.stringify(reports, null, '\t'));
+				logger.info('report: ' +
+					JSON.stringify(report, null, '\t'));
 
-				res.json(reports);
+				// filter
+				var ore = report.map(function(item) {
+					return item.ore;
+				});
+				logger.info('ore: ' +
+					JSON.stringify(ore, null, '\t'));
+
+				// arrow function
+				var sommaore = ore.reduce( ( acc, cur ) => acc + cur, 0 );
+				logger.info('sommaore: ' +
+					JSON.stringify(sommaore, null, '\t'));
+
+				var result = {
+					inserimenti: report,
+					oretotali: sommaore
+				};
+				res.json(result);
 			});
 		};
 
