@@ -4,7 +4,7 @@ module.exports = function(options) {
 	var logger = require('./../../lib/logger');
 
 	return function queryReportsByUserNameAndDateInterval(req, res, next) {
-		var query = 'select t.ENTRY_DATE as data, ' +
+		var query = 'select DATE_FORMAT(t.ENTRY_DATE,\'%d/%m/%y\') as data, ' +
 				'c.NAME as cliente, ' +
 				'p.NAME as progetto, p.PROJECT_CODE as codiceProgetto, ' +
 				'concat(u.LAST_NAME, \' - \', u.FIRST_NAME) as dipendente, ' +
