@@ -9,7 +9,9 @@ module.exports = function(options) {
 				'concat(u.LAST_NAME, \' - \', u.FIRST_NAME) ' +
 				'as cognomeNomeDipendente, ' +
 				'u.ACTIVE as active ' +
-				'from USERS u where active = \'Y\' ORDER BY cognomeDipendente;'
+				'from USERS u where u.ACTIVE = \'Y\' ' +
+				'and u.LAST_NAME != \'Admin\' ' +
+				'ORDER BY cognomeDipendente;'
 		logger.info('sql query: ' + JSON.stringify(query, null, '\t'));
 
 		MysqlPool.getConnection(getData, query);
