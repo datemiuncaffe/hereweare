@@ -20,10 +20,12 @@ module.exports = function(options) {
 		var queryparams = req.query;
 		logger.info('queryparams: ' + JSON.stringify(queryparams, null, '\t'));
 
-		if (queryparams.lastName == null ) {
+		if (queryparams.lastName == null ||
+				queryparams.firstName == null) {
 			res.json([]);
 		} else {
-			query += 'where u.LAST_NAME = \'' + queryparams.lastName + '\'';
+			query += 'where u.LAST_NAME = \'' + queryparams.lastName +
+				'\' and u.FIRST_NAME = \'' + queryparams.firstName + '\'';
 			if (queryparams.startDate != null ) {
 				query += ' and t.ENTRY_DATE > \'' + queryparams.startDate + '\'';
 			}
