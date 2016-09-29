@@ -32,6 +32,7 @@ module.exports = function(options) {
 			if (queryparams.endDate != null ) {
 				query += ' and t.ENTRY_DATE <= \'' + queryparams.endDate + '\'';
 			}
+			query += ' GROUP BY data, cliente, progetto, codiceProgetto';
 			query += ' order by t.ENTRY_DATE;';
 			logger.info('sql query: ' + JSON.stringify(query, null, '\t'));
 			MysqlPool.getConnection(getData, query);
