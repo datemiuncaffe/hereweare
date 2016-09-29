@@ -27,10 +27,10 @@ module.exports = function(options) {
 			query += 'where u.LAST_NAME = \'' + queryparams.lastName +
 				'\' and u.FIRST_NAME = \'' + queryparams.firstName + '\'';
 			if (queryparams.startDate != null ) {
-				query += ' and t.ENTRY_DATE > \'' + queryparams.startDate + '\'';
+				query += ' and t.ENTRY_DATE >= \'' + queryparams.startDate + '\'';
 			}
 			if (queryparams.endDate != null ) {
-				query += ' and t.ENTRY_DATE < \'' + queryparams.endDate + '\'';
+				query += ' and t.ENTRY_DATE <= \'' + queryparams.endDate + '\'';
 			}
 			query += ' order by t.ENTRY_DATE;';
 			logger.info('sql query: ' + JSON.stringify(query, null, '\t'));
