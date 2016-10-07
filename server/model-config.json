@@ -28,5 +28,9 @@
   "Cost": {
     "dataSource": "mongoBudgets",
     "public": true
+  },
+  "Hwuser": {
+    "dataSource": "mongoBudgets",
+    "public": true
   }
 }
