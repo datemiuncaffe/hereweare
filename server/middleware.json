@@ -97,6 +97,12 @@
     "./middleware/local/ehourmigratecosts": {
       "paths": "/ehourmigratecosts"
     },
+    "./middleware/ext/zoho": {
+      "paths": "/zoho"
+    },
+    "./middleware/ext/zohoGetPortals": {
+      "paths": "/zoho_portals"
+    },
     "./middleware/log": {
       "paths": "/log"
     }
