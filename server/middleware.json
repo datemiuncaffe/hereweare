@@ -48,6 +48,9 @@
     "./middleware/ehourqueries/queryProjectsByCustomerId": {
       "paths": "/query_projects_by_customer_id"
     },
+    "./middleware/ehourqueries/queryProjectsAndCustomersByUserNameAndDateInterval": {
+      "paths": "/query_projects_customers_by_username_dateinterval"
+    },
     "./middleware/ehourqueries/queryBudgetsCostsByCustomerIds": {
       "paths": "/query_budgets_costs_by_customer_ids"
     },

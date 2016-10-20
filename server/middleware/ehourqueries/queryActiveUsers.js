@@ -1,5 +1,4 @@
 module.exports = function(options) {
-	var mysql = require("mysql");
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
 	var logger = require('./../../lib/logger');
 
