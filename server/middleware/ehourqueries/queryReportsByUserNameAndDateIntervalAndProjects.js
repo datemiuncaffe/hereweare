@@ -3,7 +3,7 @@ module.exports = function(options) {
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
 	var logger = require('./../../lib/logger');
 
-	return function queryReportsByUserNameAndDateInterval(req, res, next) {
+	return function queryReportsByUserNameAndDateIntervalAndProjects(req, res, next) {
 		var query = 'select DATE_FORMAT(t.ENTRY_DATE,\'%d/%m/%y\') as data, ' +
 				'c.NAME as cliente, ' +
 				'p.NAME as progetto, p.PROJECT_CODE as codiceProgetto, ' +
@@ -26,11 +26,15 @@ module.exports = function(options) {
 		} else {
 			query += 'where u.LAST_NAME = \'' + queryparams.lastName +
 				'\' and u.FIRST_NAME = \'' + queryparams.firstName + '\'';
-			if (queryparams.startDate != null ) {
+			if (queryparams.startDate != null) {
 				query += ' and t.ENTRY_DATE >= \'' + queryparams.startDate + '\'';
 			}
-			if (queryparams.endDate != null ) {
+			if (queryparams.endDate != null) {
 				query += ' and t.ENTRY_DATE <= \'' + queryparams.endDate + '\'';
+			}
+			if (queryparams.projectCodes != null &&
+					queryparams.projectCodes.length > 0) {
+				query += ' and p.PROJECT_CODE IN (' + queryparams.projectCodes + ')';
 			}
 			query += ' GROUP BY data, cliente, progetto, codiceProgetto';
 			query += ' order by t.ENTRY_DATE;';
