@@ -24,13 +24,40 @@ module.exports = function(options) {
 			'join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID ' +
 			'group by anno, mese, c.CUSTOMER_ID, p.PROJECT_ID, u.USER_ID';
 		if (queryparams != null && queryparams.filter != null) {
-			query += ' having ';
 			var keys = Object.keys(queryparams.filter);
-			for (var i = 0; i < keys.length; i++) {
-				query += keys[i] + ' like \'%' + queryparams.filter[keys[i]]
-						+ '%\'';
-				if (i !== (keys.length - 1)) {
-					query += ' and ';
+			var keysWithoutMese = keys.filter(function(key){
+				return (key !== 'meseIn' && key !== 'meseFin');
+			});
+			query += ' having';
+			if (keysWithoutMese.length > 0) {
+				for (var i = 0; i < keysWithoutMese.length; i++) {
+					query += ' ' + keysWithoutMese[i] + ' like \'%' +
+							queryparams.filter[keysWithoutMese[i]] + '%\'';
+					if (i !== (keysWithoutMese.length - 1)) {
+						query += ' and';
+					}
+				}
+				if (queryparams.filter.meseIn != null &&
+						queryparams.filter.meseIn > 0) {
+					query += ' and mese >= ' + queryparams.filter.meseIn;
+				}
+				if (queryparams.filter.meseFin != null &&
+						queryparams.filter.meseFin > 0) {
+					query += ' and mese <= ' + queryparams.filter.meseFin;
+				}
+			} else {
+				if (queryparams.filter.meseIn != null &&
+						queryparams.filter.meseIn > 0 &&
+						queryparams.filter.meseFin != null &&
+						queryparams.filter.meseFin > 0) {
+					query += ' mese >= ' + queryparams.filter.meseIn +
+									 ' and mese <= ' + queryparams.filter.meseFin;
+				} else if (queryparams.filter.meseFin != null &&
+						queryparams.filter.meseFin > 0) {
+					query += ' mese <= ' + queryparams.filter.meseFin;
+				} else if (queryparams.filter.meseIn != null &&
+						queryparams.filter.meseIn > 0) {
+					query += ' mese >= ' + queryparams.filter.meseIn;
 				}
 			}
 		} else {
