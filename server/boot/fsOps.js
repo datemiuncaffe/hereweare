@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var bodyParser = require("body-parser");
 var logger = require('./../lib/logger');
 
 module.exports = function(app) {
@@ -12,6 +13,8 @@ module.exports = function(app) {
   conf.sep = path.sep;
   conf.serverdir =
     bootfile.dir.substring(0, bootfile.dir.lastIndexOf(conf.sep));
+
+  app.use(bodyParser.json());
 
   router.get('/read', function(req, res) {
     var result = {};
@@ -37,15 +40,49 @@ module.exports = function(app) {
 
   });
 
+  router.post('/save', function(req, res) {
+    logger.info('save');
+    var body = req.body;
+    logger.info('body: ' +
+      JSON.stringify(body, null, '\t'));
+    var result = {};
+
+    var fileName = body.fileName;
+    var fileContent = body.fileContent;
+    if (fileName != null && fileName.length > 0 &&
+        fileContent != null && fileContent.length > 0) {
+      var filePath = path.resolve(conf.serverdir, 'documents', fileName);
+      result.filePath = filePath;
+      fs.writeFile(filePath, fileContent, (err) => {
+        logger.info('saving data');
+        if (err) {
+          result.msg = 'writing error';
+          result.err = err;
+          res.send(result);
+        }
+        result.msg = 'writing ok';
+        result.err = 'no err';
+        logger.info('result: ' +
+          JSON.stringify(result, null, '\t'));
+        res.send(result);
+      });
+    } else {
+      result.msg = 'no data to write';
+      res.send(result);
+    }
+
+  });
+
   router.get('/browseDocs', function(req, res) {
     var result = {};
 
     result.docDir = path.resolve(conf.serverdir, 'documents');
     result.docContent = fs.readdirSync(result.docDir);
+    result.numOfDocs =
+      result.docContent != null ? result.docContent.length : 0;
 
     res.send(result);
   });
-
 
   router.get('/processInfo', function(req, res) {
     logger.info("cwd: " + process.cwd());
