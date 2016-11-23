@@ -28,6 +28,7 @@
     "moment": "^2.13.0",
     "mongo-sequence": "^0.1.5",
     "mongojs": "^2.4.0",
+    "mysql-events": "0.0.8",
     "request": "^2.75.0",
     "run-sequence": "^1.2.2",
     "serve-favicon": "^2.0.1",
