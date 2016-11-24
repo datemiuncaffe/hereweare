@@ -136,7 +136,7 @@ module.exports = function(app) {
     var arguments = null;
     switch (datatype) {
       case 'zset':
-        arguments = [key, 0, -1];
+        arguments = [key, 0, -1, 'WITHSCORES'];
         redisClient.zrange(arguments, function (err, response) {
           if (err) {
             result.code = 'KO';
@@ -144,7 +144,22 @@ module.exports = function(app) {
             cb(result);
           }
           result.code = 'OK';
-          result.response = response;
+
+          var values = [];
+          response.forEach(function(item, index, array){
+            if (index % 2 == 0) {
+              var currentValue = {};
+              currentValue['userId'] = array[index + 1];
+              currentValue['firstName'] = '';
+              currentValue['lastName'] = '';
+              currentValue['userName'] = item;
+              currentValue['email'] = '';
+              currentValue['internalCost'] = '';
+              values.push(currentValue);
+            }
+          });
+
+          result[key] = values;
           cb(result);
         });
         break;
