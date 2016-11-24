@@ -8,6 +8,8 @@ var redisClientOpts = {
 };
 var redisClient = redis.createClient(redisClientOpts);
 
+var datatypes = ['list', 'set', 'zset'];
+
 module.exports = function(app) {
   var router = app.loopback.Router();
 
@@ -50,6 +52,48 @@ module.exports = function(app) {
 
   });
 
+  router.get('/users', function(req, res) {
+    var report = {};
+
+    var queryparams = req.query;
+		logger.info('queryparams: ' + JSON.stringify(queryparams));
+    var key = queryparams.key;
+    var datatype = queryparams.datatype;
+
+    if (key != null && key.length > 0 &&
+        datatypes.indexOf(datatype) > -1) {
+      read(key, datatype, function(result){
+        report.result = result;
+        res.send(report);
+      });
+    } else {
+      report.result = 'specify key and datatype parameters';
+      res.send(report);
+    }
+
+  });
+
+  router.all('/del-users', function(req, res) {
+    var report = {};
+
+    var queryparams = req.query;
+		logger.info('queryparams: ' + JSON.stringify(queryparams));
+    var key = queryparams.key;
+    var datatype = queryparams.datatype;
+
+    if (key != null && key.length > 0 &&
+        datatypes.indexOf(datatype) > -1) {
+      del(key, datatype, function(result){
+        report.result = result;
+        res.send(report);
+      });
+    } else {
+      report.result = 'specify key and datatype parameters';
+      res.send(report);
+    }
+
+  });
+
   app.use('/redis-ops', router);
 
   function save(data, cb) {
@@ -86,22 +130,54 @@ module.exports = function(app) {
 
   }; // end save
 
-  function read() {
-    // -Infinity and +Infinity also work
-    var args1 = [ 'myzset', '+inf', '-inf' ];
-    client.zrevrangebyscore(args1, function (err, response) {
-        if (err) throw err;
-        console.log('example1', response);
-        // write your code here
-    });
+  function read(key, datatype, cb) {
+    var result = {};
 
-    var max = 3, min = 1, offset = 1, count = 2;
-    var args2 = [ 'myzset', max, min, 'WITHSCORES', 'LIMIT', offset, count ];
-    client.zrevrangebyscore(args2, function (err, response) {
-        if (err) throw err;
-        console.log('example2', response);
-        // write your code here
-    });
-  };
+    var arguments = null;
+    switch (datatype) {
+      case 'zset':
+        arguments = [key, 0, -1];
+        redisClient.zrange(arguments, function (err, response) {
+          if (err) {
+            result.code = 'KO';
+            result.err = err;
+            cb(result);
+          }
+          result.code = 'OK';
+          result.response = response;
+          cb(result);
+        });
+        break;
+
+      default:
+
+    }
+
+  }; // end read
+
+  function del(key, datatype, cb) {
+    var result = {};
+
+    var arguments = null;
+    switch (datatype) {
+      case 'zset':
+        arguments = [key, 0, -1];
+        redisClient.zremrangebyrank(arguments, function (err, response) {
+          if (err) {
+            result.code = 'KO';
+            result.err = err;
+            cb(result);
+          }
+          result.code = 'OK';
+          result.response = response;
+          cb(result);
+        });
+        break;
+
+      default:
+
+    }
+
+  }; // end del
 
 };
