@@ -29,6 +29,7 @@
     "mongo-sequence": "^0.1.5",
     "mongojs": "^2.4.0",
     "mysql-events": "0.0.8",
+    "node-redis-multi": "^0.1.2",
     "redis": "^2.6.3",
     "request": "^2.75.0",
     "run-sequence": "^1.2.2",

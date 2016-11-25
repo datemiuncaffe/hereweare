@@ -2,6 +2,8 @@ var MysqlPool = require('./../lib/mysql-pool').pool();
 var logger = require('./../lib/logger');
 
 var redis = require("redis");
+require('node-redis-multi')(redis);
+//require('../lib/multi')(redis);
 var redisClientOpts = {
   host: '127.0.0.1',
   port: 6379
@@ -94,26 +96,71 @@ module.exports = function(app) {
 
   });
 
+  router.all('/del-all', function(req, res) {
+    var report = {};
+
+    redisClient.flushdb(function (err, response) {
+      if (err) {
+        report.code = 'KO';
+        report.err = err;
+        res.send(report);
+      } else {
+        report.code = 'OK';
+        report.msg = 'db flushed';
+        res.send(report);
+      }
+    });
+
+  });
+
   app.use('/redis-ops', router);
 
   function save(data, cb) {
     var result = {};
+    var multiClient = redisClient.multi();
 
-    //logger.info('data: ' +
-    //  JSON.stringify(data, null, '\t'));
-    var ehourUsers = ['ehourUsers'];
+    var usersSet = ['EHOUR_USERS'];
     data.forEach(function(item) {
-      if (item.USER_ID != null && item.USER_ID > 0 &&
-          item.USERNAME != null && item.USERNAME.length > 0) {
-        ehourUsers.push(item.USER_ID);
-        ehourUsers.push(item.USER_ID + '_' + item.USERNAME);
+      if (item.USER_ID != null && item.USER_ID > 0) {
+        var userHashKey = 'EHOUR_USER_' + item.USER_ID;
+        usersSet.push(item.USER_ID);
+        usersSet.push(userHashKey);
+
+        var userHash = [userHashKey];
+        userHash.push('FIRST_NAME');
+        userHash.push(item.FIRST_NAME);
+        userHash.push('LAST_NAME');
+        userHash.push(item.LAST_NAME);
+        userHash.push('USERNAME');
+        userHash.push(item.USERNAME);
+        userHash.push('EMAIL');
+        userHash.push(item.EMAIL);
+        userHash.push('COSTO_INTERNO');
+        userHash.push(0);
+
+        //logger.info('userHash: ' +
+        //  JSON.stringify(userHash, null, '\t'));
+
+        //multiClient.set(userHashKey, 0);
+
+        logger.info('multiClient: ' + multiClient);
       }
     });
 
-    logger.info('ehourUsers: ' +
-      JSON.stringify(ehourUsers, null, '\t'));
+    var userHashEx = ['EHOUR_USER_EX'];
+    userHashEx.push('FIRST_NAME');
+    userHashEx.push('FEDERICO');
+    userHashEx.push('COSTO_INTERNO');
+    userHashEx.push(0);
+    //multiClient.set('EHOUR_USER_EX', 0);
+    multiClient.hmset(userHashEx);
 
-    redisClient.zadd(ehourUsers, function (err, response) {
+    multiClient.zadd(usersSet);
+
+    logger.info('multiClient keys: ' +
+      JSON.stringify(Object.keys(multiClient), null, '\t'));
+
+    multiClient.exec(function (err, response) {
       logger.info('err: ' +
         JSON.stringify(err, null, '\t'));
       logger.info('response: ' +
@@ -124,9 +171,13 @@ module.exports = function(app) {
         cb(result);
       }
       result.code = 'OK';
+      logger.info('saved data: ' +
+        JSON.stringify(response, null, '\t'));
       result.response = response;
       cb(result);
     });
+
+    multiClient.discard();
 
   }; // end save
 
