@@ -115,6 +115,8 @@ module.exports = function(app) {
 
   app.use('/redis-ops', router);
 
+  /*------- internal functions ----------*/
+
   function save(data, cb) {
     var result = {};
     var multiClient = redisClient.multi();
@@ -138,43 +140,26 @@ module.exports = function(app) {
         userHash.push('COSTO_INTERNO');
         userHash.push(0);
 
-        //logger.info('userHash: ' +
-        //  JSON.stringify(userHash, null, '\t'));
-
-        //multiClient.set(userHashKey, 0);
-
-        logger.info('multiClient: ' + multiClient);
+        multiClient.hmset(userHash);
       }
     });
 
-    var userHashEx = ['EHOUR_USER_EX'];
-    userHashEx.push('FIRST_NAME');
-    userHashEx.push('FEDERICO');
-    userHashEx.push('COSTO_INTERNO');
-    userHashEx.push(0);
-    //multiClient.set('EHOUR_USER_EX', 0);
-    multiClient.hmset(userHashEx);
-
     multiClient.zadd(usersSet);
 
-    logger.info('multiClient keys: ' +
-      JSON.stringify(Object.keys(multiClient), null, '\t'));
-
     multiClient.exec(function (err, response) {
-      logger.info('err: ' +
-        JSON.stringify(err, null, '\t'));
-      logger.info('response: ' +
-        JSON.stringify(response, null, '\t'));
       if (err) {
+        logger.info('err: ' +
+          JSON.stringify(err, null, '\t'));
         result.code = 'KO';
         result.err = err;
         cb(result);
+      } else {
+        logger.info('response: ' +
+          JSON.stringify(response, null, '\t'));
+        result.code = 'OK';
+        result.response = response;
+        cb(result);
       }
-      result.code = 'OK';
-      logger.info('saved data: ' +
-        JSON.stringify(response, null, '\t'));
-      result.response = response;
-      cb(result);
     });
 
     multiClient.discard();
