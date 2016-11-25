@@ -178,25 +178,63 @@ module.exports = function(app) {
             result.code = 'KO';
             result.err = err;
             cb(result);
+          } else {
+            result.code = 'OK';
+
+            var multiClient = redisClient.multi();
+            var values = [];
+            response.forEach(function(item, index, array){
+              if (index % 2 == 0) {
+                var currentValue = {};
+                currentValue['userId'] = array[index + 1];
+                currentValue['firstName'] = '';
+                currentValue['lastName'] = '';
+                currentValue['userName'] = '';
+                currentValue['email'] = '';
+                currentValue['internalCost'] = '';
+                currentValue['key'] = item;
+                values.push(currentValue);
+
+                multiClient.hgetall(item);
+              }
+            });
+
+            multiClient.exec(function (err, response) {
+              if (err) {
+                logger.info('single err: ' +
+                  JSON.stringify(err, null, '\t'));
+                result.singlecode = 'KO SINGLE ELEMENTS';
+                result.singleerr = err;
+                cb(result);
+              } else {
+                logger.info('response: ' +
+                  JSON.stringify(response, null, '\t'));
+                result.singlecode = 'OK';
+                result.singleresponse = response;
+                if (response._repliesByKey != null) {
+                  values.forEach(function(value) {
+                    if (response._repliesByKey[value.key]) {
+                      value['firstName'] =
+                        response._repliesByKey[value.key]['FIRST_NAME'];
+                      value['lastName'] =
+                        response._repliesByKey[value.key]['LAST_NAME'];
+                      value['userName'] =
+                        response._repliesByKey[value.key]['USERNAME'];
+                      value['email'] =
+                        response._repliesByKey[value.key]['EMAIL'];
+                      value['internalCost'] =
+                        response._repliesByKey[value.key]['COSTO_INTERNO'];
+                    }
+                  });
+                }
+                result[key] = values;
+                cb(result);
+              }
+            });
+
+            multiClient.discard();
+
           }
-          result.code = 'OK';
-
-          var values = [];
-          response.forEach(function(item, index, array){
-            if (index % 2 == 0) {
-              var currentValue = {};
-              currentValue['userId'] = array[index + 1];
-              currentValue['firstName'] = '';
-              currentValue['lastName'] = '';
-              currentValue['userName'] = item;
-              currentValue['email'] = '';
-              currentValue['internalCost'] = '';
-              values.push(currentValue);
-            }
-          });
-
-          result[key] = values;
-          cb(result);
         });
         break;
 
