@@ -1,4 +1,5 @@
 var MysqlPool = require('./../lib/mysql-pool').pool();
+var bodyParser = require("body-parser");
 var logger = require('./../lib/logger');
 
 var redis = require("redis");
@@ -14,6 +15,7 @@ var datatypes = ['list', 'set', 'zset'];
 
 module.exports = function(app) {
   var router = app.loopback.Router();
+  app.use(bodyParser.json());
 
   router.get('/server-info', function(req, res) {
     var serverInfo = redisClient.serverInfo;
@@ -73,6 +75,26 @@ module.exports = function(app) {
       res.send(report);
     }
 
+  });
+
+  router.post('/save-users', function(req, res) {
+    var body = req.body;
+    logger.info('body: ' +
+      JSON.stringify(body, null, '\t'));
+    var report = {};
+
+    var ehourUsers = body.EHOUR_USERS;
+    if (ehourUsers != null && ehourUsers.length > 0) {
+      //save(users, function(result){
+      //     report.result = result;
+      //     res.send(report);
+      //   });
+      report.savedNum = ehourUsers.length;
+      res.send(report);
+    } else {
+      report.result = 'no users';
+      res.send(report);
+    }
   });
 
   router.all('/del-users', function(req, res) {
