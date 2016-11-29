@@ -85,12 +85,21 @@ module.exports = function(app) {
 
     var ehourUsers = body.EHOUR_USERS;
     if (ehourUsers != null && ehourUsers.length > 0) {
-      //save(users, function(result){
-      //     report.result = result;
-      //     res.send(report);
-      //   });
-      report.savedNum = ehourUsers.length;
-      res.send(report);
+      var userData = ehourUsers.map(function(item){
+        var user = {};
+        user['USER_ID'] = parseInt(item.userId);
+        user['FIRST_NAME'] = item.firstName;
+        user['LAST_NAME'] = item.lastName;
+        user['USERNAME'] = item.userName;
+        user['EMAIL'] = item.email;
+        user['INTERNAL_COST'] = item.internalCost;
+        return user;
+      });
+      
+      save(userData, function(result){
+        report.result = result;
+        res.send(report);
+      });
     } else {
       report.result = 'no users';
       res.send(report);
@@ -159,8 +168,13 @@ module.exports = function(app) {
         userHash.push(item.USERNAME);
         userHash.push('EMAIL');
         userHash.push(item.EMAIL);
-        userHash.push('COSTO_INTERNO');
-        userHash.push(0);
+        userHash.push('INTERNAL_COST');
+        if (item.INTERNAL_COST != null &&
+            item.INTERNAL_COST > 0) {
+          userHash.push(item.INTERNAL_COST);
+        } else {
+          userHash.push(0);
+        }
 
         multiClient.hmset(userHash);
       }
@@ -245,7 +259,7 @@ module.exports = function(app) {
                       value['email'] =
                         response._repliesByKey[value.key]['EMAIL'];
                       value['internalCost'] =
-                        response._repliesByKey[value.key]['COSTO_INTERNO'];
+                        response._repliesByKey[value.key]['INTERNAL_COST'];
                     }
                   });
                 }
