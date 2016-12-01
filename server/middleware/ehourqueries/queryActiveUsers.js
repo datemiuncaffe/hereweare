@@ -13,7 +13,11 @@ module.exports = function(options) {
 				'ORDER BY cognomeDipendente;'
 		logger.info('sql query: ' + JSON.stringify(query, null, '\t'));
 
-		MysqlPool.getConnection(getData, query);
+		MysqlPool.getPool(getConnection);
+
+		function getConnection() {
+			MysqlPool.getConnection(getData, query);
+		};
 
 		function getData(err, connection, query) {
 			connection.query(query, function(err, activeUsers) {

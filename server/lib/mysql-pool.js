@@ -1,17 +1,27 @@
 var MysqlPool = function() {
 	var logger = require('./logger');
 	var mysql = require('mysql');
-	var pool  = mysql.createPool({
-	  connectionLimit : 30,
-		host : "192.168.88.158",
-		user : "centos",
-		database : "ehour"
-	});
 
+	var pool  = null;
 	var res = {
 		connectionLimit : 10,
 		checklog: function() {
 			logger.info('simple check');
+		},
+		getPool: function(cb) {
+			if (pool) {
+				logger.info('pool: ' + pool);
+				cb();
+			} else {
+				pool = mysql.createPool({
+				  connectionLimit : 10,
+					host : "192.168.88.158",
+					user : "centos",
+					database : "ehour"
+				});
+				logger.info('create pool: ' + pool);
+				cb();
+			}
 		},
 		getConnection: function(cb, options) {
 			logger.info('pool: ' + pool);

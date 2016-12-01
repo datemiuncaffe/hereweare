@@ -1,6 +1,5 @@
 module.exports = function(options) {
 	var jp = require('jsonpath');
-	var mysql = require("mysql");
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
 	var logger = require('./../../lib/logger');
 
@@ -35,7 +34,7 @@ module.exports = function(options) {
 			var sortingParamskeys = Object.keys(queryparams.sorting);
 			sortingParamskeys.forEach(function(key) {
 				sorting[key] = queryparams.sorting[key];
-			});			
+			});
 		}
 		if (Object.keys(sorting).length == 2) {
 			sorting.cognomeDipendente = 'ASC';
@@ -51,7 +50,11 @@ module.exports = function(options) {
 		}
 		logger.info('sql query: ' + JSON.stringify(query, null, '\t'));
 
-		MysqlPool.getConnection(getData, query);
+		MysqlPool.getPool(getConnection);
+
+		function getConnection() {
+			MysqlPool.getConnection(getData, query);
+		};
 
 		function getData(err, connection, query) {
 			connection.query(query, function(err, oreLav) {

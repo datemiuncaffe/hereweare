@@ -28,7 +28,11 @@ module.exports = function(options) {
 		query += ' order by c.CUSTOMER_ID, p.PROJECT_CODE';
 		logger.info('sql query: ' + JSON.stringify(query, null, '\t'));
 
-		MysqlPool.getConnection(getData, query);
+		MysqlPool.getPool(getConnection);
+
+		function getConnection() {
+			MysqlPool.getConnection(getData, query);
+		};
 
 		function getData(err, connection, query) {
 			connection.query(query, function(err, giorniCommessa) {

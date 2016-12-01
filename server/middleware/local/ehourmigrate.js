@@ -1,4 +1,4 @@
-var mysql = require('mysql');
+var MysqlPool = require('./../../lib/mysql-pool').pool();
 var async = require('async');
 module.exports = function(options) {
 	var logger = require('./../../lib/logger');
@@ -12,12 +12,6 @@ module.exports = function(options) {
 		var Customer = app.models.Customer;
 		var Project = app.models.Project;
 
-		var con = mysql.createConnection({
-			host : '192.168.88.158',
-			user : 'centos',
-			database : 'ehour'
-		});
-
 		// sequence
 		var connector = app.dataSources.mongoDs.connector;
 		var db = null;
@@ -28,32 +22,41 @@ module.exports = function(options) {
 			logger.info('all items have been processed');
 		};
 
-		con.query('select * from CUSTOMER', function(err, rows) {
-			if (err) {
-				throw err;
-			}
+		var queryCustomers = 'select * from CUSTOMER';
+		MysqlPool.getPool(getConnection);
 
-			var customers = JSON.parse(JSON.stringify(rows));
-			logger.info('ehour customers: ' + customers);
-			res.json(customers);
+		function getConnection() {
+			MysqlPool.getConnection(getData, query);
+		};
 
-			connector.connect(function(err, dbase){
+		function getData(err, connection, queryCustomers) {
+			connection.query(queryCustomers, function(err, rows) {
 				if (err) {
+					MysqlPool.releaseConnection(connection);
 					throw err;
 				}
-				db = dbase;
 
-				// process customers
-				customers.forEach(function(customer) {
-					logger.info('customer: ' + JSON.stringify(customer));
-					q.push(customer, null, function(err) {
-						logger.info('end processing customer = ' + customer.NAME);
+				MysqlPool.releaseConnection(connection);
+				var customers = JSON.parse(JSON.stringify(rows));
+				logger.info('ehour customers: ' + customers);
+				res.json(customers);
+
+				connector.connect(function(err, dbase){
+					if (err) {
+						throw err;
+					}
+					db = dbase;
+
+					// process customers
+					customers.forEach(function(customer) {
+						logger.info('customer: ' + JSON.stringify(customer));
+						q.push(customer, null, function(err) {
+							logger.info('end processing customer = ' + customer.NAME);
+						});
 					});
 				});
-
 			});
-
-		});
+		};
 
 		// migrate Customer
 		function migrateCustomer(customer, callback) {
@@ -83,59 +86,71 @@ module.exports = function(options) {
 				throw err;
 			}
 			logger.info('customerId: ' + customerId + '; ehourcustomerId: ' + ehourcustomerId);
+			var query = 'select * from PROJECT where ' +
+				'CUSTOMER_ID = ' + ehourcustomerId;
 
-			con.query('select * from PROJECT where CUSTOMER_ID = ' + ehourcustomerId, function(err, projects) {
-				if (err) {
-					throw err;
-				}
+			MysqlPool.getPool(getConnection);
 
-				var count = 0;
+			function getConnection() {
+				MysqlPool.getConnection(getData, query);
+			};
 
-				async.whilst(
-				    function () { return count < projects.length; },
-				    function (callback) {
+			function getData(err, connection, query) {
+				connection.query(query, function(err, projects) {
+					if (err) {
+						MysqlPool.releaseConnection(connection);
+						throw err;
+					}
 
-				    	var projectseq = mongoSequence(db,'projects');
-						projectseq.getNext(function(err, sequence) {
-							logger.info('projectseq name: ' + projectseq.name + '; no: ' + sequence);
-							if (err) {
-								count++;
-						        setTimeout(function () {
-						            callback(err, count);
-						        }, 1000);
-							} else {
-								logger.info('insert Project with name: ' + projects[count].NAME);
-								Project.create({
-									id : sequence,
-									name : projects[count].NAME,
-									code : projects[count].PROJECT_CODE,
-									customerId : customerId
-								}, function(err, mongoproject) {
-									if (err) {
-										throw err;
-									}
-									logger.info('Project created: \n', JSON.stringify(mongoproject));
+					var count = 0;
+					async.whilst(
+					    function () { return count < projects.length; },
+					    function (callback) {
+
+					    	var projectseq = mongoSequence(db,'projects');
+							projectseq.getNext(function(err, sequence) {
+								logger.info('projectseq name: ' + projectseq.name + '; no: ' + sequence);
+								if (err) {
 									count++;
 							        setTimeout(function () {
-							            callback(null, count);
+							            callback(err, count);
 							        }, 1000);
-								});
-							}
-						});
+								} else {
+									logger.info('insert Project with name: ' + projects[count].NAME);
+									Project.create({
+										id : sequence,
+										name : projects[count].NAME,
+										code : projects[count].PROJECT_CODE,
+										customerId : customerId
+									}, function(err, mongoproject) {
+										if (err) {
+											throw err;
+										}
+										logger.info('Project created: \n', JSON.stringify(mongoproject));
+										count++;
+								        setTimeout(function () {
+								            callback(null, count);
+								        }, 1000);
+									});
+								}
+							});
 
-				    },
-				    function (err, n) {
-				        logger.info('results: ' + n);
-				    }
-				);
-			});
-		}
+					    },
+					    function (err, n) {
+					        logger.info('results: ' + n);
+									MysqlPool.releaseConnection(connection);
+					    }
+					);
+					res.json(results);
+				});
+			};
+		};
 
 		function migrate(customer, cb) {
 			async.waterfall([
-			                  async.apply(migrateCustomer, customer),
-			                  migrateProjects
-			                ],
+          async.apply(migrateCustomer, customer),
+          migrateProjects
+        ],
 				function(err, result) {
 					if (err) {
 						throw err;
@@ -143,7 +158,7 @@ module.exports = function(options) {
 					logger.info('end migrate...' + result);
 			});
 			cb();
-		}
+		};
 
 		return res;
 

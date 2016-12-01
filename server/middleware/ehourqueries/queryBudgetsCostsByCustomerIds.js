@@ -152,7 +152,11 @@ module.exports = function(options) {
 
 			async.parallel([
 		    function(callback) {
-					MysqlPool.getConnection(getData, customerIds);
+					MysqlPool.getPool(getConnection);
+
+					function getConnection() {
+						MysqlPool.getConnection(getData, customerIds);
+					};
 					function getData(err, connection, customerIds) {
 						var costsresults = [];
 						async.each(customerIds, function(custId, callbk) {

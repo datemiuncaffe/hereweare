@@ -1,7 +1,7 @@
 module.exports = function(options) {
 	var jp = require('jsonpath');
-	var mysql = require("mysql");
-	var MysqlPool = require('./../../lib/mysql-pool').pool();
+	var MysqlPool = require('./../../lib/mysql-pool')
+		.pool();
 	var logger = require('./../../lib/logger');
 
 	return function queryGiorniCliente(req, res, next) {
@@ -27,7 +27,11 @@ module.exports = function(options) {
 		}
 		logger.info('sql query: ' + JSON.stringify(query, null, '\t'));
 
-		MysqlPool.getConnection(getData, query);
+		MysqlPool.getPool(getConnection);
+
+		function getConnection() {
+			MysqlPool.getConnection(getData, query);
+		};
 
 		function getData(err, connection, query) {
 			connection.query(query, function(err, giorniCliente) {

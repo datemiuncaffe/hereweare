@@ -1,4 +1,4 @@
-var mysql = require('mysql');
+var MysqlPool = require('./../../lib/mysql-pool').pool();
 var async = require('async');
 module.exports = function(options) {
 	var logger = require('./../../lib/logger');
@@ -12,12 +12,6 @@ module.exports = function(options) {
 		var Cost = app.models.Cost;
 
 		var mongoSequence = require('./../../lib/mongo-sequence');
-
-		var con = mysql.createConnection({
-			host : '192.168.88.158',
-			user : 'centos',
-			database : 'ehour'
-		});
 
 		// sequence
 		var connector = app.dataSources.mongoDs.connector;
@@ -75,52 +69,76 @@ module.exports = function(options) {
 
 
 		function migrateCosts(project, cb) {
-			logger.info('project: ' + project + '; code: ' + project.code);
+			logger.info('project: ' + project +
+				'; code: ' + project.code);
+			var query = 'select year(ENTRY_DATE) as anno, ' +
+				'month(ENTRY_DATE) as mese, c.NAME as nomeCliente, ' +
+				'p.PROJECT_CODE as codiceProgetto, ' +
+				'p.NAME as nomeProgetto, ' +
+				'round(sum(HOURS)/8,2) as giornateMese ' +
+				'from TIMESHEET_ENTRY t ' +
+				'join PROJECT_ASSIGNMENT a ' +
+				'on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID ' +
+				'join PROJECT p on a.PROJECT_ID = p.PROJECT_ID ' +
+				'join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID ' +
+				'group by anno, mese, c.CUSTOMER_ID, ' +
+				'p.PROJECT_ID having codiceProgetto = \'' +
+				project.code + '\' order by anno, mese;';
 
-			con.query('select year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, c.NAME as nomeCliente, p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, round(sum(HOURS)/8,2) as giornateMese from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID join PROJECT p on a.PROJECT_ID = p.PROJECT_ID join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID group by anno, mese, c.CUSTOMER_ID, p.PROJECT_ID having codiceProgetto = \'' + project.code + '\' order by anno, mese;', function(err, costs) {
-				if (err) {
-					throw err;
-				}
+			MysqlPool.getPool(getConnection);
 
-				var count = 0;
-				async.whilst(
-				    function () { return count < costs.length; },
-				    function (callback) {
-				    	logger.info('cost: ' + JSON.stringify(costs[count]));
-				    	var cost = costs[count];
+			function getConnection() {
+				MysqlPool.getConnection(getData, query);
+			};
 
-				    	var costseq = mongoSequence(db,'costs');
-						costseq.getNext(function(err, sequence) {
-							logger.info('costseq name: ' + costseq.name + '; no: ' + sequence);
-							if (err) {
-								count++;
-								callback(err, count);
-							} else {
-								logger.info('insert Cost. nomeProgetto: ' + cost.nomeProgetto + '; codiceProgetto: ' + cost.codiceProgetto + '; anno: ' + cost.anno + '; mese: ' + cost.mese + '; giornateMese: ' + cost.giornateMese);
-								Cost.create({
-									id : sequence,
-									year : cost.anno,
-									month : cost.mese,
-									days : cost.giornateMese,
-									projectId : project.id
-								}, function(err, mongocost) {
-									if (err) {
-										throw err;
-									}
-									logger.info('Cost created: \n', JSON.stringify(mongocost));
+			function getData(err, connection, query) {
+				connection.query(query, function(err, costs) {
+					if (err) {
+						MysqlPool.releaseConnection(connection);
+						throw err;
+					}
+
+					MysqlPool.releaseConnection(connection);
+					var count = 0;
+					async.whilst(
+					    function () { return count < costs.length; },
+					    function (callback) {
+					    	logger.info('cost: ' + JSON.stringify(costs[count]));
+					    	var cost = costs[count];
+
+					    	var costseq = mongoSequence(db,'costs');
+							costseq.getNext(function(err, sequence) {
+								logger.info('costseq name: ' + costseq.name + '; no: ' + sequence);
+								if (err) {
 									count++;
 									callback(err, count);
-								});
-							}
-						});
+								} else {
+									logger.info('insert Cost. nomeProgetto: ' + cost.nomeProgetto + '; codiceProgetto: ' + cost.codiceProgetto + '; anno: ' + cost.anno + '; mese: ' + cost.mese + '; giornateMese: ' + cost.giornateMese);
+									Cost.create({
+										id : sequence,
+										year : cost.anno,
+										month : cost.mese,
+										days : cost.giornateMese,
+										projectId : project.id
+									}, function(err, mongocost) {
+										if (err) {
+											throw err;
+										}
+										logger.info('Cost created: \n', JSON.stringify(mongocost));
+										count++;
+										callback(err, count);
+									});
+								}
+							});
 
-				    },
-				    function (err, n) {
-				        logger.info('results: ' + n);
-				        cb();
-				    }
-				);
-			});
+					    },
+					    function (err, n) {
+					        logger.info('results: ' + n);
+					        cb();
+					    }
+					);
+				});
+			};
 		}
 
 		function migrate(project, cb) {

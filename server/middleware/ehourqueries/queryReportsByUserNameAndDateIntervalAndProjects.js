@@ -1,5 +1,4 @@
 module.exports = function(options) {
-	var mysql = require("mysql");
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
 	var logger = require('./../../lib/logger');
 
@@ -39,7 +38,11 @@ module.exports = function(options) {
 			query += ' GROUP BY data, cliente, progetto, codiceProgetto';
 			query += ' order by t.ENTRY_DATE;';
 			logger.info('sql query: ' + JSON.stringify(query, null, '\t'));
-			MysqlPool.getConnection(getData, query);
+			MysqlPool.getPool(getConnection);
+
+			function getConnection() {
+				MysqlPool.getConnection(getData, query);
+			};
 		}
 
 		function getData(err, connection, query) {

@@ -1,5 +1,4 @@
 module.exports = function(options) {
-	var mysql = require("mysql");
 	var moment = require('moment');
 	var MysqlPool = require('./../../lib/mysql-pool').pool();
 	var logger = require('./../../lib/logger');
@@ -37,7 +36,11 @@ module.exports = function(options) {
 			}
 		}
 
-		MysqlPool.getConnection(getData, query);
+		MysqlPool.getPool(getConnection);
+
+		function getConnection() {
+			MysqlPool.getConnection(getData, query);
+		};
 
 		function getData(err, connection, query) {
 			connection.query(query, function(err, customers) {

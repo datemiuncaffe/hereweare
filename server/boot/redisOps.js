@@ -28,7 +28,11 @@ module.exports = function(app) {
                 ' LAST_NAME, USERNAME, EMAIL,' +
                 ' ACTIVE from USERS;';
 
-    MysqlPool.getConnection(getData, query);
+    MysqlPool.getPool(getConnection);
+
+		function getConnection() {
+			MysqlPool.getConnection(getData, query);
+		};
 
     function getData(err, connection, query) {
 			connection.query(query, function(err, users) {
@@ -95,7 +99,7 @@ module.exports = function(app) {
         user['INTERNAL_COST'] = item.internalCost;
         return user;
       });
-      
+
       save(userData, function(result){
         report.result = result;
         res.send(report);
