@@ -26,7 +26,8 @@ module.exports = function(app) {
     var report = {};
     var query = 'select USER_ID, FIRST_NAME,' +
                 ' LAST_NAME, USERNAME, EMAIL,' +
-                ' ACTIVE from USERS;';
+                ' ACTIVE from USERS' +
+                ' WHERE ACTIVE = \'Y\';';
 
     MysqlPool.getPool(getConnection);
 
