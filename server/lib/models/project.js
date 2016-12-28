@@ -35,24 +35,7 @@ var ProjectEmitter = function() {
 		var model = mongoose.obj.model('Project', projectSchema);
 
 		var res = {
-			obj: model,
-			findOne: function(conditions, cb) {
-				var res = {};
-
-				logger.info('Project Model keys: ' +
-					JSON.stringify(Object.keys(Project), null, '\t'));
-
-				Project.findOne(conditions, function (err, project) {
-				  if (err) {
-						res.error = err;
-						cb(err, res);
-					}
-				  logger.info('find one project',
-						JSON.stringify(project, null, '\t'));
-					res.project = project;
-					cb(err, res);
-				});
-			}
+			obj: model
 		}; // end res
 
 		emitter.emit('once', res);

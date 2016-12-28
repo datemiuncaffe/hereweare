@@ -1,76 +1,163 @@
 var logger = require('./../lib/logger');
-var Budget = require('./../lib/models/budget.js').Budget();
-logger.info('budget: ' + Budget);
+var moment = require("moment");
+var bodyParser = require("body-parser");
+var BudgetEmitter = require('./../lib/models/budget.js').BudgetEmitter();
+var MultiPromise = require('./../lib/models/promises.js').MultiPromise;
 
-var BudgetObj = null;
+var BudgetModel = null;
 
 var BudgetOps = function(app) {
   var router = app.loopback.Router();
-  logger.info('int budget: ' +
-    JSON.stringify(Budget, null, '\t'));
-
-  router.get('/numBudgets', function(req, res) {
-    var report = {};
-
-    var queryparams = req.query;
-    logger.info('queryparams: ' + JSON.stringify(queryparams));
-    var conditions = null;
-    if (queryparams.conditions != null) {
-      conditions = queryparams.conditions;
-    }
-
-    BudgetObj.count(conditions, function(err, response) {
-      if (err) {
-        report.error = err;
-        report.response = response;
-        res.send(report);
-      }
-      logger.info('there are %d budgets', response.count);
-      report.response = response;
-      res.send(report);
-    });
-
-  });
+  app.use(bodyParser.json());
 
   router.get('/budgets', function(req, res) {
     var report = {};
-
     var queryparams = req.query;
-    logger.info('queryparams: ' +
-      JSON.stringify(queryparams));
-
-    var conditions = {};
-    if (queryparams._id != null &&
-        queryparams._id > 0) {
-      conditions._id = parseInt(queryparams._id);
-    }
-    logger.info('conditions: ' +
-      JSON.stringify(conditions));
-
-    BudgetObj.findOne(conditions, function(err, response) {
-      if (err) {
-        report.error = err;
-        report.response = response;
-        res.send(report);
-      }
-      logger.info('find one budget', response.budget);
-      report.response = response;
+		logger.info('queryparams: ' + JSON.stringify(queryparams));
+    var projectId = queryparams.id;
+    if (projectId != null && projectId > 0) {
+      logger.info('projectId: ' + projectId);
+      var conditions = {
+        projectId: projectId
+      };
+      BudgetModel.find(conditions, null, null, function(err, docs) {
+        logger.info('budgets docs: ' + JSON.stringify(docs, null, '\t'));
+        if (docs != null) {
+          report.budgets = docs;
+          res.send(report);
+        } else {
+          report.msg = 'no budgets for projectId: ' + projectId;
+          res.send(report);
+        }
+      });
+    } else {
+      report.msg = 'no projectId';
       res.send(report);
-    });
+    }
+  });
+
+  router.put('/update-all-by-project-id', function(req, res) {
+    logger.info('post body: ' +
+      JSON.stringify(req.body, null, '\t'));
+
+    var report = {};
+    if (req.body != null &&
+        req.body.projectId != null &&
+        req.body.budgets != null) {
+      updateAllByProjectId(req.body.projectId, req.body.budgets, function (err, response) {
+        if (err) {
+          if (err.message != null) {
+            report.error = err.message;
+          }
+          res.send(report);
+        } else {
+          logger.info('update successfull: ', response);
+          report.response = response;
+          res.send(report);
+        }
+      });
+    } else {
+      report.response = 'no budgets in body request';
+      res.send(report);
+    }
 
   });
 
-  app.use('/budget-ops', router);
+  app.use('/budgets-ops', router);
 
   /*------- internal functions ----------*/
+  function toISODate(budget) {
+    var from = moment(budget.from, "DD/MM/YYYY");
+    var to = moment(budget.to, "DD/MM/YYYY");
+    budget.from = from.toDate();
+    budget.to = to.toDate();
+  };
+
+  function updateAllByProjectId(project_id, newBudgets, cb) {
+    var budgetsToSave = newBudgets.filter(function(budget){
+      return (budget.status === 'save');
+    });
+    var budgetsToUpdate = newBudgets.filter(function(budget){
+      return (budget.status === 'update');
+    });
+    var budgetsToDelete = newBudgets.filter(function(budget){
+      return (budget.status !== 'save' && budget.status !== 'update');
+    });
+    logger.info('budgetsToSave: ' + JSON.stringify(budgetsToSave, null, '\t'));
+    logger.info('budgetsToUpdate: ' + JSON.stringify(budgetsToUpdate, null, '\t'));
+    logger.info('budgetsToDelete: ' + JSON.stringify(budgetsToDelete, null, '\t'));
+
+    if (budgetsToSave != null && budgetsToSave.length > 0) {
+      var tasks = [];
+      budgetsToSave.forEach(function(budget){
+        var Budget = getBudgetDoc(budget);
+        tasks.push(Budget.save());
+      });
+      // var promise = new MultiPromise.ES6();
+      // logger.info('MultiPromise: ' +
+      //   JSON.stringify(Object.keys(promise), null, '\t'));
+      MultiPromise.all(tasks);
+      // MultiPromise.all(tasks).then(function(results) {
+      //   console.log(results);
+      // }, function (err) {
+      //   console.log(err);
+      // });
+    }
+    // BudgetModel.find({where: {projectId: parseInt(project_id)}}, function(err, oldBudgets){
+    //   if (err) {
+    //     cb(err, 'error finding budgets');
+    //   } else {
+    //     var response = {};
+    //     logger.info('old budgets: ' + JSON.stringify(oldBudgets, null, '\t'));
+    //     var newLength = newBudgets.length;
+    //     var oldLength = oldBudgets.length;
+    //
+    //
+    //     response.newLength = newLength;
+    //     response.oldLength = oldLength;
+    //     cb(null, response);
+    //   };
+    // });
+    cb(null, {});
+  };
+
+  function getBudgetDoc(budget) {
+    var doc = {};
+    if (budget.from != null && budget.from.length > 0) {
+      doc.from = moment(budget.from, "DD/MM/YYYY").toDate();
+    }
+    if (budget.to != null && budget.to.length > 0) {
+      doc.to = moment(budget.to, "DD/MM/YYYY").toDate();
+    }
+    if (budget.year != null && budget.year > 0) {
+      doc.year = budget.year;
+    }
+    if (budget.month != null && budget.month.length > 0) {
+      doc.month = budget.month;
+    }
+    if (budget.days != null && budget.days > 0) {
+      doc.days = budget.days;
+    }
+    if (budget.businessdays != null && budget.businessdays.length > 0) {
+      doc.businessdays = budget.businessdays;
+    }
+    if (budget.amount != null && budget.amount > 0) {
+      doc.amount = budget.amount;
+    }
+    if (budget.projectId != null && budget.projectId > 0) {
+      doc.projectId = budget.projectId;
+    }
+
+    var Budget = new BudgetModel(doc);
+    return Budget;
+
+  }; // end getBudgetDoc
 
 };
 
 module.exports = BudgetOps;
 
-Budget.on('once', (Budg) => {
+BudgetEmitter.on('once', (emitter) => {
   logger.info('once event occurred!');
-  logger.info('Budg: ' +
-    JSON.stringify(Object.keys(Budg), null, '\t'));
-  BudgetObj = Budg;
+  BudgetModel = emitter.obj;
 });

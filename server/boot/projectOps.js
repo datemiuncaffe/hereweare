@@ -25,7 +25,32 @@ var ProjectOps = function(app) {
     });
   });
 
-  router.get('/find-last-id-project', function(req, res) {
+  router.get('/find-max-id-project', function(req, res) {
+    var report = {};
+    ProjectModel.find(null, null, null, function(err, docs) {
+      logger.info('docs: ' +
+        JSON.stringify(docs, null, '\t'));
+      if (docs != null) {
+        var idsArray = docs.map(function(o) {
+          if (typeof o.id === 'number') {
+            return o.id;
+          }
+        }).filter(function(id) {
+          return id != null;
+        });
+        logger.info('idsArray: ' + JSON.stringify(idsArray));
+        var max = Math.max.apply(null, idsArray);
+        logger.info('max: ' + max);
+        report.maxId = max;
+        res.send(report);
+      } else {
+        report.msg = 'no projects';
+        res.send(report);
+      }
+    });
+  });
+
+  router.get('/projects', function(req, res) {
     var report = {};
     ProjectModel.find(null, null, null, function(err, docs) {
       logger.info('docs: ' +
@@ -37,16 +62,6 @@ var ProjectOps = function(app) {
         report.msg = 'no projects';
         res.send(report);
       }
-      // var idsArray = ids.map(function(o) {
-      //   if (typeof o.id === 'number') {
-      //     return o.id;
-      //   }
-      // }).filter(function(id) {
-      //   return id != null;
-      // });
-      // logger.info('idsArray: ' + JSON.stringify(idsArray));
-      // var max = Math.max.apply(null, idsArray);
-      // logger.info('max: ' + max);
     });
   });
 
