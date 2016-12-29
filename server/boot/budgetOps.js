@@ -87,37 +87,40 @@ var BudgetOps = function(app) {
     logger.info('budgetsToUpdate: ' + JSON.stringify(budgetsToUpdate, null, '\t'));
     logger.info('budgetsToDelete: ' + JSON.stringify(budgetsToDelete, null, '\t'));
 
+    var tasks = [];
     if (budgetsToSave != null && budgetsToSave.length > 0) {
-      var tasks = [];
       budgetsToSave.forEach(function(budget){
         var Budget = getBudgetDoc(budget);
         tasks.push(Budget.save());
       });
+    }
+    if (budgetsToUpdate != null && budgetsToUpdate.length > 0) {
+      budgetsToUpdate.forEach(function(budget){
+        var Budget = getBudgetDoc(budget);
+        tasks.push(Budget.remove());
+        tasks.push(Budget.save());
+        //task.push(BudgetModel.findByIdAndUpdate(id, obj, null, cbk));
+      });
+    }
+    if (budgetsToDelete != null && budgetsToDelete.length > 0) {
+      budgetsToDelete.forEach(function(budget){
+        var Budget = getBudgetDoc(budget);
+        tasks.push(Budget.remove());
+        //task.push(BudgetModel.findByIdAndRemove(id, null, cbk));
+      });
+    }
+
+    if (tasks.length > 0) {
       // var promise = new MultiPromise.ES6();
-      // logger.info('MultiPromise: ' +
-      //   JSON.stringify(Object.keys(promise), null, '\t'));
       MultiPromise.all(tasks);
       // MultiPromise.all(tasks).then(function(results) {
       //   console.log(results);
       // }, function (err) {
       //   console.log(err);
       // });
+    } else {
+
     }
-    // BudgetModel.find({where: {projectId: parseInt(project_id)}}, function(err, oldBudgets){
-    //   if (err) {
-    //     cb(err, 'error finding budgets');
-    //   } else {
-    //     var response = {};
-    //     logger.info('old budgets: ' + JSON.stringify(oldBudgets, null, '\t'));
-    //     var newLength = newBudgets.length;
-    //     var oldLength = oldBudgets.length;
-    //
-    //
-    //     response.newLength = newLength;
-    //     response.oldLength = oldLength;
-    //     cb(null, response);
-    //   };
-    // });
     cb(null, {});
   };
 

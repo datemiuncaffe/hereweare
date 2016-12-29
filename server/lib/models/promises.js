@@ -1,10 +1,8 @@
 var logger = require('./../logger');
-//var MultiPromise = require("mongoose").Promise;
-var Promise = require("mongoose").Promise;
-logger.info('Promise: ' + Promise);
+var MultiPromise = require("mongoose").Promise;
 
-Promise.all = function(promises) {
-  var mainPromise = new Promise();
+MultiPromise.all = function(promises) {
+  var mainPromise = new MultiPromise();
   if (promises.length == 0) {
     mainPromise.resolve(null, promises);
   }
@@ -28,4 +26,4 @@ Promise.all = function(promises) {
   return mainPromise;
 };
 
-module.exports.MultiPromise = Promise;
+module.exports.MultiPromise = MultiPromise;
