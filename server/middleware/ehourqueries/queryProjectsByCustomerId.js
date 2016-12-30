@@ -10,9 +10,16 @@ module.exports = function(options) {
 		if (queryparams.customerId != null && queryparams.customerId > 0) {
 			logger.info('customerId: ' + queryparams.customerId);
 			var query = 'select p.NAME as name, ' +
-				'p.PROJECT_CODE as code, p.PROJECT_ID as id, ' +
+				'p.PROJECT_CODE as code, ' +
+				'p.PROJECT_ID as id, ' +
+				'p.PROJECT_MANAGER as managerId, ' +
+				'u.FIRST_NAME as managerFirstName, ' +
+				'u.LAST_NAME as managerName, ' +
+				'u.EMAIL as managerEmail, ' +
 				'p.CUSTOMER_ID as customerId ' +
-				'FROM PROJECT p WHERE p.CUSTOMER_ID = \'' +
+				'FROM PROJECT p ' +
+				'left join USERS u on u.USER_ID = p.PROJECT_MANAGER ' +
+				'WHERE p.CUSTOMER_ID = \'' +
 				queryparams.customerId + '\'';
 			if (queryparams.onlyActive != null && queryparams.onlyActive == 'Y') {
 				query += ' AND p.ACTIVE = \'y\';';
