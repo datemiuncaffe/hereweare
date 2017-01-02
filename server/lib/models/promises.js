@@ -13,12 +13,13 @@ MultiPromise.all = function(promises) {
 		logger.info('pending: ' + pending);
     p.then(function(val) {
       promises[i] = val;
-			logger.info('inner val: ' + val);
+			logger.info('inner val: ' + JSON.stringify(val, null, '\t'));
 			logger.info('inner pending: ' + pending);
       if (--pending === 0) {
         mainPromise.resolve(null, promises);
       }
     }, function(err) {
+      logger.info('err: ' + err);
       mainPromise.reject(err);
     });
   });

@@ -88,41 +88,41 @@ var BudgetOps = function(app) {
     logger.info('budgetsToDelete: ' + JSON.stringify(budgetsToDelete, null, '\t'));
 
     var tasks = [];
-    // if (budgetsToSave != null && budgetsToSave.length > 0) {
-    //   budgetsToSave.forEach(function(budget){
-    //     var Budget = getBudgetDoc(budget);
-    //     tasks.push(Budget.save());
-    //   });
-    // }
-    // if (budgetsToUpdate != null && budgetsToUpdate.length > 0) {
-    //   budgetsToUpdate.forEach(function(budget){
-    //     var Budget = getBudgetDoc(budget);
-    //     tasks.push(Budget.remove());
-    //     tasks.push(Budget.save());
-    //     //task.push(BudgetModel.findByIdAndUpdate(id, obj, null, cbk));
-    //   });
-    // }
+    if (budgetsToSave != null && budgetsToSave.length > 0) {
+      budgetsToSave.forEach(function(budget){
+        var doc = getBudgetDoc(budget);
+        var Budget = new BudgetModel(doc);
+        tasks.push(Budget.save());
+      });
+    }
+    if (budgetsToUpdate != null && budgetsToUpdate.length > 0) {
+      budgetsToUpdate.forEach(function(budget){
+        var doc = getBudgetDoc(budget);
+        tasks.push(BudgetModel.update({id: budget.id}, doc).exec());
+      });
+    }
     if (budgetsToDelete != null && budgetsToDelete.length > 0) {
       budgetsToDelete.forEach(function(budget){
         var Budget = new BudgetModel(budget);
         logger.info('Budget: ' + JSON.stringify(Budget, null, '\t'));
         tasks.push(Budget.remove());
-        //task.push(BudgetModel.findByIdAndRemove(id, null, cbk));
       });
     }
 
     if (tasks.length > 0) {
       // var promise = new MultiPromise.ES6();
-      MultiPromise.all(tasks);
-      // MultiPromise.all(tasks).then(function(results) {
-      //   console.log(results);
-      // }, function (err) {
-      //   console.log(err);
-      // });
+      //MultiPromise.all(tasks);
+      MultiPromise.all(tasks).then(function(results) {
+        logger.info('results: ' + JSON.stringify(results, null, '\t'));
+        cb(null, results);
+      }, function (err) {
+        logger.info('err: ' + err);
+        cb(err, {msg: 'errors while saving'});
+      });
     } else {
-
+      cb(null, {msg: 'nothing to do'});
     }
-    cb(null, {});
+
   };
 
   function getBudgetDoc(budget) {
@@ -152,8 +152,9 @@ var BudgetOps = function(app) {
       doc.projectId = budget.projectId;
     }
 
-    var Budget = new BudgetModel(doc);
-    return Budget;
+    //var Budget = new BudgetModel(doc);
+    //return Budget;
+    return doc;
 
   }; // end getBudgetDoc
 
