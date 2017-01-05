@@ -1,5 +1,6 @@
 var logger = require('./../lib/logger');
 var moment = require("moment");
+var jp = require('jsonpath');
 var bodyParser = require("body-parser");
 var BudgetEmitter = require('./../lib/models/budget.js').BudgetEmitter();
 var MultiPromise = require('./../lib/models/promises.js').MultiPromise;
@@ -20,9 +21,26 @@ var BudgetOps = function(app) {
       var conditions = {
         projectId: projectId
       };
-      BudgetModel.find(conditions, null, null, function(err, docs) {
+      BudgetModel.find(conditions, null, null)
+                 .lean().exec(function(err, docs) {
         logger.info('budgets docs: ' + JSON.stringify(docs, null, '\t'));
         if (docs != null) {
+          jp.apply(docs, '$[*].from', function(from) {
+      			if (from != null && from instanceof Date) {
+              logger.info('day: ' + from.getDate());
+      				var formattedfrom = moment(from).format('DD/MM/YYYY');
+      				logger.info('formattedfrom: ' + formattedfrom);
+      				return formattedfrom;
+      			}
+      		});
+      		jp.apply(docs, '$[*].to', function(to) {
+      			if (to != null && to instanceof Date) {
+      				var formattedto = moment(to).format('DD/MM/YYYY');
+      				logger.info('formattedto: ' + formattedto);
+      				return formattedto;
+      			}
+      		});
+
           report.budgets = docs;
           res.send(report);
         } else {
@@ -51,7 +69,7 @@ var BudgetOps = function(app) {
           }
           res.send(report);
         } else {
-          logger.info('update successfull: ', response);
+          logger.info('update successfull: ' + response);
           report.response = response;
           res.send(report);
         }

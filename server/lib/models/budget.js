@@ -31,6 +31,7 @@ var BudgetEmitter = function() {
 			amount: Number,
 			projectId: Number
 		});
+		//budgetSchema.set('toObject', { getters: true });
 		budgetSchema.plugin(mongoose.autoIncrement, {inc_field: 'id'});
 		var model = mongoose.obj.model('Budget', budgetSchema);
 
