@@ -78,6 +78,9 @@
     "./middleware/ehourqueries/queryGiorniCommessaUtente": {
       "paths": "/query_giorni_lav_commessa_utente_mese"
     },
+    "./middleware/ehourqueries/queryGiorniCommessaUtenteWithComments": {
+      "paths": "/query_giorni_lav_commessa_utente_mese_with_comments"
+    },
     "./middleware/ehourqueries/queryOreLavUtenteMese": {
       "paths": "/query_ore_lav_utente_mese"
     },

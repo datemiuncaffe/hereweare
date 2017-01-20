@@ -4,50 +4,62 @@ module.exports = function(options) {
 	var logger = require('./../../lib/logger');
 
 	var filterParametersMap = {
-		anno: 'anno',
-		meseIn: 'mese',
-		meseFin: 'mese'
+		anno: 'year(ENTRY_DATE)',
+		meseIn: 'month(ENTRY_DATE)',
+		meseFin: 'month(ENTRY_DATE)',
+		dayOfMonth: 'dayofmonth(ENTRY_DATE)',
+		codiceProgetto: 'p.PROJECT_CODE',
+		cognomeDipendente: 'u.LAST_NAME',
+		nomeCliente: 'c.NAME',
+		nomeDipendente: 'u.FIRST_NAME',
+		nomeProgetto: 'p.NAME'
 	};
 
-	return function queryGiorniCommessaUtente(req, res, next) {
+	return function queryGiorniCommessaUtenteWithComments(req, res, next) {
 		var resList = {
-			giorniCommessaUtente : []
+			giorniCommessaUtenteWithComments : []
 		};
 		// parse query string parameters
 		var queryparams = req.query;
-		logger.info('queryparams: ' + JSON.stringify(queryparams, null, '\t'));
+		logger.info('queryparams: ' +
+			JSON.stringify(queryparams, null, '\t'));
 
-		var query = 'select year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, ' +
+		var query = 'select year(ENTRY_DATE) as anno, ' +
+			'month(ENTRY_DATE) as mese, ' +
+			'dayofmonth(ENTRY_DATE) as dayOfMonth, ' +
 			'c.NAME as nomeCliente, concat(c.CODE, \' - \', c.NAME) as codiceNomeCliente, ' +
 			'p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, ' +
 			'u.FIRST_NAME as nomeDipendente, u.LAST_NAME as cognomeDipendente, ' +
 			'concat(u.LAST_NAME, \', \', u.FIRST_NAME) as cognomeNomeDipendente, ' +
-			'round(sum(HOURS)/8,2) as giornateMese, sum(HOURS) as oreMese ' +
-			'from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID ' +
+			'HOURS as oreMese, COMMENT as comment ' +
+			'from TIMESHEET_ENTRY t ' +
+			'join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID ' +
 			'join PROJECT p on a.PROJECT_ID = p.PROJECT_ID ' +
 			'join USERS u on u.USER_ID = a.USER_ID ' +
-			'join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID ' +
-			'group by anno, mese, c.CUSTOMER_ID, p.PROJECT_ID, u.USER_ID';
+			'join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID';
 		if (queryparams != null && queryparams.filter != null) {
 			var keys = Object.keys(queryparams.filter);
-			var keysWithoutMeseAndAnno = keys.filter(function(key){
-				return (key !== 'meseIn' && key !== 'meseFin' && key !== 'anno');
+			var keysNotInDate = keys.filter(function(key){
+				return (key !== 'meseIn' && key !== 'meseFin' &&
+								key !== 'anno' && key !== 'dayOfMonth');
 			});
-			var keysMeseAndAnno = keys.filter(function(key){
-				return (key == 'meseIn' || key == 'meseFin' || key == 'anno');
+			var keysInDate = keys.filter(function(key){
+				return (key == 'meseIn' || key == 'meseFin' ||
+								key == 'anno' || key == 'dayOfMonth');
 			});
-			query += ' having';
-			if (keysWithoutMeseAndAnno.length > 0) {
-				for (var i = 0; i < keysWithoutMeseAndAnno.length; i++) {
-					query += ' ' + keysWithoutMeseAndAnno[i] + ' like \'%' +
-							queryparams.filter[keysWithoutMeseAndAnno[i]] + '%\'';
-					if (i !== (keysWithoutMeseAndAnno.length - 1)) {
+			query += ' where';
+			if (keysNotInDate.length > 0) {
+				for (var i = 0; i < keysNotInDate.length; i++) {
+					query += ' ' + filterParametersMap[keysNotInDate[i]] +
+							' like \'%' +
+							queryparams.filter[keysNotInDate[i]] + '%\'';
+					if (i !== (keysNotInDate.length - 1)) {
 						query += ' and';
 					}
 				}
-				for (var i = 0; i < keysMeseAndAnno.length; i++) {
-					query += ' and ' + filterParametersMap[keysMeseAndAnno[i]];
-					switch (keysMeseAndAnno[i]) {
+				for (var i = 0; i < keysInDate.length; i++) {
+					query += ' and ' + filterParametersMap[keysInDate[i]];
+					switch (keysInDate[i]) {
 						case 'anno':
 							query += ' = ';
 							break;
@@ -57,11 +69,14 @@ module.exports = function(options) {
 						case 'meseFin':
 							query += ' <= ';
 							break;
+						case 'dayOfMonth':
+							query += ' = ';
+							break;
 						default:
 							query += ' error ';
 							break;
 					}
-					query += queryparams.filter[keysMeseAndAnno[i]];
+					query += queryparams.filter[keysInDate[i]];
 				}
 			} else {
 				for (var i = 0; i < keys.length; i++) {
@@ -76,6 +91,9 @@ module.exports = function(options) {
 						case 'meseFin':
 							query += ' <= ';
 							break;
+						case 'dayOfMonth':
+							query += ' = ';
+							break;
 						default:
 							query += ' error ';
 							break;
@@ -87,7 +105,7 @@ module.exports = function(options) {
 				}
 			}
 		} else {
-			query += ' having ' +
+			query += ' where ' +
 							 filterParametersMap[anno] + ' = year(now())' +
 							 ' and ' +
 							 filterParametersMap[meseIn] + ' = month(now()) - 1';
@@ -105,6 +123,8 @@ module.exports = function(options) {
 		}
 		if (Object.keys(sorting).length == 2) {
 			sorting.cognomeDipendente = 'ASC';
+			sorting.codiceProgetto = 'ASC';
+			sorting.dayOfMonth = 'ASC';
 		}
 		logger.info('sorting: ' + JSON.stringify(sorting, null, '\t'));
 		query += ' order by ';
@@ -124,7 +144,7 @@ module.exports = function(options) {
 		};
 
 		function getData(err, connection, query) {
-			connection.query(query, function(err, giorniCommessaUtente) {
+			connection.query(query, function(err, giorniCommessaUtenteWithComments) {
 				if (err) {
 					logger.info('err: ' + JSON.stringify(err));
 					MysqlPool.releaseConnection(connection);
@@ -132,12 +152,13 @@ module.exports = function(options) {
 				}
 
 				MysqlPool.releaseConnection(connection);
-				logger.info('queryGiorniCommessaUtente performed ...');
-				logger.info('giorniCommessaUtente: ' + JSON.stringify(giorniCommessaUtente, null, '\t'));
+				logger.info('querygiorniCommessaUtenteWithComments performed ...');
+				logger.info('giorniCommessaUtenteWithComments: ' +
+					JSON.stringify(giorniCommessaUtenteWithComments, null, '\t'));
 
-				resList['giorniCommessaUtente'] = giorniCommessaUtente;
+				resList['giorniCommessaUtenteWithComments'] = giorniCommessaUtenteWithComments;
 				logger.info('resList: ' + JSON.stringify(resList));
-				jp.apply(resList, '$.giorniCommessaUtente[*].giornateMese', function(item) {
+				jp.apply(resList, '$.giorniCommessaUtenteWithComments[*].giornateMese', function(item) {
 					logger.info('giornateMese: ' + item +
 						'; typeof: ' + typeof item);
 					if (item != null && typeof item == 'number') {
@@ -146,7 +167,7 @@ module.exports = function(options) {
 						return formattedItem;
 					}
 				});
-				jp.apply(resList, '$.giorniCommessaUtente[*].oreMese', function(item) {
+				jp.apply(resList, '$.giorniCommessaUtenteWithComments[*].oreMese', function(item) {
 					logger.info('oreMese: ' + item +
 						'; typeof: ' + typeof item);
 					if (item != null && typeof item == 'number') {
