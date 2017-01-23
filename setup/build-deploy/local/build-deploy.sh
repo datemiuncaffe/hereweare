@@ -34,6 +34,7 @@ clean()
 deploy()
 {
   echo -n $"deploying hereweare to ehour machine ..."
+  gulp --cwd ./../../../ deploy
   RETVAL=$?
   echo [ $RETVAL -eq 0 ]
 }
