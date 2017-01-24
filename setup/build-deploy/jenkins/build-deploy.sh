@@ -15,7 +15,8 @@ build()
   if [ ! $GULP_CHECK -eq 0 ]; then
     npm install --save gulp
   fi
-  gulp --cwd ./../../../ build
+  #gulp --cwd ./../../../ build
+  gulp build
   RETVAL=$?
   echo [ $RETVAL -eq 0 ]
 }
