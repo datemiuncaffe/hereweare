@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# hereweare - build-deploy script for hereweare
+# hereweare
+# build-deploy script for hereweare
 # run as:
 # bash -x build-deploy.sh buildcomplete
 #
-
-node=${NODE-/usr/local/bin/node}
 
 build()
 {
