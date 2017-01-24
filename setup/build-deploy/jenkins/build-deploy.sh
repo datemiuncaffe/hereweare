@@ -9,6 +9,11 @@
 build()
 {
   echo -n $"building hereweare ..."
+  npm list gulp
+  GULP_CHECK=$?
+  if [ ! GULP_CHECK -eq 0 ]; then
+    npm install --save gulp
+  fi
   gulp --cwd ./../../../ build
   RETVAL=$?
   echo [ $RETVAL -eq 0 ]
