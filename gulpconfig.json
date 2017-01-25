@@ -1,15 +1,16 @@
 {
 	"local":
 	{
+		"projectDir": "/home/federico/Documents/ehour/projects/hereweare",
 		"srcall":
 		[
-			"/home/federico/Documents/ehour/projects/hereweare/**",
+			"**",
 			"!**/build",
 			"!**/build/**"
 		],
 		"src":
 		[
-			"/home/federico/Documents/ehour/projects/hereweare/**",
+			"**",
 			"!**/vendor",
 			"!**/node_modules",
 			"!**/build",
@@ -18,24 +19,40 @@
 			"!**/build/**"
 		],
 		"dest": "build/local",
+		"modify":
+		[
+			{
+				"src": "server/lib/mongo-pool.js",
+				"dest": "build/local/server/lib"
+			},
+			{
+				"src": "server/middleware/local/connMongoDb.js",
+				"dest": "build/local/server/middleware/local"
+			},
+			{
+				"src": "server/datasources.json",
+				"dest": "build/local/server"
+			}
+		],
 		"logger": {
 			"logpath": "'/var/log/hereweare'",
-			"src": "/home/federico/Documents/ehour/projects/hereweare/server/lib/logger.js",
-			"dest": "/home/federico/Documents/ehour/projects/hereweare/build/local/server/lib"
+			"src": "server/lib/logger.js",
+			"dest": "build/local/server/lib"
 		}
 	},
 
 	"test":
 	{
+		"projectDir": "/home/federico/Documents/ehour/projects/hereweare",
 		"srcall":
 		[
-			"/home/federico/Documents/ehour/projects/hereweare/**",
+			"**",
 			"!**/build",
 			"!**/build/**"
 		],
 		"src":
 		[
-			"/home/federico/Documents/ehour/projects/hereweare/**",
+			"**",
 			"!**/vendor",
 			"!**/node_modules",
 			"!**/build",
@@ -44,10 +61,25 @@
 			"!**/build/**"
 		],
 		"dest": "build/test",
+		"modify":
+		[
+			{
+				"src": "server/lib/mongo-pool.js",
+				"dest": "build/test/server/lib"
+			},
+			{
+				"src": "server/middleware/local/connMongoDb.js",
+				"dest": "build/test/server/middleware/local"
+			},
+			{
+				"src": "server/datasources.json",
+				"dest": "build/test/server"
+			}
+		],
 		"logger": {
 			"logpath": "'/var/log/hereweare'",
-			"src": "/home/federico/Documents/ehour/projects/hereweare/server/lib/logger.js",
-			"dest": "/home/federico/Documents/ehour/projects/hereweare/build/test/server/lib"
+			"src": "server/lib/logger.js",
+			"dest": "build/test/server/lib"
 		}
 	}
 }

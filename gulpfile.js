@@ -41,19 +41,19 @@ function buildCompleteTestFn() {
 // Modify local
 function modifyLocalFn() {
 	gutil.log('modify mongo-pool.js file in local...');
-	gulp.src(['/home/federico/Documents/ehour/projects/hereweare/server/lib/mongo-pool.js'])
+	gulp.src([config.local.modify[0].src])
     .pipe(replace('$mongodbport$', '27018'))
-    .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare/build/local/server/lib'));
+    .pipe(gulp.dest(config.local.modify[0].dest));
 
 	gutil.log('modify connMongoDb file in local...');
-	gulp.src(['/home/federico/Documents/ehour/projects/hereweare/server/middleware/local/connMongoDb.js'])
+	gulp.src([config.local.modify[1].src])
     .pipe(replace('$mongodbport$', '27018'))
-    .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare/build/local/server/middleware/local'));
+    .pipe(gulp.dest(config.local.modify[1].dest));
 
 	gutil.log('modify datasources.json file in local...');
-	gulp.src(['/home/federico/Documents/ehour/projects/hereweare/server/datasources.json'])
+	gulp.src([config.local.modify[2].src])
     .pipe(replace('$mongodbport$', '27018'))
-    .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare/build/local/server'));
+    .pipe(gulp.dest(config.local.modify[2].dest));
 
 	gutil.log('modify logpath in logger.js file in local...');
 	gulp.src([config.local.logger.src])
@@ -64,19 +64,19 @@ function modifyLocalFn() {
 // Modify test
 function modifyTestFn() {
 	gutil.log('modify mongo-pool.js file in test...');
-	gulp.src(['/home/federico/Documents/ehour/projects/hereweare/server/lib/mongo-pool.js'])
+	gulp.src([config.test.modify[0].src])
     .pipe(replace('$mongodbport$', '27017'))
-    .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare/build/test/server/lib'));
+    .pipe(gulp.dest(config.test.modify[0].dest));
 
 	gutil.log('modify connMongoDb file in test...');
-	gulp.src(['/home/federico/Documents/ehour/projects/hereweare/server/middleware/local/connMongoDb.js'])
+	gulp.src([config.test.modify[1].src])
     .pipe(replace('$mongodbport$', '27017'))
-    .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare/build/test/server/middleware/local'));
+    .pipe(gulp.dest(config.test.modify[1].dest));
 
 	gutil.log('modify datasources.json file in test...');
-	gulp.src(['/home/federico/Documents/ehour/projects/hereweare/server/datasources.json'])
+	gulp.src([config.test.modify[2].src])
     .pipe(replace('$mongodbport$', '27017'))
-    .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare/build/test/server'));
+    .pipe(gulp.dest(config.test.modify[2].dest));
 
 	gutil.log('modify logpath in logger.js file in test...');
 	gulp.src([config.test.logger.src])
