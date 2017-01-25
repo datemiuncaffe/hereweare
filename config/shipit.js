@@ -3,7 +3,7 @@ var config = {
 	  workspace: '/home/federico/Documents/ehour/projects/hereweare',
 	  dirToCopy: '/home/federico/Documents/ehour/projects/hereweare/build/test',
 	  deployTo: '/opt/hereweare',
-	  repositoryUrl: 'https://github.com/datemiuncaffe/hereweare.git',
+	  repositoryUrl: 'https://fmanganiello@bitbucket.org/senseiinternal/hereweare-backend.git',
 	// ignores: ['.git', 'node_modules'],
 	// keepReleases: 2,
 	// deleteOnRollback: false,
