@@ -6,17 +6,22 @@
 # bash -x build-deploy.sh buildcomplete
 #
 
+installDeps()
+{
+  echo -n $"installing hereweare dependencies via npm ..."
+  npm install
+}
+
 build()
 {
   echo -n $"building hereweare ..."
   #npm list gulp
   #GULP_CHECK=$?
-  #if [ ! (GULP_CHECK -eq 0) ]; then
   #if [ ! $GULP_CHECK -eq 0 ]; then
   #  npm install --save gulp
   #fi
   #gulp --cwd ./../../../ build
-  npm install
+  installDeps
   gulp build
   RETVAL=$?
   echo [ $RETVAL -eq 0 ]
@@ -25,7 +30,8 @@ build()
 buildcomplete()
 {
   echo -n $"full building hereweare ..."
-  gulp --cwd ./../../../ buildcomplete
+  installDeps
+  gulp buildcomplete
   RETVAL=$?
   echo [ $RETVAL -eq 0 ]
 }
@@ -33,7 +39,7 @@ buildcomplete()
 clean()
 {
   echo -n $"cleaning hereweare build folder ..."
-  gulp --cwd ./../../../ clean
+  gulp clean
   RETVAL=$?
   echo [ $RETVAL -eq 0 ]
 }
@@ -41,7 +47,7 @@ clean()
 deploy()
 {
   echo -n $"deploying hereweare to ehour machine ..."
-  gulp --cwd ./../../../ deploy
+  gulp deploy
   RETVAL=$?
   echo [ $RETVAL -eq 0 ]
 }
