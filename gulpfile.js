@@ -9,6 +9,7 @@ var changed = require('gulp-changed');
 var shipitCaptain = require('shipit-captain');
 var config = require('./gulpconfig.json');
 var shipitConfig = require('./config/shipit').config;
+var shipitConfigForDelivery = require('./config/shipit-delivery').config;
 
 // Clean build folder function:
 function cleanBuildFn() {
@@ -125,14 +126,18 @@ var options = {
   run: ['deploy'],
   targetEnv: 'staging',
 }
-
 gulp.task('deploy', function(cb) {
   shipitCaptain(shipitConfig, options, cb);
 });
 
 // deploy from jenkins
+var deliveryOptions = {
+  init: require('./config/shipit-delivery').init,
+  run: ['pwd'],
+  targetEnv: 'staging',
+}
 gulp.task('deploy-no-fetch', function(cb) {
-  //shipitCaptain(shipitConfig, options, cb);
+  shipitCaptain(shipitConfigForDelivery, deliveryOptions, cb);
 	gutil.log('deploy-no-fetch...');
 });
 
