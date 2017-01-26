@@ -52,6 +52,14 @@ deploy()
   echo [ $RETVAL -eq 0 ]
 }
 
+delivery-pipeline()
+{
+  echo -n $"hereweare delivery pipeline ..."
+  gulp delivery-pipeline
+  RETVAL=$?
+  echo [ $RETVAL -eq 0 ]
+}
+
 RETVAL=0
 case "$1" in
   build)
@@ -66,12 +74,15 @@ case "$1" in
   deploy)
     deploy
     ;;
+  delivery-pipeline)
+    delivery-pipeline
+    ;;
   status)
     status $node
     RETVAL=$?
     ;;
   *)
-    echo "Usage: $0 {build|buildcomplete|clean|deploy|status}"
+    echo "Usage: $0 {build|buildcomplete|clean|deploy|delivery-pipeline|status}"
     RETVAL=1
 esac
 exit $RETVAL

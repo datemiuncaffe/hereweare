@@ -130,6 +130,16 @@ gulp.task('deploy', function(cb) {
   shipitCaptain(shipitConfig, options, cb);
 });
 
+// deploy from jenkins
+gulp.task('deploy-no-fetch', function(cb) {
+  //shipitCaptain(shipitConfig, options, cb);
+	gutil.log('deploy-no-fetch...');
+});
+
+gulp.task('delivery-pipeline', function(cb)) {
+	runSequence(['buildcomplete', 'deploy-no-fetch']);
+});
+
 // Default task: Check configuration
 gulp.task('default', function() {
 	gutil.log('checking configuration...');
