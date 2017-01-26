@@ -55,6 +55,7 @@ deploy()
 delivery-pipeline()
 {
   echo -n $"hereweare delivery pipeline ..."
+  installDeps
   gulp delivery-pipeline
   RETVAL=$?
   echo [ $RETVAL -eq 0 ]
