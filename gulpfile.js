@@ -133,8 +133,11 @@ gulp.task('deploy', function(cb) {
 // deploy from jenkins
 var deliveryOptions = {
   init: require('./config/shipit-delivery').init,
-  run: ['pwd'],
+  //run: ['pwd', 'list'],
+	run: ['deploy:init', 'deploy:update', 'deploy:publish',
+				'deploy:clean', 'deploy:finish'],
   targetEnv: 'staging',
+	confirm: false
 }
 gulp.task('deploy-no-fetch', function(cb) {
   shipitCaptain(shipitConfigForDelivery, deliveryOptions, cb);
