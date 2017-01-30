@@ -140,7 +140,11 @@ var deliveryOptions = {
 	confirm: false
 }
 gulp.task('deploy-no-fetch', function(cb) {
-  shipitCaptain(shipitConfigForDelivery, deliveryOptions, cb);
+	try {
+    shipitCaptain(shipitConfigForDelivery, deliveryOptions, cb);
+	} catch(err) {
+	  gutil.log('deploy-no-fetch err: ' + err);
+	}
 	gutil.log('deploy-no-fetch...');
 });
 
