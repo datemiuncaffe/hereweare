@@ -7,7 +7,7 @@ var config = {
 	// ignores: ['.git', 'node_modules'],
 		keepReleases: 10,
 	// deleteOnRollback: false,
-	  key: '/home/centos/.ssh/id_rsa_sensei',
+	  key: '/home/tomcat7/.ssh/id_rsa_sensei',
 		branch: 'nuovolayout'
 	// shallowClone: true
 	},
