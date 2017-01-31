@@ -4,11 +4,11 @@ var config = {
 	  dirToCopy: 'build/test',
 	  deployTo: '/opt/hereweare',
 	// repositoryUrl: 'https://fmanganiello@bitbucket.org/senseiinternal/hereweare-backend.git',
-	// ignores: ['.git', 'node_modules'],
-		keepReleases: 10,
+		ignores: ['.git', 'node_modules'],
+		keepReleases: 5,
 	// deleteOnRollback: false,
 	  key: '/home/tomcat7/.ssh/id_rsa_sensei',
-		branch: 'nuovolayout'
+		branch: 'remotes/origin/nuovolayout'
 	// shallowClone: true
 	},
 	staging: {
