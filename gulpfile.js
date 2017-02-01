@@ -149,7 +149,7 @@ gulp.task('deploy-no-fetch', function(cb) {
 });
 
 gulp.task('delivery-pipeline', function(cb) {
-	runSequence(['buildcomplete', 'deploy-no-fetch']);
+	runSequence(['build', 'deploy-no-fetch']);
 });
 
 // Default task: Check configuration
