@@ -135,7 +135,7 @@ var deliveryOptions = {
   init: require('./config/shipit-delivery').init,
   //run: ['pwd', 'list'],
 	run: ['deploy:init', 'deploy:update', 'deploy:publish',
-				'deploy:clean', 'deploy:finish'],
+				'deploy:clean', 'deploy:finish', 'npm:install'],
   targetEnv: 'staging',
 	confirm: false
 }

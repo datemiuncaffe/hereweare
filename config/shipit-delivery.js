@@ -18,6 +18,7 @@ var config = {
 module.exports.config = config;
 module.exports.init = function(shipit) {
 	require('shipit-deploy')(shipit);
+	require('shipit-npm')(shipit);
 
 	shipit.initConfig(config);
 

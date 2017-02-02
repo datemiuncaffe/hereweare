@@ -37,6 +37,7 @@
     "run-sequence": "^1.2.2",
     "serve-favicon": "^2.0.1",
     "shipit-captain": "^0.4.3",
+    "shipit-npm": "^0.2.0",
     "winston": "^2.2.0"
   },
   "devDependencies": {
