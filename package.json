@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "angucomplete-alt": "^2.4.1",
+    "bower": "^1.8.0",
     "bunyan": "^1.8.0",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
