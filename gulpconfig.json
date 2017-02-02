@@ -4,13 +4,13 @@
 		"projectDir": "/home/federico/Documents/ehour/projects/hereweare-frontend",
 		"srcall":
 		[
-			"/home/federico/Documents/ehour/projects/hereweare-frontend/**",
+			"**",
 			"!**/build",
 			"!**/build/**"
 		],
 		"src":
 		[
-			"/home/federico/Documents/ehour/projects/hereweare-frontend/**",
+			"**",
 			"!**/vendor",
 			"!**/node_modules",
 			"!**/build",
@@ -37,13 +37,13 @@
 		"projectDir": "/home/federico/Documents/ehour/projects/hereweare-frontend",
 		"srcall":
 		[
-			"/home/federico/Documents/ehour/projects/hereweare-frontend/**",
+			"**",
 			"!**/build",
 			"!**/build/**"
 		],
 		"src":
 		[
-			"/home/federico/Documents/ehour/projects/hereweare-frontend/**",
+			"**",
 			"!**/vendor",
 			"!**/node_modules",
 			"!**/build",
