@@ -6,7 +6,8 @@
 		[
 			"**",
 			"!**/build",
-			"!**/build/**"
+			"!**/build/**",
+			"**/.*"
 		],
 		"src":
 		[
@@ -16,7 +17,8 @@
 			"!**/build",
 			"!**/vendor/**",
 			"!**/node_modules/**",
-			"!**/build/**"
+			"!**/build/**",
+			"**/.*"
 		],
 		"dest": "build/local",
 		"modify":
@@ -39,7 +41,8 @@
 		[
 			"**",
 			"!**/build",
-			"!**/build/**"
+			"!**/build/**",
+			"**/.*"
 		],
 		"src":
 		[
@@ -49,7 +52,8 @@
 			"!**/build",
 			"!**/vendor/**",
 			"!**/node_modules/**",
-			"!**/build/**"
+			"!**/build/**",
+			"**/.*"
 		],
 		"dest": "build/test",
 		"modify":
