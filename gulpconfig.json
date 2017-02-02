@@ -1,6 +1,7 @@
 {
 	"local":
 	{
+		"projectDir": "/home/federico/Documents/ehour/projects/hereweare-frontend",
 		"srcall":
 		[
 			"/home/federico/Documents/ehour/projects/hereweare-frontend/**",
@@ -17,11 +18,23 @@
 			"!**/node_modules/**",
 			"!**/build/**"
 		],
-		"dest": "build/local"
+		"dest": "build/local",
+		"modify":
+		[
+			{
+				"src": "client/js/app.js",
+				"dest": "build/local/client/js"
+			},
+			{
+				"src": "client/views/estimate/ricerca.html",
+				"dest": "build/local/client/views/estimate"
+			}
+		]
 	},
 
 	"test":
 	{
+		"projectDir": "/home/federico/Documents/ehour/projects/hereweare-frontend",
 		"srcall":
 		[
 			"/home/federico/Documents/ehour/projects/hereweare-frontend/**",
@@ -38,6 +51,17 @@
 			"!**/node_modules/**",
 			"!**/build/**"
 		],
-		"dest": "build/test"
+		"dest": "build/test",
+		"modify":
+		[
+			{
+				"src": "client/js/app.js",
+				"dest": "build/test/client/js"
+			},
+			{
+				"src": "client/views/estimate/ricerca.html",
+				"dest": "build/test/client/views/estimate"
+			}
+		]
 	}
 }

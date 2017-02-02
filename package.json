@@ -26,7 +26,9 @@
     "loopback-component-explorer": "^2.4.0",
     "loopback-datasource-juggler": "^2.39.0",
     "run-sequence": "^1.2.1",
-    "serve-favicon": "^2.0.1"
+    "serve-favicon": "^2.0.1",
+    "shipit-captain": "^0.4.4",
+    "shipit-npm": "^0.2.0"
   },
   "devDependencies": {
     "jshint": "^2.5.6",

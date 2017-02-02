@@ -5,10 +5,11 @@ var replace = require('gulp-replace');
 var runSequence = require('run-sequence');
 var del = require('del');
 var changed = require('gulp-changed');
-
 var shipitCaptain = require('shipit-captain');
+
 var config = require('./gulpconfig.json');
 var shipitConfig = require('./config/shipit').config;
+var shipitConfigForDelivery = require('./config/shipit-delivery').config;
 
 // Clean build folder function:
 function cleanBuildFn() {
@@ -41,25 +42,27 @@ function buildCompleteTestFn() {
 // Modify local
 function modifyLocalFn() {
 	gutil.log('modify app.js file in local...');
-	gulp.src(['/home/federico/Documents/ehour/projects/hereweare-frontend/client/js/app.js'])
+	gulp.src([config.local.modify[0].src])
     .pipe(replace('$resourceBaseUrl$', 'localhost:3002'))
-    .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare-frontend/build/local/client/js'));
+    .pipe(gulp.dest(config.local.modify[0].dest));
+
 	gutil.log('modify ricerca.html file in local...');
-	gulp.src(['/home/federico/Documents/ehour/projects/hereweare-frontend/client/views/estimate/ricerca.html'])
+	gulp.src([config.local.modify[1].src])
     .pipe(replace('$resourceBaseUrl$', 'localhost:3002'))
-    .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare-frontend/build/local/client/views/estimate'));
+    .pipe(gulp.dest(config.local.modify[1].dest));
 }
 
 // Modify test
 function modifyTestFn() {
 	gutil.log('modify app.js file in test...');
-	gulp.src(['/home/federico/Documents/ehour/projects/hereweare-frontend/client/js/app.js'])
+	gulp.src([config.local.modify[0].src])
     .pipe(replace('$resourceBaseUrl$', '89.96.126.46:3002'))
-    .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare-frontend/build/test/client/js'));
+    .pipe(gulp.dest(config.local.modify[0].dest));
+
 	gutil.log('modify ricerca.html file in test...');
-	gulp.src(['/home/federico/Documents/ehour/projects/hereweare-frontend/client/views/estimate/ricerca.html'])
+	gulp.src([config.local.modify[1].src])
     .pipe(replace('$resourceBaseUrl$', '89.96.126.46:3002'))
-    .pipe(gulp.dest('/home/federico/Documents/ehour/projects/hereweare-frontend/build/test/client/views/estimate'));
+    .pipe(gulp.dest(config.local.modify[1].dest));
 }
 
 gulp.task('build:deploy', function() {
@@ -103,9 +106,29 @@ var options = {
   run: ['deploy'],
   targetEnv: 'staging'
 }
-
 gulp.task('deploy', function(cb) {
   shipitCaptain(shipitConfig, options, cb);
+});
+
+// deploy from jenkins
+var deliveryOptions = {
+  init: require('./config/shipit-delivery').init,
+  //run: ['pwd', 'list'],
+	run: ['deploy:init', 'deploy:update', 'deploy:publish',
+				'deploy:clean', 'deploy:finish', 'npm:install'],
+  targetEnv: 'staging',
+	confirm: false
+}
+gulp.task('deploy-no-fetch', function(cb) {
+	try {
+    shipitCaptain(shipitConfigForDelivery, deliveryOptions, cb);
+	} catch(err) {
+	  gutil.log('deploy-no-fetch err: ' + err);
+	}
+	gutil.log('deploy-no-fetch...');
+});
+gulp.task('delivery-pipeline', function(cb) {
+	runSequence(['build', 'deploy-no-fetch']);
 });
 
 // Default task: Check configuration
