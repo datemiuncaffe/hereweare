@@ -28,6 +28,7 @@
     "loopback-datasource-juggler": "^2.39.0",
     "run-sequence": "^1.2.1",
     "serve-favicon": "^2.0.1",
+    "shipit-bower": "^0.2.1",
     "shipit-captain": "^0.4.4",
     "shipit-npm": "^0.2.0"
   },
