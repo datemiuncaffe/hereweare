@@ -73,6 +73,7 @@
       var responseFormatter;
       var validState = null;
       var httpCanceller = null;
+      var httpCallInProgress = false;
       var dd = elem[0].querySelector('.angucomplete-dropdown');
       var isScrollOn = false;
       var mousedownOn = null;
@@ -440,15 +441,15 @@
       }
 
       function httpErrorCallback(errorRes, status, headers, config) {
-        scope.searching = false;
-
-        // cancelled/aborted
-        if (status === 0 || status === -1) { return; }
+        scope.searching = httpCallInProgress;
 
         // normalize return obejct from promise
         if (!status && !headers && !config) {
           status = errorRes.status;
         }
+
+        // cancelled/aborted
+        if (status === 0 || status === -1) { return; }
         if (scope.remoteUrlErrorCallback) {
           scope.remoteUrlErrorCallback(errorRes, status, headers, config);
         }
@@ -478,9 +479,11 @@
         cancelHttpRequest();
         httpCanceller = $q.defer();
         params.timeout = httpCanceller.promise;
+        httpCallInProgress = true;
         $http.get(url, params)
           .success(httpSuccessCallbackGen(str))
-          .error(httpErrorCallback);
+          .error(httpErrorCallback)
+          .finally(function(){httpCallInProgress=false;});
       }
 
       function getRemoteResultsWithCustomHandler(str) {
@@ -621,12 +624,15 @@
 
       function showAll() {
         if (scope.localData) {
+          scope.searching = false;
           processResults(scope.localData, '');
         }
         else if (scope.remoteApiHandler) {
+          scope.searching = true;
           getRemoteResultsWithCustomHandler('');
         }
         else {
+          scope.searching = true;
           getRemoteResults('');
         }
       }
@@ -704,7 +710,6 @@
           clearResults();
         }
         else if (str.length === 0 && minlength === 0) {
-          scope.searching = false;
           showAll();
         }
 
@@ -763,7 +768,7 @@
 
       // register events
       inputField.on('keydown', keydownHandler);
-      inputField.on('keyup', keyupHandler);
+      inputField.on('keyup compositionend', keyupHandler);
 
       // set response formatter
       responseFormatter = callFunctionOrIdentity('remoteUrlResponseFormatter');

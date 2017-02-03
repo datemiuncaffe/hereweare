@@ -1,7 +1,7 @@
 {
   "name": "angular-drag-and-drop-lists",
   "main": "angular-drag-and-drop-lists.js",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "homepage": "https://github.com/marceljuenemann/angular-drag-and-drop-lists",
   "authors": [
     "Marcel Juenemann <marcel@juenemann.cc>"
@@ -27,14 +27,13 @@
     "test",
     "tests"
   ],
-  "_release": "2.0.0",
+  "_release": "2.1.0",
   "_resolution": {
     "type": "version",
-    "tag": "2.0.0",
-    "commit": "724d62d9f149bc45c3d7708d106a040b206b9a6f"
+    "tag": "2.1.0",
+    "commit": "7e98e194a8d66fa735bf6dc7c3e39886287b914e"
   },
   "_source": "https://github.com/marceljuenemann/angular-drag-and-drop-lists.git",
   "_target": "^2.0.0",
-  "_originalSource": "angular-drag-and-drop-lists",
-  "_direct": true
+  "_originalSource": "angular-drag-and-drop-lists"
 }

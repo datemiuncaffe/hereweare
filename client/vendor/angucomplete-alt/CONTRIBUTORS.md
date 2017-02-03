@@ -41,6 +41,10 @@
 
 * Missing 'type' field on input element when not specified #167
 
+### [@elkami12](https://github.com/elkami12)
+
+* Fix for issue #426 (Not found" when an external request is cancelled) #427
+
 ### [@federicojasson: Federico Jasson](https://github.com/federicojasson)
 
 * Fix auto-match #245 #246
@@ -72,6 +76,8 @@
 ### [@JaZo: Jasper Zonneveld](https://github.com/JaZo)
 
 * Pass textSearching and textNoResult with @ #335
+* Show text-searching on focus or when input becomes empty with minlength=0 #378
+* Normalize return object before we check the status #421
 
 ### [@jesusr: Jesús R Peinado](https://github.com/jesusr)
 
@@ -96,6 +102,11 @@
 ### [@Leocrest](https://github.com/Leocrest)
 
 * Clear input #61
+
+### [@loren138](https://github.com/loren138)
+
+* Update the package file and contribution instructions #372
+* Pass data variable to select function #373
 
 ### [@mcnocopo: Pachito Marco Calabrese](https://github.com/mcnocopo)
 

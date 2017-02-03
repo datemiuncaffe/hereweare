@@ -2,6 +2,7 @@
   "name": "js-xlsx",
   "homepage": "https://github.com/SheetJS/js-xlsx",
   "main": "dist/xlsx.js",
+  "version": "0.8.1",
   "ignore": [
     "bin",
     "bits",
@@ -19,14 +20,14 @@
     "js-xls",
     "js-xlsx"
   ],
-  "_release": "a8ba0451e2",
+  "_release": "0.8.1",
   "_resolution": {
-    "type": "branch",
-    "branch": "beta",
-    "commit": "a8ba0451e2150efc983d9c3e91b44b8e974a2d80"
+    "type": "version",
+    "tag": "v0.8.1",
+    "commit": "2a756fffccc30bf6871d7f04ede61a6fef160555"
   },
-  "_source": "https://github.com/protobi/js-xlsx.git",
-  "_target": "beta",
-  "_originalSource": "js-xlsx-style",
+  "_source": "https://github.com/SheetJS/js-xlsx.git",
+  "_target": "^0.8.1",
+  "_originalSource": "js-xlsx",
   "_direct": true
 }

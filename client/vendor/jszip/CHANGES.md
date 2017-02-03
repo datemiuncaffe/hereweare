@@ -4,6 +4,21 @@ layout: default
 section: main
 ---
 
+### v3.1.3 2016-10-06
+- instanceof failing in window / iframe contexts (see [#350](https://github.com/Stuk/jszip/pull/350)).
+- remove a copy with blob output (see [#357](https://github.com/Stuk/jszip/pull/357)).
+- fix crc32 check for empty entries (see [#358](https://github.com/Stuk/jszip/pull/358)).
+- fix the base64 error message with data uri (see [#359](https://github.com/Stuk/jszip/pull/359)).
+
+### v3.1.2 2016-08-23
+- fix support of nodejs `process.platform` in `generate*` methods (see [#335](https://github.com/Stuk/jszip/pull/335)).
+- improve browserify/webpack support (see [#333](https://github.com/Stuk/jszip/pull/333)).
+- partial support of a promise of text (see [#337](https://github.com/Stuk/jszip/pull/337)).
+- fix streamed zip files containing folders (see [#342](https://github.com/Stuk/jszip/pull/342)).
+
+### v3.1.1 2016-08-08
+- Use a hard-coded JSZip.version, fix an issue with webpack (see [#328](https://github.com/Stuk/jszip/pull/328)).
+
 ### v3.1.0 2016-08-03
 - utils.delay: use macro tasks instead of micro tasks (see [#288](https://github.com/Stuk/jszip/pull/288)).
 - Harden base64 decode (see [#316](https://github.com/Stuk/jszip/pull/316)).
@@ -27,6 +42,9 @@ This release changes a lot of methods, please see [the upgrade guide](http://stu
 - Add `base64` and `array` as possible output type.
 - Add a forEach method.
 - Drop node 0.8 support (see [#270](https://github.com/Stuk/jszip/pull/270)).
+
+### v2.6.1 2016-07-28
+- update pako to v1.0.2 to fix a DEFLATE bug (see [#322](https://github.com/Stuk/jszip/pull/322)).
 
 ### v2.6.0 2016-03-23
 - publish `dist/` files in the npm package (see [#225](https://github.com/Stuk/jszip/pull/225)).
