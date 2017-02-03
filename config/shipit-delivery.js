@@ -3,7 +3,7 @@ var config = {
 	  workspace: '.',
 	  dirToCopy: 'build/test',
 	  deployTo: '/opt/hereweare-frontend',
-		ignores: ['.git', 'node_modules'],
+		ignores: ['.git', 'client/vendor', 'node_modules'],
 		keepReleases: 5,
 	  key: '/home/tomcat7/.ssh/id_rsa_sensei',
 		branch: 'remotes/origin/nuovolayout'
