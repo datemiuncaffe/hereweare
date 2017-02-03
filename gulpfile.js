@@ -55,14 +55,14 @@ function modifyLocalFn() {
 // Modify test
 function modifyTestFn() {
 	gutil.log('modify app.js file in test...');
-	gulp.src([config.local.modify[0].src])
+	gulp.src([config.test.modify[0].src])
     .pipe(replace('$resourceBaseUrl$', '89.96.126.46:3002'))
-    .pipe(gulp.dest(config.local.modify[0].dest));
+    .pipe(gulp.dest(config.test.modify[0].dest));
 
 	gutil.log('modify ricerca.html file in test...');
-	gulp.src([config.local.modify[1].src])
+	gulp.src([config.test.modify[1].src])
     .pipe(replace('$resourceBaseUrl$', '89.96.126.46:3002'))
-    .pipe(gulp.dest(config.local.modify[1].dest));
+    .pipe(gulp.dest(config.test.modify[1].dest));
 }
 
 gulp.task('build:deploy', function() {
