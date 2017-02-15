@@ -41,6 +41,7 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
+    "gulp-sonar": "^3.0.0",
     "jshint": "^2.5.6",
     "nsp": "^2.1.0"
   },

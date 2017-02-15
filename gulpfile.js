@@ -5,9 +5,11 @@ var replace = require('gulp-replace');
 var runSequence = require('run-sequence');
 var del = require('del');
 var changed = require('gulp-changed');
-
 var shipitCaptain = require('shipit-captain');
+
 var config = require('./gulpconfig.json');
+var sonarConfig = require('./sonar-project.properties');
+
 var shipitConfig = require('./config/shipit').config;
 var shipitConfigForDelivery = require('./config/shipit-delivery').config;
 
@@ -120,6 +122,14 @@ gulp.task('buildcomplete:test', buildCompleteTestFn);
 gulp.task('modify:local', modifyLocalFn);
 gulp.task('modify:test', modifyTestFn);
 
+// Sonar task
+//gulp.task('sonar', )
+
+
+
+
+
+
 // Deploy task
 var options = {
   init: require('./config/shipit').init,
@@ -147,7 +157,6 @@ gulp.task('deploy-no-fetch', function(cb) {
 	}
 	gutil.log('deploy-no-fetch...');
 });
-
 gulp.task('delivery-pipeline', function(cb) {
 	runSequence(['build', 'deploy-no-fetch']);
 });
