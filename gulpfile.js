@@ -6,9 +6,10 @@ var runSequence = require('run-sequence');
 var del = require('del');
 var changed = require('gulp-changed');
 var shipitCaptain = require('shipit-captain');
+var sonar = require("gulp-sonar");
 
 var config = require('./gulpconfig.json');
-var sonarConfig = require('./sonar-project.properties');
+var sonarConfig = require('./sonar-project-properties.json');
 
 var shipitConfig = require('./config/shipit').config;
 var shipitConfigForDelivery = require('./config/shipit-delivery').config;
@@ -87,6 +88,40 @@ function modifyTestFn() {
     .pipe(gulp.dest(config.test.logger.dest));
 }
 
+function sonarLocalAnalysisFn() {
+	gutil.log('local code analysis ...');
+}
+
+function sonarTestAnalysisFn() {
+	gutil.log('test code analysis ...');
+
+	return gulp.src('thisFileDoesNotExist.js', { read: false })
+		  .pipe(sonar(sonarConfig))
+		  .on('error', gutil.log);
+
+	// try {
+	// 	return gulp.src('thisFileDoesNotExist.js', { read: false })
+	//         .pipe(sonar(sonarConfig))
+	//         .on('error', util.log);
+	// } catch (e) {
+	// 	if (e instanceof gutil.PluginError) {
+	// 		gutil.log('e: ' + e);
+	// 	}
+	// } finally {
+	//
+	// }
+
+	// process.on('uncaughtException', (err) => {
+	// 	if (err instanceof gutil.PluginError) {
+   // 		gutil.log('err: ' + err);
+   // 	}
+	// });
+}
+
+/* ------------------------------- */
+/* ------------ tasks ------------ */
+/* --------------------------------- */
+
 gulp.task('build:deploy', function() {
 	runSequence(['build:local', 'build:test'],
 							['modify:local', 'modify:test'],
@@ -123,12 +158,8 @@ gulp.task('modify:local', modifyLocalFn);
 gulp.task('modify:test', modifyTestFn);
 
 // Sonar task
-//gulp.task('sonar', )
-
-
-
-
-
+gulp.task('sonar:local', sonarLocalAnalysisFn);
+gulp.task('sonar:test', sonarTestAnalysisFn);
 
 // Deploy task
 var options = {
