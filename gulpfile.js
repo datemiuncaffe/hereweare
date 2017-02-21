@@ -94,28 +94,8 @@ function sonarLocalAnalysisFn() {
 
 function sonarTestAnalysisFn() {
 	gutil.log('test code analysis ...');
-
 	return gulp.src('thisFileDoesNotExist.js', { read: false })
-		  .pipe(sonar(sonarConfig))
-		  .on('error', gutil.log);
-
-	// try {
-	// 	return gulp.src('thisFileDoesNotExist.js', { read: false })
-	//         .pipe(sonar(sonarConfig))
-	//         .on('error', util.log);
-	// } catch (e) {
-	// 	if (e instanceof gutil.PluginError) {
-	// 		gutil.log('e: ' + e);
-	// 	}
-	// } finally {
-	//
-	// }
-
-	// process.on('uncaughtException', (err) => {
-	// 	if (err instanceof gutil.PluginError) {
-   // 		gutil.log('err: ' + err);
-   // 	}
-	// });
+		  .pipe(sonar(sonarConfig));
 }
 
 /* ------------------------------- */
