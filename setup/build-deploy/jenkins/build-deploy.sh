@@ -6,15 +6,17 @@
 # bash -x build-deploy.sh buildcomplete
 #
 
+PACKAGE_NAME="hereweare-backend"
+
 installDeps()
 {
-  echo -n $"installing hereweare dependencies via npm ..."
+  echo -n $"installing $PACKAGE_NAME dependencies via npm ..."
   npm install
 }
 
 build()
 {
-  echo -n $"building hereweare ..."
+  echo -n $"building $PACKAGE_NAME ..."
   #npm list gulp
   #GULP_CHECK=$?
   #if [ ! $GULP_CHECK -eq 0 ]; then
@@ -29,7 +31,7 @@ build()
 
 buildcomplete()
 {
-  echo -n $"full building hereweare ..."
+  echo -n $"full building $PACKAGE_NAME ..."
   installDeps
   gulp buildcomplete
   RETVAL=$?
@@ -38,7 +40,7 @@ buildcomplete()
 
 clean()
 {
-  echo -n $"cleaning hereweare build folder ..."
+  echo -n $"cleaning $PACKAGE_NAME build folder ..."
   gulp clean
   RETVAL=$?
   echo [ $RETVAL -eq 0 ]
@@ -46,7 +48,7 @@ clean()
 
 deploy()
 {
-  echo -n $"deploying hereweare to ehour machine ..."
+  echo -n $"deploying $PACKAGE_NAME to ehour machine ..."
   gulp deploy
   RETVAL=$?
   echo [ $RETVAL -eq 0 ]
@@ -54,9 +56,18 @@ deploy()
 
 delivery-pipeline()
 {
-  echo -n $"hereweare delivery pipeline ..."
+  echo -n $"$PACKAGE_NAME delivery pipeline ..."
   installDeps
   gulp delivery-pipeline
+  RETVAL=$?
+  echo [ $RETVAL -eq 0 ]
+}
+
+sonar-pipeline()
+{
+  echo -n $"$PACKAGE_NAME sonar pipeline ..."
+  installDeps
+  gulp sonar-pipeline
   RETVAL=$?
   echo [ $RETVAL -eq 0 ]
 }
@@ -78,12 +89,15 @@ case "$1" in
   delivery-pipeline)
     delivery-pipeline
     ;;
+  sonar-pipeline)
+    sonar-pipeline
+    ;;
   status)
     status $node
     RETVAL=$?
     ;;
   *)
-    echo "Usage: $0 {build|buildcomplete|clean|deploy|delivery-pipeline|status}"
+    echo "Usage: $0 {build|buildcomplete|clean|deploy|delivery-pipeline|sonar-pipeline|status}"
     RETVAL=1
 esac
 exit $RETVAL

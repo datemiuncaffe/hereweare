@@ -9,10 +9,20 @@ var shipitCaptain = require('shipit-captain');
 var sonar = require("gulp-sonar");
 
 var config = require('./gulpconfig.json');
-var sonarConfig = require('./sonar-project-properties.json');
+
+var sonarLocalConfig = require('./config/sonar/sonar-local.json');
+var sonarTestConfig = require('./config/sonar/sonar-test.json');
 
 var shipitConfig = require('./config/shipit').config;
 var shipitConfigForDelivery = require('./config/shipit-delivery').config;
+
+// Default task: Check configuration
+gulp.task('default', function() {
+	gutil.log('checking configuration...');
+	gutil.log('config: ' + JSON.stringify(config, null, '\t'));
+});
+
+/* -------------------- custom functions and tasks -------------------------- */
 
 // Clean build folder function:
 function cleanBuildFn() {
@@ -90,17 +100,19 @@ function modifyTestFn() {
 
 function sonarLocalAnalysisFn() {
 	gutil.log('local code analysis ...');
+	return gulp.src('thisFileDoesNotExist.js', { read: false })
+		  .pipe(sonar(sonarLocalConfig));
 }
 
 function sonarTestAnalysisFn() {
 	gutil.log('test code analysis ...');
 	return gulp.src('thisFileDoesNotExist.js', { read: false })
-		  .pipe(sonar(sonarConfig));
+		  .pipe(sonar(sonarTestConfig));
 }
 
-/* ------------------------------- */
-/* ------------ tasks ------------ */
-/* --------------------------------- */
+/* --------------------------------------------------------------------- */
+/* ------------------------------ tasks -------------------------------- */
+/* --------------------------------------------------------------------- */
 
 gulp.task('build:deploy', function() {
 	runSequence(['build:local', 'build:test'],
@@ -151,7 +163,9 @@ gulp.task('deploy', function(cb) {
   shipitCaptain(shipitConfig, options, cb);
 });
 
-// deploy from jenkins
+/* ----------------------------- jenkins tasks ------------------------------ */
+
+/* --------- delivery deploy ---------- */
 var deliveryOptions = {
   init: require('./config/shipit-delivery').init,
   //run: ['pwd', 'list'],
@@ -171,9 +185,11 @@ gulp.task('deploy-no-fetch', function(cb) {
 gulp.task('delivery-pipeline', function(cb) {
 	runSequence(['build', 'deploy-no-fetch']);
 });
+/* --------- end  delivery deploy ---------- */
 
-// Default task: Check configuration
-gulp.task('default', function() {
-	gutil.log('checking configuration...');
-	gutil.log('config: ' + JSON.stringify(config, null, '\t'));
+/* --------- sonar ------------------------- */
+gulp.task('sonar-pipeline', function(cb) {
+	runSequence(['build', 'sonar:test']);
 });
+/* --------- end  sonar -------------------- */
+/* ------------------------ end jenkins tasks ------------------------------ */

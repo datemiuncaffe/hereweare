@@ -1,0 +1,22 @@
+{
+	"sonar":
+	{
+		"host": {
+		  "url": "http://localhost:9000"
+		},
+		"projectKey": "hwr:hereweare-backend:1.0.0",
+		"projectName": "hereweare-backend",
+		"projectVersion": "1.0.0",
+		"sources": "build/local/server",
+		"language": "js",
+		"sourceEncoding": "UTF-8",
+		"javascript": {
+		  "lcov": {
+		      "reportPath": "test/sonar_report/lcov.info"
+		  }
+		},
+		"exec": {
+		  "maxBuffer" : "1024*1024"
+		}
+	}
+}
