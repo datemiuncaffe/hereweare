@@ -13,6 +13,7 @@
 .DS_Store
 .idea
 .project
+.sonar
 .strong-pm
 build
 client/vendor

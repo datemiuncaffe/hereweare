@@ -1,0 +1,22 @@
+{
+	"sonar":
+	{
+		"host": {
+		  "url": "http://192.168.88.168:9000"
+		},
+		"projectKey": "hwr:hereweare-frontend-css:1.0.0",
+		"projectName": "hereweare-frontend-css",
+		"projectVersion": "1.0.0",
+		"sources": "build/test/client/css",
+		"language": "css",
+		"sourceEncoding": "UTF-8",
+		"javascript": {
+		  "lcov": {
+		      "reportPath": "test/sonar_report/lcov.info"
+		  }
+		},
+		"exec": {
+		  "maxBuffer" : "1024*1024"
+		}
+	}
+}
