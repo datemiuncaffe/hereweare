@@ -18,8 +18,8 @@ var sonarHtmlTestConfig = require('./config/sonar/html/sonar-test-html.json');
 var sonarJsLocalConfig = require('./config/sonar/js/sonar-local-js.json');
 var sonarJsTestConfig = require('./config/sonar/js/sonar-test-js.json');
 
-var shipitConfig = require('./config/shipit').config;
-var shipitConfigForDelivery = require('./config/shipit-delivery').config;
+var shipitLocal = require('./config/shipit-local');
+var shipitForDelivery = require('./config/shipit-delivery');
 
 /* -------------------- custom functions and tasks -------------------------- */
 
@@ -207,8 +207,8 @@ gulp.task('build', buildFn);
 gulp.task('buildcomplete', buildCompleteFn);
 
 // ---------------------- Deploy task ----------------------------
-var options = {
-	init: require('./config/shipit').init,
+var shipitLocalOptions = {
+	init: shipitLocal.init,
 	run: ['deploy:init', 'deploy:update', 'deploy:publish',
 			'deploy:clean', 'deploy:finish',
 			'npm:install', 'bower:install'],
@@ -217,7 +217,7 @@ var options = {
 }
 gulp.task('deploy-no-fetch:local', function(cb) {
 	try {
-   	shipitCaptain(shipitConfig, options, cb);
+   	shipitCaptain(shipitLocal.config, shipitLocalOptions, cb);
 	} catch(err) {
 		gutil.log('deploy-no-fetch:local err: ' + err);
 	}
@@ -239,8 +239,8 @@ gulp.task('sonar:test:js', sonarJsTestAnalysisFn);
 /* ----------------------------- jenkins tasks ------------------------------ */
 
 /* --------- delivery deploy ---------- */
-var deliveryOptions = {
-	init: require('./config/shipit-delivery').init,
+var shipitDeliveryOptions = {
+	init: shipitForDelivery.init,
 	run: ['deploy:init', 'deploy:update', 'deploy:publish',
 			'deploy:clean', 'deploy:finish',
 			'npm:install', 'bower:install'],
@@ -249,7 +249,7 @@ var deliveryOptions = {
 }
 gulp.task('deploy-no-fetch', function(cb) {
 	try {
-    shipitCaptain(shipitConfigForDelivery, deliveryOptions, cb);
+    shipitCaptain(shipitForDelivery.config, shipitDeliveryOptions, cb);
 	} catch(err) {
 	  gutil.log('deploy-no-fetch err: ' + err);
 	}
@@ -264,14 +264,34 @@ gulp.task('delivery-pipeline', function(cb) {
 /* --------- sonar ------------------------- */
 function sonarPipelineLocalCssFn(cb) {
 	gutil.log('sonar-pipeline:local:css (running in series) ...');
-	gulpSequence('build:test', 'sonar:local:css', cb);
+	gulpSequence('build:local', 'sonar:local:css', cb);
 }
 function sonarPipelineTestCssFn(cb) {
-	gutil.log('sonar-pipeline:css (running in series) ...');
+	gutil.log('sonar-pipeline:test:css (running in series) ...');
 	gulpSequence('build:test', 'sonar:test:css', cb);
+}
+function sonarPipelineLocalHtmlFn(cb) {
+	gutil.log('sonar-pipeline:local:html (running in series) ...');
+	gulpSequence('build:local', 'sonar:local:html', cb);
+}
+function sonarPipelineTestHtmlFn(cb) {
+	gutil.log('sonar-pipeline:test:html (running in series) ...');
+	gulpSequence('build:test', 'sonar:test:html', cb);
+}
+function sonarPipelineLocalJsFn(cb) {
+	gutil.log('sonar-pipeline:local:js (running in series) ...');
+	gulpSequence('build:local', 'sonar:local:js', cb);
+}
+function sonarPipelineTestJsFn(cb) {
+	gutil.log('sonar-pipeline:test:js (running in series) ...');
+	gulpSequence('build:test', 'sonar:test:js', cb);
 }
 gulp.task('sonar-pipeline:local:css', sonarPipelineLocalCssFn);
 gulp.task('sonar-pipeline:test:css', sonarPipelineTestCssFn);
+gulp.task('sonar-pipeline:local:html', sonarPipelineLocalHtmlFn);
+gulp.task('sonar-pipeline:test:html', sonarPipelineTestHtmlFn);
+gulp.task('sonar-pipeline:local:js', sonarPipelineLocalJsFn);
+gulp.task('sonar-pipeline:test:js', sonarPipelineTestJsFn);
 
 function sonarPipelineTestFn(cb) {
 	gutil.log('sonar-pipeline:test (running in series) ...');
