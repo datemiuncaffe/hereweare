@@ -2,9 +2,10 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var rename = require("gulp-rename");
 var replace = require('gulp-replace');
-var runSequence = require('run-sequence');
-var del = require('del');
 var changed = require('gulp-changed');
+var gulpSequence = require('gulp-sequence');
+var del = require('del');
+
 var shipitCaptain = require('shipit-captain');
 var sonar = require("gulp-sonar");
 
@@ -20,65 +21,45 @@ var sonarJsTestConfig = require('./config/sonar/js/sonar-test-js.json');
 var shipitConfig = require('./config/shipit').config;
 var shipitConfigForDelivery = require('./config/shipit-delivery').config;
 
-// Default task: Check configuration
-gulp.task('default', function() {
-	gutil.log('checking configuration...');
-	gutil.log('config: ' + JSON.stringify(config, null, '\t'));
-});
-
 /* -------------------- custom functions and tasks -------------------------- */
 
 // Clean build folder function:
-function cleanBuildFn() {
-	gutil.log('cleaning build folder...');
-    return del.sync([config.local.dest, config.test.dest]);
+function cleanLocalFn() {
+	gutil.log('cleaning build/local folder...');
+	return del([config.local.dest]);
+}
+function cleanTestFn() {
+	gutil.log('cleaning build/test folder...');
+	return del([config.test.dest]);
 }
 
 // Build local
-function buildLocalFn() {
-	gutil.log('build:local ...');
+function copyLocalFn() {
+	gutil.log('copy:local ...');
 	return gulp.src(config.local.src)
 		.pipe(changed(config.local.dest))
-    .pipe(gulp.dest(config.local.dest));
+    	.pipe(gulp.dest(config.local.dest));
 }
-function buildCompleteLocalFn() {
+function copyCompleteLocalFn() {
+	gutil.log('copycomplete:local ...');
 	return gulp.src(config.local.srcall)
-    .pipe(gulp.dest(config.local.dest));
+		.pipe(changed(config.local.dest))
+   	.pipe(gulp.dest(config.local.dest));
 }
 
 // Build test
-function buildTestFn() {
-	gutil.log('build test ...');
+function copyTestFn() {
+	gutil.log('copy test ...');
 	gutil.log(`Current directory: ${process.cwd()}`);
 	return gulp.src(config.test.src)
 		.pipe(changed(config.test.dest))
-    .pipe(gulp.dest(config.test.dest));
-
-	// src = [
-	// 	"**",
-	// 	"**/.*",
-	// 	"**/.*/**",
-	// 	"**/.*/**/.*",
-	// 	"!**/vendor",
-	// 	"!**/node_modules",
-	// 	"!**/build",
-	// 	"!**/vendor/**",
-	// 	"!**/node_modules/**",
-	// 	"!**/build/**",
-	// 	"!**/vendor/**/.*",
-	// 	"!**/node_modules/**/.*",
-	// 	"!**/build/**/.*",
-	// 	"!**/vendor/**/.*/**",
-	// 	"!**/node_modules/**/.*/**",
-	// 	"!**/build/**/.*/**",
-	// 	"!**/vendor/**/.*/**/.*",
-	// 	"!**/node_modules/**/.*/**/.*",
-	// 	"!**/build/**/.*/**/.*"
-	// ];
+   	.pipe(gulp.dest(config.test.dest));
 }
-function buildCompleteTestFn() {
+function copyCompleteTestFn() {
+	gutil.log('copycomplete test ...');
 	return gulp.src(config.test.srcall)
-    .pipe(gulp.dest(config.test.dest));
+		.pipe(changed(config.test.dest))
+   	.pipe(gulp.dest(config.test.dest));
 }
 
 // Modify local
@@ -149,42 +130,97 @@ function sonarJsTestAnalysisFn() {
 /* ------------------------------ tasks -------------------------------- */
 /* --------------------------------------------------------------------- */
 
-gulp.task('build:deploy', function() {
-	runSequence(['build:local', 'build:test'],
-							['modify:local', 'modify:test'],
-							'deploy');
+// ------------- Default task: Check configuration --------------
+gulp.task('default', function() {
+	gutil.log('checking configuration...');
+	gutil.log('config: ' + JSON.stringify(config, null, '\t'));
 });
 
-gulp.task('buildcomplete', function() {
-	runSequence(['buildcomplete:local', 'buildcomplete:test'],
-							['modify:local', 'modify:test']);
-});
+// ------------- Clean tasks: ---------------------------
+gulp.task('clean:local', cleanLocalFn);
+gulp.task('clean:test', cleanTestFn);
 
-gulp.task('build', function() {
-	// gulp.watch(config.test.src, ['build']);
+function cleanFn(cb) {
+	gutil.log('clean local and test in series ...');
+	gulpSequence('clean:local', 'clean:test', cb);
+}
+gulp.task('clean', cleanFn);
 
-	// gulp.watch(config.test.src, function(event) {
-   // 	console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
-	// });
+// --------------------- Copy tasks: --------------------------
+gulp.task('copy:local', copyLocalFn);
+gulp.task('copy:test', copyTestFn);
+gulp.task('copycomplete:local', copyCompleteLocalFn);
+gulp.task('copycomplete:test', copyCompleteTestFn);
 
-	runSequence(['build:local', 'build:test'],
-					['modify:local', 'modify:test']);
-});
+function copyFn(cb) {
+	gutil.log('copy local and test in series ...');
+	gulpSequence('copy:local', 'copy:test', cb);
+}
+function copyCompleteFn(cb) {
+	gutil.log('copycomplete local and test in series ...');
+	gulpSequence('copycomplete:local', 'copycomplete:test', cb);
+}
 
-// Clean tasks:
-gulp.task('clean', cleanBuildFn);
+gulp.task('copy', copyFn);
+gulp.task('copycomplete', copyCompleteFn);
 
-// Build tasks:
-gulp.task('build:local', buildLocalFn);
-gulp.task('build:test', buildTestFn);
-gulp.task('buildcomplete:local', buildCompleteLocalFn);
-gulp.task('buildcomplete:test', buildCompleteTestFn);
-
-// Modify tasks:
+// --------------------- Modify tasks: ------------------------------
 gulp.task('modify:local', modifyLocalFn);
 gulp.task('modify:test', modifyTestFn);
 
-// Sonar task
+function modifyFn(cb) {
+	gutil.log('modify (modify:local and modify:test in series) ...');
+	gulpSequence('modify:local', 'modify:test', cb);
+}
+gulp.task('modify', modifyFn);
+
+// --------------------- Build tasks -------------------------
+function buildLocalFn(cb) {
+	gutil.log('build:local (running in series) ...');
+	gulpSequence('clean:local', 'copy:local', 'modify:local', cb);
+}
+function buildCompleteLocalFn(cb) {
+	gutil.log('buildcomplete:local (running in series) ...');
+	gulpSequence('clean:local', 'copycomplete:local', 'modify:local', cb);
+}
+function buildTestFn(cb) {
+	gutil.log('build:test (running in series) ...');
+	gulpSequence('clean:test', 'copy:test', 'modify:test', cb);
+}
+function buildCompleteTestFn(cb) {
+	gutil.log('buildcomplete:test (running in series) ...');
+	gulpSequence('clean:test', 'copycomplete:test', 'modify:test', cb);
+}
+function buildFn(cb) {
+	gutil.log('build (running in series) ...');
+	gulpSequence('build:local', 'build:test', cb);
+}
+function buildCompleteFn(cb) {
+	gutil.log('buildcomplete (running in series) ...');
+	gulpSequence('buildcomplete:local', 'buildcomplete:test', cb);
+}
+gulp.task('build:local', buildLocalFn);
+gulp.task('buildcomplete:local', buildCompleteLocalFn);
+gulp.task('build:test', buildTestFn);
+gulp.task('buildcomplete:test', buildCompleteTestFn);
+gulp.task('build', buildFn);
+gulp.task('buildcomplete', buildCompleteFn);
+
+// ---------------------- Deploy task ----------------------------
+var options = {
+	init: require('./config/shipit').init,
+	run: ['deploy'],
+	targetEnv: 'staging'
+}
+gulp.task('deploy', function(cb) {
+	shipitCaptain(shipitConfig, options, cb);
+});
+gulp.task('build:deploy', function(cb) {
+	gutil.log('build and deploy (running in series) ...');
+	gulpSequence('buildcomplete:test', 'deploy', cb);
+});
+
+// ------------------ Sonar task -------------------------------
 gulp.task('sonar:local:css', sonarCssLocalAnalysisFn);
 gulp.task('sonar:test:css', sonarCssTestAnalysisFn);
 gulp.task('sonar:local:html', sonarHtmlLocalAnalysisFn);
@@ -192,26 +228,15 @@ gulp.task('sonar:test:html', sonarHtmlTestAnalysisFn);
 gulp.task('sonar:local:js', sonarJsLocalAnalysisFn);
 gulp.task('sonar:test:js', sonarJsTestAnalysisFn);
 
-// Deploy task
-var options = {
-  init: require('./config/shipit').init,
-  run: ['deploy'],
-  targetEnv: 'staging'
-}
-gulp.task('deploy', function(cb) {
-  shipitCaptain(shipitConfig, options, cb);
-});
-
 /* ----------------------------- jenkins tasks ------------------------------ */
 
 /* --------- delivery deploy ---------- */
 var deliveryOptions = {
-  init: require('./config/shipit-delivery').init,
-  //run: ['pwd', 'list'],
+	init: require('./config/shipit-delivery').init,
 	run: ['deploy:init', 'deploy:update', 'deploy:publish',
-				'deploy:clean', 'deploy:finish',
-				'npm:install', 'bower:install'],
-  targetEnv: 'staging',
+			'deploy:clean', 'deploy:finish',
+			'npm:install', 'bower:install'],
+	targetEnv: 'staging',
 	confirm: false
 }
 gulp.task('deploy-no-fetch', function(cb) {
@@ -223,20 +248,29 @@ gulp.task('deploy-no-fetch', function(cb) {
 	gutil.log('deploy-no-fetch...');
 });
 gulp.task('delivery-pipeline', function(cb) {
-	runSequence(['clean', 'build', 'deploy-no-fetch']);
+	gutil.log('delivery-pipeline (running in series) ...');
+	gulpSequence('build:test', 'deploy-no-fetch', cb);
 });
 /* --------- end  delivery deploy ---------- */
 
 /* --------- sonar ------------------------- */
-//gulp.task('sonar-pipeline:css', ['build:local', 'build:test', 'modify:local', 'modify:test'], sonarCssTestAnalysisFn);
+function sonarPipelineLocalCssFn(cb) {
+	gutil.log('sonar-pipeline:local:css (running in series) ...');
+	gulpSequence('build:test', 'sonar:local:css', cb);
+}
+function sonarPipelineTestCssFn(cb) {
+	gutil.log('sonar-pipeline:css (running in series) ...');
+	gulpSequence('build:test', 'sonar:test:css', cb);
+}
+gulp.task('sonar-pipeline:local:css', sonarPipelineLocalCssFn);
+gulp.task('sonar-pipeline:test:css', sonarPipelineTestCssFn);
 
-gulp.task('sonar-pipeline:css', ['build:test'], sonarCssTestAnalysisFn);
-gulp.task('sonar-pipeline:html', ['sonar-pipeline:css'], sonarHtmlTestAnalysisFn);
-gulp.task('sonar-pipeline:js', ['sonar-pipeline:html'], sonarJsTestAnalysisFn);
+function sonarPipelineTestFn(cb) {
+	gutil.log('sonar-pipeline:test (running in series) ...');
+	gulpSequence('build:test',
+		'sonar:test:css', 'sonar:test:html', 'sonar:test:js', cb);
+}
+gulp.task('sonar-pipeline:test', sonarPipelineTestFn);
 
-gulp.task('sonar-pipeline', ['sonar-pipeline:js'], function() {
-	gutil.log('end of sonar-pipeline ...');
-	//runSequence(['build', 'sonar:test:css', 'sonar:test:html', 'sonar:test:js']);
-});
 /* --------- end  sonar -------------------- */
 /* ------------------------ end jenkins tasks ------------------------------ */

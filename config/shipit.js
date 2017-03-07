@@ -1,15 +1,12 @@
 var config = {
 	default: {
-	  workspace: '/home/federico/Documents/ehour/projects/hereweare-frontend',
-	  dirToCopy: '/home/federico/Documents/ehour/projects/hereweare-frontend/build/test',
-	  deployTo: '/opt/hereweare-frontend',
-	  repositoryUrl: 'https://github.com/datemiuncaffe/hereweare-frontend.git',
-	// ignores: ['.git', 'node_modules'],
-	// keepReleases: 2,
-	// deleteOnRollback: false,
-	  key: '/home/federico/.ssh/id_rsa_sensei',
+	  	workspace: '.',
+	  	dirToCopy: 'build/test',
+	  	deployTo: '/opt/hereweare-frontend',
+	 	ignores: ['.git', 'client/vendor', 'node_modules'],
+	 	keepReleases: 5,
+	  	key: '/home/federico/.ssh/id_rsa_sensei',
 		branch: 'nuovolayout'
-	// shallowClone: true
 	},
 	staging: {
 		servers: 'centos@192.168.88.158'
@@ -17,8 +14,9 @@ var config = {
 };
 module.exports.config = config;
 module.exports.init = function(shipit) {
-	require('shipit-shared')(shipit);
 	require('shipit-deploy')(shipit);
+	require('shipit-npm')(shipit);
+	require('shipit-bower')(shipit);
 
 	shipit.initConfig(config);
 

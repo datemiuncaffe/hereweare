@@ -27,6 +27,7 @@
     "gulp-print": "^2.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
+    "gulp-sequence": "^0.4.6",
     "gulp-sonar": "^3.0.0",
     "gulp-uglify": "^2.0.1",
     "gulp-util": "^3.0.8",
