@@ -209,15 +209,23 @@ gulp.task('buildcomplete', buildCompleteFn);
 // ---------------------- Deploy task ----------------------------
 var options = {
 	init: require('./config/shipit').init,
-	run: ['deploy'],
-	targetEnv: 'staging'
+	run: ['deploy:init', 'deploy:update', 'deploy:publish',
+			'deploy:clean', 'deploy:finish',
+			'npm:install', 'bower:install'],
+	targetEnv: 'staging',
+	confirm: true
 }
-gulp.task('deploy', function(cb) {
-	shipitCaptain(shipitConfig, options, cb);
+gulp.task('deploy-no-fetch:local', function(cb) {
+	try {
+   	shipitCaptain(shipitConfig, options, cb);
+	} catch(err) {
+		gutil.log('deploy-no-fetch:local err: ' + err);
+	}
+	gutil.log('deploy-no-fetch:local ...');
 });
 gulp.task('build:deploy', function(cb) {
-	gutil.log('build and deploy (running in series) ...');
-	gulpSequence('buildcomplete:test', 'deploy', cb);
+	gutil.log('build and deploy-no-fetch:local (running in series) ...');
+	gulpSequence('buildcomplete:test', 'deploy-no-fetch:local', cb);
 });
 
 // ------------------ Sonar task -------------------------------
