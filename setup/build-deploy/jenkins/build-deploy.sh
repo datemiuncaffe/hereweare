@@ -90,7 +90,7 @@ case "$1" in
       delivery-pipeline
       ;;
    sonar-pipeline)
-      sonar-pipeline:test
+      sonar-pipeline
       ;;
    status)
       status $node
