@@ -67,7 +67,7 @@ sonar-pipeline()
 {
   echo -n $"$PACKAGE_NAME sonar pipeline ..."
   installDeps
-  gulp sonar-pipeline
+  gulp sonar-pipeline:test
   RETVAL=$?
   echo [ $RETVAL -eq 0 ]
 }

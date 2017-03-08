@@ -5,8 +5,8 @@ var config = {
 		deployTo: '/opt/hereweare',
 		ignores: ['.git', 'node_modules'],
 		keepReleases: 5,
-		key: '/home/tomcat7/.ssh/id_rsa_sensei',
-		branch: 'remotes/origin/nuovolayout'
+		key: '/home/federico/.ssh/id_rsa_sensei',
+		branch: 'nuovolayout'
 	},
 	staging: {
 		servers: 'centos@192.168.88.158'
@@ -21,8 +21,5 @@ module.exports.init = function(shipit) {
 
 	shipit.task('pwd', function () {
 		return shipit.remote('pwd');
-	});
-	shipit.task('list', function () {
-		return shipit.remote('ls -la');
 	});
 };

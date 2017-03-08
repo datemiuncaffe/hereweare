@@ -1,22 +1,35 @@
 {
 	"local":
 	{
-		"projectDir": "/home/federico/Documents/ehour/projects/hereweare",
+		"projectDir": "/home/federico/Work/hereweare/src/hereweare-backend",
 		"srcall":
 		[
 			"**",
+			"**/.*",
+			"**/.*/**",
+			"**/.*/**/.*",
 			"!**/build",
-			"!**/build/**"
+			"!**/build/**",
+			"!**/build/**/.*",
+			"!**/build/**/.*/**",
+			"!**/build/**/.*/**/.*"
 		],
 		"src":
 		[
 			"**",
-			"!**/vendor",
+			"**/.*",
+			"**/.*/**",
+			"**/.*/**/.*",
 			"!**/node_modules",
 			"!**/build",
-			"!**/vendor/**",
 			"!**/node_modules/**",
-			"!**/build/**"
+			"!**/build/**",
+			"!**/node_modules/**/.*",
+			"!**/build/**/.*",
+			"!**/node_modules/**/.*/**",
+			"!**/build/**/.*/**",
+			"!**/node_modules/**/.*/**/.*",
+			"!**/build/**/.*/**/.*"
 		],
 		"dest": "build/local",
 		"modify":
@@ -43,22 +56,35 @@
 
 	"test":
 	{
-		"projectDir": "/home/federico/Documents/ehour/projects/hereweare",
+		"projectDir": "/home/federico/Work/hereweare/src/hereweare-backend",
 		"srcall":
 		[
 			"**",
+			"**/.*",
+			"**/.*/**",
+			"**/.*/**/.*",
 			"!**/build",
-			"!**/build/**"
+			"!**/build/**",
+			"!**/build/**/.*",
+			"!**/build/**/.*/**",
+			"!**/build/**/.*/**/.*"
 		],
 		"src":
 		[
 			"**",
-			"!**/vendor",
+			"**/.*",
+			"**/.*/**",
+			"**/.*/**/.*",
 			"!**/node_modules",
 			"!**/build",
-			"!**/vendor/**",
 			"!**/node_modules/**",
-			"!**/build/**"
+			"!**/build/**",
+			"!**/node_modules/**/.*",
+			"!**/build/**/.*",
+			"!**/node_modules/**/.*/**",
+			"!**/build/**/.*/**",
+			"!**/node_modules/**/.*/**/.*",
+			"!**/build/**/.*/**/.*"
 		],
 		"dest": "build/test",
 		"modify":
