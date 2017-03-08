@@ -1,7 +1,7 @@
 {
 	"local":
 	{
-		"projectDir": "/home/federico/Documents/ehour/projects/hereweare-frontend",
+		"projectDir": "/home/federico/Work/hereweare/src/hereweare-frontend",
 		"srcall":
 		[
 			"**",
@@ -52,7 +52,7 @@
 
 	"test":
 	{
-		"projectDir": "/home/federico/Documents/ehour/projects/hereweare-frontend",
+		"projectDir": "/home/federico/Work/hereweare/src/hereweare-frontend",
 		"srcall":
 		[
 			"**",

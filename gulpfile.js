@@ -33,7 +33,7 @@ function cleanTestFn() {
 	return del([config.test.dest]);
 }
 
-// Build local
+// Copy local
 function copyLocalFn() {
 	gutil.log('copy:local ...');
 	return gulp.src(config.local.src)
@@ -47,7 +47,7 @@ function copyCompleteLocalFn() {
    	.pipe(gulp.dest(config.local.dest));
 }
 
-// Build test
+// Copy test
 function copyTestFn() {
 	gutil.log('copy test ...');
 	gutil.log(`Current directory: ${process.cwd()}`);
