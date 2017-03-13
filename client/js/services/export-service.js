@@ -63,7 +63,7 @@
               cell.t = 's';
               cellLength = cell.v.length;
             }
-            console.log("R: " + R + "C: " + C + "; length: " + cellLength);
+            //console.log("R: " + R + "C: " + C + "; length: " + cellLength);
             if (cellLength > columnsWidths[C].wch) {
               columnsWidths[C].wch = cellLength;
             }
@@ -79,7 +79,7 @@
               if (opts[R][C].font != null) {
                 cell.s.font = opts[R][C].font;
               }
-            }            
+            }
 
             ws[cell_ref] = cell;
           }

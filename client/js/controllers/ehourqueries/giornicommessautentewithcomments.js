@@ -124,9 +124,9 @@ angular
     					res = data.giorniCommessaUtenteWithComments;
     				}
 
-            $scope.totalHours =
-              $scope.sumGrouped(res, "oreMese");
-            //console.log('totalHours: ' + $scope.totalHours);
+               $scope.totalHours =
+                  $scope.sumGrouped(res, "oreMese")
+                     .toFixed(2).replace(".",",");
 
     				return res;
     			});
@@ -155,7 +155,7 @@ angular
           sum += parseFloat(dottedValue);
         }
       });
-      return sum.toFixed(2);
+      return sum;
     };
 
     $scope.sumTotalHours = function(groups, field) {
@@ -405,13 +405,16 @@ angular
             }
 
             if (groupdata[i].hasOwnProperty("oreMese")) {
-              line.push(groupdata[i]["oreMese"]);
+               var lineField = groupdata[i]["oreMese"];
+               var adjLineField = parseFloat(lineField.replace(",","."))
+                                  .toFixed(2);
+               line.push(parseFloat(adjLineField));
             } else {
-              line.push(null);
+               line.push(null);
             }
 
             if (groupdata[i].hasOwnProperty("comment")) {
-              line.push(groupdata[i]["comment"]);
+               line.push(groupdata[i]["comment"]);
             } else {
               line.push(null);
             }
@@ -421,7 +424,8 @@ angular
         }
         XLSdata.push([null, null, null, null,
           null, null, "Totali:",
-          $scope.sumGrouped(groupdata, "oreMese"), null]);
+          parseFloat($scope.sumGrouped(groupdata, "oreMese").toFixed(2)),
+          null]);
         XLSoptions.push([null, null, null, null,
           null, null, null, null, null]);
         XLSdata.push([null, null, null, null,
@@ -433,7 +437,8 @@ angular
       // total sum
       XLSdata.push([null, null, null, null,
         null, null, "Totali complessivi:",
-        $scope.totalHours, null]);
+        parseFloat($scope.totalHours.replace(",",".")),
+        null]);
       XLSoptions.push([null, null, null, null,
         null, null, null, null, null]);
 

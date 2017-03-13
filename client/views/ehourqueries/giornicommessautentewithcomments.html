@@ -92,7 +92,7 @@
 							<strong>Totali:</strong>
 						</td>
             <td>
-							<em>{{ sumGrouped(group.data, "oreMese") }}</em>
+							<em>{{ sumGrouped(group.data, "oreMese").toFixed(2).replace(".",",") }}</em>
 						</td>
         	</tr>
 

@@ -76,10 +76,10 @@
 							<strong>Totali:</strong>
 						</td>
             <td>
-							<em>{{ sumGrouped(group.data, "oreMese") }}</em>
+							<em>{{ sumGrouped(group.data, "oreMese").toFixed(2).replace(".",",") }}</em>
 						</td>
 						<td>
-							<em>{{ sumGrouped(group.data, "giornateMese") }}</em>
+							<em>{{ sumGrouped(group.data, "giornateMese").toFixed(2).replace(".",",") }}</em>
 						</td>
         	</tr>
 

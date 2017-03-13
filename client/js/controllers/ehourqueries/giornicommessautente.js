@@ -143,12 +143,12 @@ angular
     					res = data.giorniCommessaUtente;
     				}
 
-            $scope.totalHours =
-              $scope.sumGrouped(res, "oreMese");
-            $scope.totalDays =
-              $scope.sumGrouped(res, "giornateMese");
-            //console.log('totalHours: ' + $scope.totalHours +
-            //            'totalDays: ' + $scope.totalDays);
+               $scope.totalHours =
+                  $scope.sumGrouped(res, "oreMese")
+                     .toFixed(2).replace(".",",");
+               $scope.totalDays =
+                  $scope.sumGrouped(res, "giornateMese")
+                     .toFixed(2).replace(".",",");
 
     				return res;
     			});
@@ -177,7 +177,7 @@ angular
           sum += parseFloat(dottedValue);
         }
       });
-      return sum.toFixed(2);
+      return sum;
     };
 
     $scope.sumTotalHours = function(groups, field) {
@@ -431,24 +431,32 @@ angular
             }
 
             if (groupdata[i].hasOwnProperty("oreMese")) {
-              line.push(groupdata[i]["oreMese"]);
+               var lineField = groupdata[i]["oreMese"];
+               var adjLineField = parseFloat(lineField.replace(",","."))
+                                  .toFixed(2);
+               line.push(parseFloat(adjLineField));
             } else {
-              line.push(null);
+               line.push(null);
             }
 
             if (groupdata[i].hasOwnProperty("giornateMese")) {
-              line.push(groupdata[i]["giornateMese"]);
+               var lineField = groupdata[i]["giornateMese"];
+               var adjLineField = parseFloat(lineField.replace(",","."))
+                                  .toFixed(2);
+               line.push(parseFloat(adjLineField));
             } else {
-              line.push(null);
+               line.push(null);
             }
             XLSdata.push(line);
             XLSoptions.push([null, null, null, null,
               null, null, null, null, null]);
+
+            console.log('line: ' + JSON.stringify(line, null, '\t'));
         }
         XLSdata.push([null, null, null, null,
           null, null, "Totali:",
-          $scope.sumGrouped(groupdata, "oreMese"),
-          $scope.sumGrouped(groupdata, "giornateMese")]);
+          parseFloat($scope.sumGrouped(groupdata, "oreMese").toFixed(2)),
+          parseFloat($scope.sumGrouped(groupdata, "giornateMese").toFixed(2))]);
         XLSoptions.push([null, null, null, null,
           null, null, null, null, null]);
         XLSdata.push([null, null, null, null,
@@ -457,12 +465,17 @@ angular
           null, null, null, null, null]);
       });
 
+      console.log('totalHours: ' + $scope.totalHours +
+                  'totalDays: ' + $scope.totalDays);
+      console.log('typeof: ' + typeof $scope.totalHours);
+
       // total sum
       XLSdata.push([null, null, null, null,
-        null, null, "Totali complessivi:",
-        $scope.totalHours, $scope.totalDays]);
+         null, null, "Totali complessivi:",
+         parseFloat($scope.totalHours.replace(",",".")),
+         parseFloat($scope.totalDays.replace(",","."))]);
       XLSoptions.push([null, null, null, null,
-        null, null, null, null, null]);
+         null, null, null, null, null]);
 
       var ws_name = "Rendicontazione ore";
       var wb = new excelgen.Workbook();
@@ -472,6 +485,8 @@ angular
       /* add worksheet to workbook */
       wb.SheetNames.push(ws_name);
       wb.Sheets[ws_name] = ws;
+      console.log('wb: ' + JSON.stringify(wb, null, '\t'));
+
       var wbout = XLSX.write(wb,
         {bookType:'xlsx', bookSST:true, type: 'binary'});
 
