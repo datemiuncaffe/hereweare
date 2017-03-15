@@ -36,7 +36,9 @@
 		</div>
 		<div class="bottom">
 			<div class="form-group">
-				<button class="btn btn-default" ng-click="modify()">Modifica progetto</button>
+				<a class="btn btn-default" ui-sref-active="active" ui-sref="{{modifyButton.link}}">
+					{{modifyButton.label}}
+				</a>
 			</div>
 		</div>
 	</fieldset>

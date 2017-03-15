@@ -57,6 +57,22 @@ angular
 			$scope.project.code = $stateParams.projectCode;
 		}
 
+		var modifyLink = "projectmodify({" +
+								"customerId: " + $scope.customer.id + "," +
+								"customerName: '" + $scope.customer.name + "'," +
+								"projectId: " + $scope.project.id + "," +
+								"projectName: '" + $scope.project.name + "'," +
+								"projectCode: '" + $scope.project.code + "'" +
+								"})";
+		var modifyLabel = "Vai a " + $scope.project.name;
+		$scope.modifyButton = {
+			link: modifyLink,
+			label: modifyLabel
+		};
+
+		$log.log('modifyLink: ' + $scope.modifyButton.link +
+					'; modifyLabel: ' + $scope.modifyButton.label);
+
     /* loading data */
     if ($scope.project.id != null && $scope.project.id > 0) {
     	// perform queries
@@ -329,22 +345,5 @@ angular
 			console.log('filteredrows: ' + JSON.stringify(filteredrows, null, '\t'));
 			return filteredrows;
 		}
-
-	  $scope.modify = function() {
-			console.log('current customer: ' + JSON.stringify($scope.customer));
-			console.log('current project: ' + JSON.stringify($scope.project));
-
-			console.log('changing state...');
-
-			var url = 'http://' + $window.location.host +
-					'/#/projectmodify' +
-					'?customerId=' + $scope.customer.id +
-					'&customerName=' + $scope.customer.name +
-					'&projectId=' + $scope.project.id +
-					'&projectCode=' + $scope.project.code +
-					'&projectName=' + $scope.project.name;
-	    $log.log(url);
-	    $window.location.href = url;
-		};
 
 	}]);

@@ -17,7 +17,9 @@ angular
     'ngStorage',
     'dndLists'
   ])
-  .config(['$stateProvider', '$urlRouterProvider', '$provide', function($stateProvider, $urlRouterProvider, $provide) {
+  .config(['$stateProvider', '$urlRouterProvider',
+            '$locationProvider', '$provide',
+            function($stateProvider, $urlRouterProvider, $locationProvider, $provide) {
       $stateProvider
       .state('activeprojects', {
         url: '/activeprojects',
@@ -183,6 +185,8 @@ angular
       });
 
       $urlRouterProvider.otherwise('overview');
+
+      $locationProvider.hashPrefix('');
 
       $provide.value('resourceBaseUrl', '$resourceBaseUrl$');
   }])
