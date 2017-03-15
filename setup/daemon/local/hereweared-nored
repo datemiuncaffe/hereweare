@@ -13,13 +13,14 @@
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=/usr/local/bin/node
+DAEMON=/usr/bin/node
 DESC=senseiapplicationforreporting
 
 # Default defaults.  Can be overridden by the /etc/default/$NAME
 NAME=hereweared
 #CONF=
-RUNDIR=/home/federico/Documents/ehour/projects/hereweare/build/local
+RUNDIR=/home/federico/Work/hereweare/src/hereweare-backend/build/local
+PIDDIR=/var/run/hereweare
 PIDFILE=/var/run/hereweare/$NAME.pid
 ENABLE_HEREWEARE=yes
 
@@ -125,6 +126,7 @@ running() {
 
 start_server() {
     test -e "$RUNDIR" || install -m 755 -o $DAEMONUSER -g $DAEMONUSER -d "$RUNDIR"
+	 test -e "$PIDDIR" || install -o $DAEMONUSER -g $DAEMONUSER -d "$PIDDIR"
     # Start the process using the wrapper
     #        start-stop-daemon --background --start --quiet --pidfile $PIDFILE \
     #                    --make-pidfile --chuid $DAEMONUSER \
