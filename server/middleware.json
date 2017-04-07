@@ -109,6 +109,12 @@
     "./middleware/ext/zohoGetPortals": {
       "paths": "/zoho_portals"
     },
+    "./middleware/migrate/mysqlToMongodb": {
+      "paths": "/migrate/mysql_to_mongodb"
+    },
+    "./middleware/migrate/showTables": {
+      "paths": "/migrate/show_tables"
+    },
     "./middleware/log": {
       "paths": "/log"
     }

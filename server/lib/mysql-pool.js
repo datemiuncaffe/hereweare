@@ -4,7 +4,8 @@ var MysqlPool = function() {
 
 	var pool  = null;
 	var res = {
-		connectionLimit : 10,
+		queueLimit: 8,
+		connectionLimit : 4,
 		checklog: function() {
 			logger.info('simple check');
 		},
@@ -14,7 +15,8 @@ var MysqlPool = function() {
 				cb();
 			} else {
 				pool = mysql.createPool({
-				  connectionLimit : 10,
+					queueLimit: 8,
+				  	connectionLimit : 4,
 					host : "192.168.88.158",
 					user : "centos",
 					database : "ehour"

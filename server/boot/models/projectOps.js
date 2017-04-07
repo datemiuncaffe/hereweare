@@ -1,7 +1,7 @@
-var logger = require('./../lib/logger');
+var logger = require('./../../lib/logger');
 var bodyParser = require("body-parser");
 var moment = require("moment");
-var ProjectEmitter = require('./../lib/models/project.js').ProjectEmitter();
+var ProjectEmitter = require('./../../lib/models/project.js').ProjectEmitter();
 
 var ProjectModel = null;
 

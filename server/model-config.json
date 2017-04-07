@@ -12,21 +12,5 @@
       "../common/mixins",
       "./mixins"
     ]
-  },
-  "Customer": {
-    "dataSource": "mongoBudgets",
-    "public": true
-  },
-  "Project": {
-    "dataSource": "mongoBudgets",
-    "public": true
-  },
-  "Budget": {
-    "dataSource": "mongoBudgets",
-    "public": true
-  },
-  "Cost": {
-    "dataSource": "mongoBudgets",
-    "public": true
   }
 }
