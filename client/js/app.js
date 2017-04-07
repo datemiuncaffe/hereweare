@@ -182,6 +182,15 @@ angular
               controller: 'EmployeeCostsController'
            }
         }
+      })
+      .state('migrateehourtables', {
+        url: '/migrate/ehour-tables',
+        views:{
+          'migrateehourtablesview': {
+              templateUrl: 'views/migrate/ehourTables.html',
+              controller: 'MigrateEhourTablesController'
+           }
+        }
       });
 
       $urlRouterProvider.otherwise('overview');

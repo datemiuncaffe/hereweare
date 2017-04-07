@@ -1,0 +1,86 @@
+form[name=ehourTablesForm] div.top {
+  font-family: Arial;
+  font-size: 14px;
+  float: left;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+form[name=ehourTablesForm] div.center {
+  font-family: Arial;
+  font-size: 14px;
+  float: left;
+  margin-bottom: 10px;
+  border-bottom: 1px solid black;
+  width: 600px;
+}
+
+form[name=ehourTablesForm] div.center div.GreyBlueFrame {
+  background-color: #165697;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+form[name=ehourTablesForm] div.center div.GreyBlueFrame b,
+form[name=ehourTablesForm] div.center div.GreyBlueFrame label {
+  font-size: 20px;
+  color: #e3e39d;
+  cursor: pointer;
+  font-weight: 400;
+  line-height: 40px;
+  margin: 4px 0 6px 0;
+  overflow: hidden;
+  text-align: left;
+  text-decoration: none;
+  white-space: normal;
+  width: 100%;
+  text-transform: none;
+}
+
+form[name=ehourTablesForm] div.center .ehourTablesHeader {
+  margin-top: 4px;
+  margin-right: 18px;
+}
+form[name=ehourTablesForm] div.center .ehourTablesHeaderTitle {
+  /*width: 200px;*/
+}
+form[name=ehourTablesForm] div.center .foldIcon {
+  float: right;
+  margin-top: 8px;
+  width: 32px;
+}
+form[name=ehourTablesForm] div.center .foldIcon a {
+  cursor: pointer;
+}
+form[name=ehourTablesForm] div.center .foldIcon .deleteIcon {
+  width: 22px;
+}
+
+form[name=ehourTablesForm] div.center .textInputSmall {
+    background-color: white !important;
+    border: 1px solid #b3c0cb;
+    border-radius: 4px;
+    color: #233e55;
+    font: 1em Geneva,Arial,Helvetica,sans-serif;
+    margin: 0;
+}
+form[name=ehourTablesForm] div.center .toggleLabel {
+    float: left;
+    width: 40%;
+}
+
+.highlight {
+    color: #ff0000;
+}
+
+form[name=ehourTablesForm] .bottom {
+  font-family: Arial;
+  font-size: 14px;
+  width: 1000px;
+  float: left;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  border-bottom: 1px solid black;
+}

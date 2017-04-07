@@ -1,0 +1,41 @@
+<h1>Copia tabelle di ehour in mongo db locale</h1>
+<section>
+<form name="ehourTablesForm" novalidate>
+	<fieldset>
+		<div class="top">
+		</div>
+		<div class="center">
+			<div class="GreyBlueFrame">
+				<div class="ehourTablesHeader">
+					<div class="foldIcon">
+						<a title="rimuovi selezione" ng-click="clearTableSelection()">
+							<img src="img/delete1_nobg.png" class="deleteIcon"></img>
+						</a>
+					</div>
+					<div class="ehourTablesHeaderTitle">
+						<b>Seleziona le tabelle da migrare</b>
+					</div>
+				</div>
+				<!--select multiple="multiple"-->
+				<select
+					name="ehourTables"
+					class="textInputSmall"
+					id="ehourTablesSelect"
+					ng-model="selectedTables"
+					ng-options="tableName as ehourTable.name for ehourTable in ehourTables"
+					ng-change="onTableChange()">
+				</select>
+				<br clear="all">
+			</div>
+		</div>
+		<div class="bottom">
+			<div class="form-group">
+				<button class="btn btn-default" ng-click="migrateTables()">
+					Inizia il trasferimento
+				</button>
+			</div>
+		</div>
+	</fieldset>
+</form>
+<hr>
+</section>

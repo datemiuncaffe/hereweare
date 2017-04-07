@@ -39,7 +39,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           getProjectsByCustomerId: 'http://' + resourceBaseUrl + '/query_projects_by_customer_id',
           getCosts: 'http://' + resourceBaseUrl + '/query_costs',
           getReportsByUserNameAndDateIntervalAndProjects: 'http://' + resourceBaseUrl + '/query_reports_by_username_dateinterval_projects',
-          getProjectsAndCustomersByUserNameAndDateInterval: 'http://' + resourceBaseUrl + '/query_projects_customers_by_username_dateinterval'
+          getProjectsAndCustomersByUserNameAndDateInterval: 'http://' + resourceBaseUrl + '/query_projects_customers_by_username_dateinterval',
+          showTables: 'http://' + resourceBaseUrl + '/migrate/show_tables'
         }
       },
       PUT: {
@@ -69,7 +70,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           getProjectsByCustomerId: $resource(queries.GET.EHOUR.getProjectsByCustomerId, null, {'query':  {method:'GET', isArray:true}}),
           getCosts: $resource(queries.GET.EHOUR.getCosts, null, {'query':  {method:'GET', isArray:true}}),
           getReportsByUserNameAndDateIntervalAndProjects: $resource(queries.GET.EHOUR.getReportsByUserNameAndDateIntervalAndProjects, null, {'query':  {method:'GET'}}),
-          getProjectsAndCustomersByUserNameAndDateInterval: $resource(queries.GET.EHOUR.getProjectsAndCustomersByUserNameAndDateInterval, null, {'query': {method:'GET'}})
+          getProjectsAndCustomersByUserNameAndDateInterval: $resource(queries.GET.EHOUR.getProjectsAndCustomersByUserNameAndDateInterval, null, {'query': {method:'GET'}}),
+          showTables: $resource(queries.GET.EHOUR.showTables, null, {'query': {method:'GET'}})
         }
       },
       PUT: {
@@ -121,6 +123,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           },
           getProjectsAndCustomersByUserNameAndDateInterval: function(params) {
             return resources.GET.EHOUR.getProjectsAndCustomersByUserNameAndDateInterval.query(params).$promise;
+          },
+          showTables: function() {
+            return resources.GET.EHOUR.showTables.query().$promise;
           }
         }
       },

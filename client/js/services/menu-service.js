@@ -28,9 +28,10 @@
           {name: 'Per dipendente', type: 'link', state: 'employeefilter', icon: ''}]
         },
         {name: 'Budgets', type: 'tree', pages: []},
-		    {name: 'Working', type: 'toggle', pages: [
-		      {name: 'Costi interni', type: 'link', state: 'employeecosts', icon: ''}]
-        }
+		  {name: 'Working', type: 'toggle', pages: [
+		    {name: 'Costi interni', type: 'link', state: 'employeecosts', icon: ''}]
+        },
+        {name: 'Migrate', type: 'link', state: 'migrateehourtables'}
       ],
       orizontalSections: [
         {name: 'Overview', type: 'link', state: 'overview'},
@@ -53,7 +54,8 @@
         },
         {name: 'Reporting', type: 'toggle', pages: [
           {name: 'Per dipendente', type: 'link', state: 'employeefilter', icon: ''}]
-        }
+        },
+        {name: 'Migrate', type: 'link', state: 'migrateehourtables'}
       ]
     };
 
