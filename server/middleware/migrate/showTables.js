@@ -5,9 +5,6 @@ module.exports = function(options) {
 	return function showTables(req, res, next) {
 		logger.info('starting show ehour tables ...');
 
-		var result = {
-			ehourTables: []
-		};
 		var query = 'SHOW TABLES;';
 
 		MysqlPool.getPool(getConnection);
@@ -28,14 +25,17 @@ module.exports = function(options) {
 
 				logger.info('show tables performed ...');
 				logger.info('tables: ' + JSON.stringify(tables, null, '\t'));
-				tables.forEach(function(table) {
+
+				var results = [];
+				tables.forEach(function(table, index) {
 					var resItem = {
+						id:	index,
 						name: table['Tables_in_ehour']
 					};
-					result.ehourTables.push(resItem);
+					results.push(resItem);
 				});
 
-				res.json(result);
+				res.json(results);
 			});
 		};
 
