@@ -71,7 +71,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           getCosts: $resource(queries.GET.EHOUR.getCosts, null, {'query':  {method:'GET', isArray:true}}),
           getReportsByUserNameAndDateIntervalAndProjects: $resource(queries.GET.EHOUR.getReportsByUserNameAndDateIntervalAndProjects, null, {'query':  {method:'GET'}}),
           getProjectsAndCustomersByUserNameAndDateInterval: $resource(queries.GET.EHOUR.getProjectsAndCustomersByUserNameAndDateInterval, null, {'query': {method:'GET'}}),
-          showTables: $resource(queries.GET.EHOUR.showTables, null, {'query': {method:'GET'}})
+          showTables: $resource(queries.GET.EHOUR.showTables, null, {'query': {method:'GET', isArray:true}})
         }
       },
       PUT: {

@@ -4,34 +4,37 @@ angular
 			['$scope', '$window', '$log', 'crud', '$q',
 			 function($scope, $window, $log, crud, $q) {
 		$scope.ehourTables = [];
-		$scope.selectedTables = [];
+		$scope.selectedEhourTables = [];
 
 		$q.all([
 			crud.GET.EHOUR.showTables()
 		])
 		.then(function(data) {
 			if (data[0] != null &&
-				 data[0].ehourTables != null &&
-				 data[0].ehourTables.length > 0) {
-				$scope.ehourTables = data[0].ehourTables;
+				 data[0].length > 0) {
+				$scope.ehourTables = data[0];
+				$scope.selectedEhourTables.push(data[0][0]);
 				$log.log('ehourTables: ' +
-					JSON.stringify($scope.ehourTables, null, '\t'));
+					JSON.stringify($scope.ehourTables, null, '\t') +
+					'; selectedEhourTables: ' +
+					JSON.stringify($scope.selectedEhourTables, null, '\t'));
 			}
 		});
 
-		$scope.onTableChange = function() {
-			$log.log('onTableChange: ' +
-				JSON.stringify($scope.selectedTables, null, '\t'));
+		$scope.onEhourTablesChange = function() {
+			$log.log('onChange... ehourTables: ' +
+				JSON.stringify($scope.ehourTables, null, '\t') +
+				'; selectedEhourTables: ' +
+				JSON.stringify($scope.selectedEhourTables, null, '\t'));
 		};
 
 		$scope.migrateTables = function() {
 			$log.log('migrating tables: ' +
-				JSON.stringify($scope.selectedTables, null, '\t'));
+				JSON.stringify($scope.selectedEhourTables, null, '\t'));
 
 			var url = 'http://' + $window.location.host +
-					'/#/reporting/report/employee';
+					'/#/migrate';
 	    	$log.log(url);
-	    	//$window.location.href = url;
 		};
 
 	}]);

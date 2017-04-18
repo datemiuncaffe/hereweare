@@ -16,16 +16,15 @@
 						<b>Seleziona le tabelle da migrare</b>
 					</div>
 				</div>
-				<!--select multiple="multiple"-->
-				<select
-					name="ehourTables"
-					class="textInputSmall"
-					id="ehourTablesSelect"
-					ng-model="selectedTables"
-					ng-options="tableName as ehourTable.name for ehourTable in ehourTables"
-					ng-change="onTableChange()">
+				<select name="ehourTables" class="textInputSmall"
+					ng-model="selectedEhourTables"
+					ng-options="ehourTable as ehourTable.name for ehourTable in ehourTables"
+					ng-change="onEhourTablesChange()"
+					size="{{ehourTables.length}}"
+					multiple>
 				</select>
-				<br clear="all">
+				<br clear="all"/>
+				<br/>
 			</div>
 		</div>
 		<div class="bottom">
