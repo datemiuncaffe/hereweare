@@ -1,5 +1,6 @@
 .bodycontent {
   padding-left: 400px;
+  padding-right: 400px;
   padding-top:10px;
   background-color: #165697;
   border-left-color: cyan;
@@ -10,11 +11,27 @@
 .bodycontent .sensei-logo-png {
   background-color: rgb(92, 220, 254);
 }
-.bodycontent .login {
+
+/* ------ login logo ------------- */
+.bodycontent .loginLogo {
+  padding-top: 40px;
+}
+
+/* ------ login infos ------------- */
+.bodycontent .loginInfos {
+   padding-top: 40px;
+}
+.bodycontent .loginInfos p {
+   font-size: 20px;
+   color: #e3e39d;
+}
+
+/* ------ login button ------------- */
+.bodycontent .loginButton {
   padding-top: 40px;
   padding-bottom: 40px;
 }
-.bodycontent .login-button {
+.bodycontent .loginButton .md-button {
   border-color: #080808;
   border-radius: 0;
   cursor: pointer;
@@ -22,12 +39,14 @@
   white-space: normal;
   width: 100%;
 }
-.bodycontent .login-button span {
+.bodycontent .loginButton .md-button span {
   font-size: 16px;
   color: #e3e39d;
   text-transform: uppercase;
-  background-color: rgba(0, 0, 0, 1.0);
+  background-color: rgba(0, 116, 215, 1.0);
+  width: 200px;
+  display: inline-block;
 }
-.bodycontent .login-button span:hover {
+.bodycontent .loginButton .md-button span:hover {
   color: #fff;
 }

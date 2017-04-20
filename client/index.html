@@ -59,6 +59,7 @@
     <script src="vendor/angular-material/angular-material.js"></script>
     <script src="vendor/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="vendor/angular-cache/dist/angular-cache.js" type="text/javascript"></script>
+    <script src="vendor/angular-cookies/angular-cookies.js" type="text/javascript"></script>
     <script src="vendor/angular-file-saver/dist/angular-file-saver.bundle.js" type="text/javascript"></script>
     <script src="vendor/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js" type="text/javascript"></script>
     <script src="vendor/js-xlsx/dist/xlsx.core.min.js" type="text/javascript"></script>
@@ -103,7 +104,7 @@
     <script src="js/controllers/working/employeeCosts.js"></script>
 
   </head>
-  <body ng-app="app">
+  <body ng-app="app" ng-controller="MainController">
     <div class="headers" role="navigation" ng-controller="MenuController as vm">
       <div class="headers-container">
 
@@ -131,6 +132,14 @@
               </md-menu-item>
             </md-menu-content>
           </md-menu>
+        </div>
+
+        <div class="headers-logout">
+           <md-button class="md-button-toggle" title="logout" ng-click="logout()">
+             <span aria-hidden="true">
+               LOGOUT
+             </span>
+           </md-button>
         </div>
 
       </div>

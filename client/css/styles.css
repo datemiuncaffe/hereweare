@@ -121,6 +121,34 @@ body {
   color: #fff;
 }
 
+.headers-container > .headers-logout {
+  border-left-color: cyan;
+  border-left-width: medium;
+  border-left-style: solid;
+  padding-top: 23px;
+  padding-bottom: 23px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+  float: right;
+}
+.headers-container > .headers-logout {
+  border-right-color: cyan;
+  border-right-width: medium;
+  border-right-style: solid;
+}
+.headers-logout span {
+   font-size: 20px;
+   color: #e3e39d;
+}
+.headers-logout span:hover {
+   background-color: transparent;
+   color: #fff;
+   text-decoration: none;
+}
+
 /* ------------------------------------ */
 .bodycontent {
   display: flex;

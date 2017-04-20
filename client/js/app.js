@@ -15,7 +15,8 @@ angular
     'ehourqueries',
     'export-service',
     'ngStorage',
-    'dndLists'
+    'dndLists',
+    'ngCookies'
   ])
   .config(['$stateProvider', '$urlRouterProvider',
             '$locationProvider', '$provide',
@@ -226,7 +227,29 @@ angular
 				}, 1);
 			}
 		};
-	});
+   })
+   .controller('MainController',
+      ['$rootScope', '$scope', '$window', '$location', 'crud', '$cookies',
+      function ($rootScope, $scope, $window, $location, crud, $cookies) {
+         $scope.loginPageUrl = 'http://' + $window.location.host + '/login.html';
+
+         var hwAuthCookie = $cookies.getObject('hwAuth');
+         console.log('hwAuthCookie: ' +
+            JSON.stringify(hwAuthCookie, null, '\t'));
+
+         if (!hwAuthCookie) {
+            $window.location.href = $scope.loginPageUrl;
+            //$location.path(url);
+         }
+
+         $scope.logout = function() {
+            console.log('removing hwAuth cookie ...');
+            $cookies.remove('hwAuth');
+            console.log('redirect to: ' + $scope.loginPageUrl);
+            $window.location.href = $scope.loginPageUrl;
+         }
+
+   }]);
 
 angular.module('ehourqueries', ['ngFileSaver']);
 angular.module('common.services',[]);
