@@ -6,56 +6,56 @@
 
     var sections = {
       verticalSections: [
-        {name: 'Overview', type: 'link', state: 'overview'},
-        {name: 'Ricerca', type: 'link', state: 'ricerca'},
+        {name: 'Overview', type: 'link', state: 'overview', visibility: [1,2,4,5]},
+        {name: 'Ricerca', type: 'link', state: 'ricerca', visibility: [1,2,4,5]},
         {name: 'Progetti', type: 'toggle', pages: [
-          {name: 'Attivi', type: 'link', state: 'activeprojects', icon: ''},
-          {name: 'Interni', type: 'link', state: 'senseiprojects', icon: ''},
-          {name: 'Nuovi', type: 'link', state: 'newprojects', icon: ''}]
+          {name: 'Attivi', type: 'link', state: 'activeprojects', visibility: [1,2,4,5], icon: ''},
+          {name: 'Interni', type: 'link', state: 'senseiprojects', visibility: [1,2,4,5], icon: ''},
+          {name: 'Nuovi', type: 'link', state: 'newprojects', visibility: [1,2,4,5], icon: ''}]
         },
         {name: 'Riepilogo dipendenti', type: 'toggle', pages: [
-          {name: 'Ore mese', type: 'link', state: 'oremese', icon: ''},
-          {name: 'GG commessa dip.', type: 'link', state: 'giornicommessautente', icon: ''},
-          {name: 'GG dip. commentati', type: 'link', state: 'giornicommessautentewithcomments', icon: ''}]
+          {name: 'Ore mese', type: 'link', state: 'oremese', visibility: [1,3,4,5], icon: ''},
+          {name: 'GG commessa dip.', type: 'link', state: 'giornicommessautente', visibility: [1,3,4,5], icon: ''},
+          {name: 'GG dip. commentati', type: 'link', state: 'giornicommessautentewithcomments', visibility: [1,3,4,5], icon: ''}]
         },
         {name: 'Riepilogo commesse', type: 'toggle', pages: [
-          {name: 'GG commessa', type: 'link', state: 'giornicommessa', icon: ''},
-          {name: 'GG erogate', type: 'link', state: 'giorni', icon: ''},
-          {name: 'GG cliente', type: 'link', state: 'giornicliente', icon: ''},
-          {name: 'GG cliente progetto', type: 'link', state: 'giorniclienteprogetto', icon: ''}]
+          {name: 'GG commessa', type: 'link', state: 'giornicommessa', visibility: [1,3,4,5], icon: ''},
+          {name: 'GG erogate', type: 'link', state: 'giorni', visibility: [1,3,4,5], icon: ''},
+          {name: 'GG cliente', type: 'link', state: 'giornicliente', visibility: [1,3,4,5], icon: ''},
+          {name: 'GG cliente progetto', type: 'link', state: 'giorniclienteprogetto', visibility: [1,3,4,5], icon: ''}]
         },
         {name: 'Reporting', type: 'toggle', pages: [
-          {name: 'Per dipendente', type: 'link', state: 'employeefilter', icon: ''}]
+          {name: 'Per dipendente', type: 'link', state: 'employeefilter', visibility: [1,2,4,5], icon: ''}]
         },
-        {name: 'Budgets', type: 'tree', pages: []},
+        {name: 'Budgets', type: 'tree', pages: [], visibility: [1,2,4,5]},
 		  {name: 'Working', type: 'toggle', pages: [
-		    {name: 'Costi interni', type: 'link', state: 'employeecosts', icon: ''}]
+		    {name: 'Costi interni', type: 'link', state: 'employeecosts', visibility: [1,2,4,5], icon: ''}]
         },
-        {name: 'Migrate', type: 'link', state: 'migrateehourtables'}
+        {name: 'Migrate', type: 'link', state: 'migrateehourtables', visibility: [5]}
       ],
       orizontalSections: [
-        {name: 'Overview', type: 'link', state: 'overview'},
-        {name: 'Ricerca', type: 'link', state: 'ricerca'},
+        {name: 'Overview', type: 'link', state: 'overview', visibility: [1,2,4,5]},
+        {name: 'Ricerca', type: 'link', state: 'ricerca', visibility: [1,2,4,5]},
         {name: 'Progetti', type: 'toggle', width: '400px', pages: [
-          {name: 'Attivi', type: 'link', state: 'activeprojects', icon: ''},
-          {name: 'Interni', type: 'link', state: 'senseiprojects', icon: ''},
-          {name: 'Nuovi', type: 'link', state: 'newprojects', icon: ''}]
+          {name: 'Attivi', type: 'link', state: 'activeprojects', visibility: [1,2,4,5], icon: ''},
+          {name: 'Interni', type: 'link', state: 'senseiprojects', visibility: [1,2,3,4,5], icon: ''},
+          {name: 'Nuovi', type: 'link', state: 'newprojects', visibility: [1,2,4,5], icon: ''}]
         },
         {name: 'Riepilogo dipendenti', type: 'toggle', pages: [
-          {name: 'Ore mese', type: 'link', state: 'oremese', icon: ''},
-          {name: 'GG commessa dip.', type: 'link', state: 'giornicommessautente', icon: ''},
-          {name: 'GG dip. commentati', type: 'link', state: 'giornicommessautentewithcomments', icon: ''}]
+          {name: 'Ore mese', type: 'link', state: 'oremese', visibility: [1,3,4,5], icon: ''},
+          {name: 'GG commessa dip.', type: 'link', state: 'giornicommessautente', visibility: [1,3,4,5], icon: ''},
+          {name: 'GG dip. commentati', type: 'link', state: 'giornicommessautentewithcomments', visibility: [1,3,4,5], icon: ''}]
         },
         {name: 'Riepilogo commesse', type: 'toggle', pages: [
-          {name: 'GG commessa', type: 'link', state: 'giornicommessa', icon: ''},
-          {name: 'GG erogate', type: 'link', state: 'giorni', icon: ''},
-          {name: 'GG cliente', type: 'link', state: 'giornicliente', icon: ''},
-          {name: 'GG cliente progetto', type: 'link', state: 'giorniclienteprogetto', icon: ''}]
+          {name: 'GG commessa', type: 'link', state: 'giornicommessa', visibility: [1,3,4,5], icon: ''},
+          {name: 'GG erogate', type: 'link', state: 'giorni', visibility: [1,3,4,5], icon: ''},
+          {name: 'GG cliente', type: 'link', state: 'giornicliente', visibility: [1,3,4,5], icon: ''},
+          {name: 'GG cliente progetto', type: 'link', state: 'giorniclienteprogetto', visibility: [1,3,4,5], icon: ''}]
         },
         {name: 'Reporting', type: 'toggle', pages: [
-          {name: 'Per dipendente', type: 'link', state: 'employeefilter', icon: ''}]
+          {name: 'Per dipendente', type: 'link', state: 'employeefilter', visibility: [1,3,4,5], icon: ''}]
         },
-        {name: 'Migrate', type: 'link', state: 'migrateehourtables'}
+        {name: 'Migrate', type: 'link', state: 'migrateehourtables', visibility: [5]}
       ]
     };
 
@@ -161,7 +161,32 @@
           };
           section.pages.push(projectSection);
         });
-      }
+     },
+     getSections: function(sectionType, role) {
+        if (self.sections[sectionType]) {
+           return self.filterSections(self.sections[sectionType], role);
+        }
+        return [];
+     },
+     filterSections: function(sections, role) {
+         function filterSection(section, role) {
+            if (section.visibility) {
+               if (section.visibility.indexOf(role) !== -1) {
+                  return section;
+               }
+            } else {
+               if (section.type !== 'link') {
+                  if (section.pages) {
+                     var visiblePages = section.pages.filter(filterSection);
+                     if (visiblePages && visiblePages.length > 0) {
+                        return section;
+                     }
+                  }
+               }
+            }
+         }
+         return sections.filter(filterSection);
+     }
     };
 
     function sortProjectsByName(projects) {

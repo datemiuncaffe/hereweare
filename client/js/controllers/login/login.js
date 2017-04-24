@@ -3,18 +3,27 @@
 
   angular.module('appLogin')
     .controller('LoginController',
-        ['$rootScope', '$scope', '$window', '$location', 'crud', '$cookies',
-        function ($rootScope, $scope, $window, $location, crud, $cookies) {
+        ['$rootScope', '$scope', '$window', '$location', 'crud',
+         '$cookies', '$authenService', '$authorizeService',
+        function ($rootScope, $scope, $window, $location, crud,
+          $cookies, $authenService, $authorizeService) {
 
       $scope.hwuser = {
-         name: 'PROD',
-         email: 'PROD@senseisrl.it',
-         password: 'PRODPSW',
+         name: 'DEFAULT',
+         email: 'DEFAULT@senseisrl.it',
+         password: 'PASS',
+         role: {
+            id: 0,
+            name: ''
+         },
          status: {
             isAuthen: false
+         },
+         session: {
+            id: 0
          }
       };
-      
+
       console.log('hwAuthCookie: ' +
          JSON.stringify($cookies.getObject('hwAuth'), null, '\t'));
 
@@ -36,7 +45,17 @@
         console.log("login");
         console.log("hwuser: " + JSON.stringify($scope.hwuser, null, '\t'));
 
-        $scope.hwuser.status.isAuthen = true;
+        // authen
+        authenticate($scope.hwuser);
+        console.log("authenticated hwuser: " +
+         JSON.stringify($scope.hwuser, null, '\t'));
+
+        // getRole from author service
+        getRole($scope.hwuser);
+        console.log("authorized hwuser: " +
+         JSON.stringify($scope.hwuser, null, '\t'));
+
+        // cookie
         console.log('hwAuthCookie: ' +
          JSON.stringify($cookies.get('hwAuth'), null, '\t'));
         $cookies.put('hwAuth', JSON.stringify($scope.hwuser));
@@ -48,6 +67,19 @@
         //$location.path('/');
         //$location.url('/');
         //$location.replace();
+      };
+
+      // call authen service ...
+      function authenticate(hwuser) {
+         console.log('authenticate...');
+         //console.log('authenService: ' + $authenService);
+         $authenService.authen(hwuser);
+      };
+
+      // call author service ...
+      function getRole(hwuser) {
+         console.log('getRole from authorizeService...');
+         $authorizeService.getRole(hwuser);
       };
 
     }]);
