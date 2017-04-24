@@ -233,11 +233,11 @@ angular
       function ($rootScope, $scope, $window, $location, crud, $cookies) {
          $scope.loginPageUrl = 'http://' + $window.location.host + '/login.html';
 
-         var hwAuthCookie = $cookies.getObject('hwAuth');
+         $scope.hwAuthCookie = $cookies.getObject('hwAuth');
          console.log('hwAuthCookie: ' +
-            JSON.stringify(hwAuthCookie, null, '\t'));
+            JSON.stringify($scope.hwAuthCookie, null, '\t'));
 
-         if (!hwAuthCookie) {
+         if (!$scope.hwAuthCookie) {
             $window.location.href = $scope.loginPageUrl;
             //$location.path(url);
          }

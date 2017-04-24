@@ -2,7 +2,8 @@
   'use strict';
 
   angular.module('common.services')
-    .factory('menu', ['$location', 'crud', function ($location, crud) {
+    .factory('menu',
+    ['$location', 'crud', '$log', function ($location, crud, $log) {
 
     var sections = {
       verticalSections: [
@@ -163,15 +164,22 @@
         });
      },
      getSections: function(sectionType, role) {
+        $log.info('getSections. sectionType: ' + sectionType + '; role: ' + role);
         if (self.sections[sectionType]) {
            return self.filterSections(self.sections[sectionType], role);
         }
         return [];
      },
      filterSections: function(sections, role) {
-         function filterSection(section, role) {
+         if (!role) {
+            role = 1;
+         }
+         function filterSection(section) {
+            console.log('current section: ' +
+               JSON.stringify(section, null, '\t'));
             if (section.visibility) {
                if (section.visibility.indexOf(role) !== -1) {
+                  console.log('indexOf: ' + section.visibility.indexOf(role));
                   return section;
                }
             } else {
@@ -185,7 +193,10 @@
                }
             }
          }
-         return sections.filter(filterSection);
+         var filteredSections = sections.filter(filterSection);
+         console.log('filteredSections: ' +
+            JSON.stringify(filteredSections, null, '\t'));
+         return filteredSections;
      }
     };
 

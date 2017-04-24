@@ -109,7 +109,7 @@
       <div class="headers-container">
 
         <div class="headers-menu" ng-class="{'last': $last}"
-          ng-repeat="section in vm.menu.sections.orizontalSections">
+          ng-repeat="section in vm.menu.getSections(&quot;orizontalSections&quot;, hwAuthCookie.role.id)">
           <a ui-sref="{{section.state}}"
              ui-sref-active="active"
              ng-if="section.type === 'link'">
@@ -153,7 +153,7 @@
           md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
           <md-content role="navigation" class="menuvert-content">
             <ul class="side-menu">
-              <li ng-repeat="section in vm.menu.sections.verticalSections"
+              <li ng-repeat="section in vm.menu.getSections(&quot;verticalSections&quot;, hwAuthCookie.role.id)"
                   class="parent-list-item"
                   ng-class="{'parentActive' : vm.isSectionSelected(section)}">
                 <h2 class="menu-heading" ng-if="section.type === 'heading'"
