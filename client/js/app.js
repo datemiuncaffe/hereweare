@@ -1,23 +1,5 @@
 angular
-  .module('app', [
-    'lbServices',
-    'hwlog-service',
-    'ngResource',
-    'ui.router',
-    'ngTable',
-    'angucomplete-alt',
-    'crudService',
-    'myMenuApp.controllers',
-    'ngAnimate',
-    'ngMaterial',
-    'ngAria',
-    'table.service',
-    'ehourqueries',
-    'export-service',
-    'ngStorage',
-    'dndLists',
-    'ngCookies'
-  ])
+  .module('app')
   .config(['$stateProvider', '$urlRouterProvider',
             '$locationProvider', '$provide',
             function($stateProvider, $urlRouterProvider, $locationProvider, $provide) {
@@ -229,8 +211,8 @@ angular
 		};
    })
    .controller('MainController',
-      ['$rootScope', '$scope', '$window', '$location', 'crud', '$cookies',
-      function ($rootScope, $scope, $window, $location, crud, $cookies) {
+      ['$rootScope', '$scope', '$window', '$location', 'crud', '$cookies', 'menu',
+      function ($rootScope, $scope, $window, $location, crud, $cookies, menu) {
          $scope.loginPageUrl = 'http://' + $window.location.host + '/login.html';
 
          $scope.hwAuthCookie = $cookies.getObject('hwAuth');
@@ -249,7 +231,10 @@ angular
             $window.location.href = $scope.loginPageUrl;
          }
 
-   }]);
+         console.log('MENU: ' + menu);
+         $scope.verticalSections =
+            menu.getSections("verticalSections", $scope.hwAuthCookie.role.id);
+         $scope.orizontalSections =
+            menu.getSections("orizontalSections", $scope.hwAuthCookie.role.id);
 
-angular.module('ehourqueries', ['ngFileSaver']);
-angular.module('common.services',[]);
+   }]);

@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  angular.module('export-service',[])
+  angular.module('export-service')
          .factory('excelgen', ['$location',
                           function ($location) {
     var self;

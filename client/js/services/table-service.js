@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  angular.module('table.service',[])
+  angular.module('table.service')
     .factory('hwtables', ['$rootScope', '$compile',
                           function ($rootScope, $compile) {
       var hwtables;

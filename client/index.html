@@ -67,22 +67,22 @@
     <script src="vendor/ngstorage/ngStorage.js" type="text/javascript"></script>
     <script src="vendor/chartist/dist/chartist.js" type="text/javascript"></script>
 
+    <script src="js/modules.js"></script>
+
     <script src="js/app.js"></script>
 
     <script src="js/services/lb-services.js"></script>
     <script src="js/services/hwlog-service.js"></script>
     <script src="js/services/crud-service.js"></script>
     <script src="js/services/table-service.js"></script>
-    <script src="js/services/menu-service.js"></script>
+    <script src="js/services/common-services/menu-service.js"></script>
     <script src="js/services/export-service.js"></script>
-    <script src="js/services/internal-costs-service.js"></script>
+    <script src="js/services/common-services/internal-costs-service.js"></script>
 
     <script src="js/pikaday.js"></script>
     <script src="js/directives/calendar.js"></script>
-    <script src="js/directives/menu-directive.js"></script>
-    <script src="js/directives/tree-directive.js"></script>
+    <script src="js/directives/menu-directives.js"></script>
 
-    <script src="js/controllers/menu-controller.js"></script>
     <script src="js/controllers/projects/activeprojects.js"></script>
     <script src="js/controllers/projects/senseiprojects.js"></script>
     <script src="js/controllers/projects/newprojects.js"></script>
@@ -105,11 +105,11 @@
 
   </head>
   <body ng-app="app" ng-controller="MainController">
-    <div class="headers" role="navigation" ng-controller="MenuController as vm">
+    <div class="headers" role="navigation">
       <div class="headers-container">
 
         <div class="headers-menu" ng-class="{'last': $last}"
-          ng-repeat="section in vm.menu.getSections(&quot;orizontalSections&quot;, hwAuthCookie.role.id)">
+          ng-repeat="section in orizontalSections">
           <a ui-sref="{{section.state}}"
              ui-sref-active="active"
              ng-if="section.type === 'link'">
@@ -140,6 +140,12 @@
                LOGOUT
              </span>
            </md-button>
+           <span aria-hidden="true">
+             role: {{hwAuthCookie.role.name}}
+           </span>
+           <span aria-hidden="true">
+             id: {{hwAuthCookie.role.id}}
+           </span>
         </div>
 
       </div>
@@ -147,15 +153,15 @@
 
     <div class="bodycontent">
 
-      <div class="menuvert" ng-controller="MenuController as vm">
+      <div class="menuvert">
         <img class="sensei-logo-png" src="img/sensei-logo_nobg.png"></img>
         <md-sidenav class="md-sidenav-left md-whiteframe-z1 menuvert-container"
           md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
           <md-content role="navigation" class="menuvert-content">
             <ul class="side-menu">
-              <li ng-repeat="section in vm.menu.getSections(&quot;verticalSections&quot;, hwAuthCookie.role.id)"
+              <li ng-repeat="section in verticalSections"
                   class="parent-list-item"
-                  ng-class="{'parentActive' : vm.isSectionSelected(section)}">
+                  ng-class="{'parentActive' : isSectionSelected(section)}">
                 <h2 class="menu-heading" ng-if="section.type === 'heading'"
                     id="heading_{{ section.name | nospace }}">
                   {{section}}

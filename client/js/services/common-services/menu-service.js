@@ -166,7 +166,11 @@
      getSections: function(sectionType, role) {
         $log.info('getSections. sectionType: ' + sectionType + '; role: ' + role);
         if (self.sections[sectionType]) {
-           return self.filterSections(self.sections[sectionType], role);
+           var filteredSections = self.filterSections(self.sections[sectionType], role);
+           if (sectionType == 'verticalSections') {
+             console.log('filteredSections: ' + JSON.stringify(filteredSections, null, '\t'));
+           }
+           return filteredSections;
         }
         return [];
      },
@@ -175,18 +179,21 @@
             role = 1;
          }
          function filterSection(section) {
-            console.log('current section: ' +
-               JSON.stringify(section, null, '\t'));
+            //console.log('current section: ' +
+            //   JSON.stringify(section, null, '\t'));
             if (section.visibility) {
                if (section.visibility.indexOf(role) !== -1) {
-                  console.log('indexOf: ' + section.visibility.indexOf(role));
+                  //console.log('indexOf: ' + section.visibility.indexOf(role));
                   return section;
                }
             } else {
                if (section.type !== 'link') {
                   if (section.pages) {
                      var visiblePages = section.pages.filter(filterSection);
+                     //console.log('visiblePages: ' +
+                     //   JSON.stringify(visiblePages, null, '\t'));
                      if (visiblePages && visiblePages.length > 0) {
+                        section.pages = visiblePages;
                         return section;
                      }
                   }
@@ -194,8 +201,8 @@
             }
          }
          var filteredSections = sections.filter(filterSection);
-         console.log('filteredSections: ' +
-            JSON.stringify(filteredSections, null, '\t'));
+         //console.log('filteredSections: ' +
+         //   JSON.stringify(filteredSections, null, '\t'));
          return filteredSections;
      }
     };
