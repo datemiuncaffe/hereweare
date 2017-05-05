@@ -222,6 +222,12 @@ angular
          if (!$scope.hwAuthCookie) {
             $window.location.href = $scope.loginPageUrl;
             //$location.path(url);
+         } else {
+            console.log('MENU: ' + menu);
+            $scope.verticalSections =
+               menu.getSections("verticalSections", $scope.hwAuthCookie.role.id);
+            $scope.orizontalSections =
+               menu.getSections("orizontalSections", $scope.hwAuthCookie.role.id);
          }
 
          $scope.logout = function() {
@@ -230,11 +236,5 @@ angular
             console.log('redirect to: ' + $scope.loginPageUrl);
             $window.location.href = $scope.loginPageUrl;
          }
-
-         console.log('MENU: ' + menu);
-         $scope.verticalSections =
-            menu.getSections("verticalSections", $scope.hwAuthCookie.role.id);
-         $scope.orizontalSections =
-            menu.getSections("orizontalSections", $scope.hwAuthCookie.role.id);
 
    }]);
