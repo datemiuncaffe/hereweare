@@ -87,22 +87,29 @@ angular
         elemScope.$groupRow.show = false;
       },
       grouptable: function(row) {
-        //console.log('grouping by: ' +
-        //  JSON.stringify($scope.tableGrouping.selected, null, '\t'));
-        if (row != null) {
-          return row["mese"];
-        } else {
-          var selector = "section#ggcommessautente table.ehourdata thead";
-          var elem = angular.element(selector);
-          var elemScope = elem.scope().$$childHead;
-          if (angular.isFunction(elemScope.groupBy) &&
-              $scope.tableGrouping.selected.length > 0) {
-            elemScope.groupBy($scope.tableGrouping.selected[0]);
-          }
-        }
+         if (row != null) {
+            return row["mese"];
+         } else {
+            var selector = "section#ggcommessautente table.ehourdata thead";
+            var elem = angular.element(selector);
+            var elemScope = elem.scope().$$childHead;
+            if (elemScope && elemScope.$ctrl &&
+                  angular.isFunction(elemScope.$ctrl.groupBy) &&
+                  $scope.tableGrouping.selected.length > 0) {
+               console.log('tableGrouping selected: ' +
+               $scope.tableGrouping.selected[0]);
+
+               elemScope.params.group($scope.tableGrouping.selected[0]);
+
+               //var selectedGroup = elemScope.$ctrl
+               //.findGroupColumn($scope.tableGrouping.selected[0]);
+
+               // console.log('$columns: ' + JSON.stringify(elemScope.$columns, null, '\t'));
+               // elemScope.$ctrl.groupBy(selectedGroup);
+            }
+         }
       }
     };
-
 
     /* ------------------------------- */
     /* ---- end custom table grouping ---- */
@@ -128,7 +135,7 @@ angular
       },
       {
     		getData : function(params) {
-    			console.log('params: ' + JSON.stringify(params, null, '\t'));
+    			//console.log('params: ' + JSON.stringify(params, null, '\t'));
     			/*console.log('params.url(): ' +
             JSON.stringify(params.url(), null, '\t'));
           console.log('params.group(): ' +
@@ -138,8 +145,9 @@ angular
     			// ajax request to back end
     			return query.get(params.url()).$promise.then(function(data) {
     				var res = [];
-    				if (data != null && data.giorniCommessaUtente != null && data.giorniCommessaUtente.length > 0) {
-    					console.log('data giorni Commessa Utente: ' + JSON.stringify(data.giorniCommessaUtente, null, '\t'));
+    				if (data != null && data.giorniCommessaUtente != null &&
+                     data.giorniCommessaUtente.length > 0) {
+    					//console.log('data giorni Commessa Utente: ' + JSON.stringify(data.giorniCommessaUtente, null, '\t'));
     					res = data.giorniCommessaUtente;
     				}
 
@@ -150,6 +158,7 @@ angular
                   $scope.sumGrouped(res, "giornateMese")
                      .toFixed(2).replace(".",",");
 
+               console.log('Giorni Commessa Utente: ' + JSON.stringify(res, null, '\t'));
     				return res;
     			});
     		}

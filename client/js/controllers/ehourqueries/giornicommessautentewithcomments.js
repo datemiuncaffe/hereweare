@@ -72,10 +72,20 @@ angular
             "section#ggcommessautentewithcomments table.ehourdata thead";
           var elem = angular.element(selector);
           var elemScope = elem.scope().$$childHead;
-          if (angular.isFunction(elemScope.groupBy) &&
-              $scope.tableGrouping.selected.length > 0) {
-            elemScope.groupBy($scope.tableGrouping.selected[0]);
-          }
+          if (elemScope && elemScope.$ctrl &&
+                angular.isFunction(elemScope.$ctrl.groupBy) &&
+                $scope.tableGrouping.selected.length > 0) {
+             console.log('tableGrouping selected: ' +
+             $scope.tableGrouping.selected[0]);
+
+             elemScope.params.group($scope.tableGrouping.selected[0]);
+
+             //var selectedGroup = elemScope.$ctrl
+             //.findGroupColumn($scope.tableGrouping.selected[0]);
+
+             // console.log('$columns: ' + JSON.stringify(elemScope.$columns, null, '\t'));
+             // elemScope.$ctrl.groupBy(selectedGroup);
+          }          
         }
       }
     };
@@ -106,7 +116,7 @@ angular
       },
       {
     		getData : function(params) {
-    			console.log('params: ' + JSON.stringify(params, null, '\t'));
+    			//console.log('params: ' + JSON.stringify(params, null, '\t'));
     			/*console.log('params.url(): ' +
             JSON.stringify(params.url(), null, '\t'));
           console.log('params.group(): ' +
@@ -119,8 +129,8 @@ angular
     				if (data != null &&
                 data.giorniCommessaUtenteWithComments != null &&
                 data.giorniCommessaUtenteWithComments.length > 0) {
-    					console.log('data giorni Commessa Utente con commenti: ' +
-                JSON.stringify(data.giorniCommessaUtenteWithComments, null, '\t'));
+    					//console.log('data giorni Commessa Utente con commenti: ' +
+                //JSON.stringify(data.giorniCommessaUtenteWithComments, null, '\t'));
     					res = data.giorniCommessaUtenteWithComments;
     				}
 

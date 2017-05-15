@@ -167,9 +167,9 @@
         $log.info('getSections. sectionType: ' + sectionType + '; role: ' + role);
         if (self.sections[sectionType]) {
            var filteredSections = self.filterSections(self.sections[sectionType], role);
-           if (sectionType == 'verticalSections') {
-             console.log('filteredSections: ' + JSON.stringify(filteredSections, null, '\t'));
-           }
+         //   if (sectionType == 'verticalSections') {
+         //     console.log('filteredSections: ' + JSON.stringify(filteredSections, null, '\t'));
+         //   }
            return filteredSections;
         }
         return [];

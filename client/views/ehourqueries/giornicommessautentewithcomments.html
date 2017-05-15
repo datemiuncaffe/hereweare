@@ -17,22 +17,32 @@
 					</button>
 				</form>
 
-				<form class="grouping">
-					<div layout="row" layout-wrap flex>
-						<div class="groupingLegend" flex="15">
-							<h4>
-								Raggruppa per:
-							</h4>
-						</div>
-						<div class="groupingCheckboxes" layout="row" flex>
-							<md-checkbox class="item-checkbox"
-								ng-repeat="item in tableGrouping.items"
-								ng-checked="tableGrouping.exists(item, tableGrouping.selected)"
-								ng-click="tableGrouping.toggle(item, tableGrouping.selected)">
-								{{ item.label }}
-							</md-checkbox>
-						</div>
-					</div>
+				<form>
+					<table class="grouping">
+						<thead>
+							<tr class="groupingLegend">
+								<th colspan="10">
+									<h4>
+										Raggruppa per:
+									</h4>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="groupingCheckboxes">
+								<td></td>
+								<td ng-repeat="item in tableGrouping.items">
+									<md-checkbox class="item-checkbox"
+										ng-checked="tableGrouping.exists(item, tableGrouping.selected)"
+										ng-click="tableGrouping.toggle(item, tableGrouping.selected)">
+										{{ item.label }}
+									</md-checkbox>
+								</td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
 				</form>
 
 				<table ng-table="ggCommessaUtWCommCtrl.tableParams"
@@ -51,7 +61,7 @@
 					</tr>
 
 					<tr ng-hide="group.$hideRows" ng-repeat="row in group.data">
-					  <td data-title="'ANNO'" filter="{anno: 'text'}" sortable="'anno'">
+						<td data-title="'ANNO'" filter="{anno: 'text'}" sortable="'anno'">
 							{{row.anno}}
 						</td>
 						<td data-title="'MESE'" filter="ggCommessaUtWCommCtrl.monthFilterByInterval" sortable="'mese'">
@@ -60,12 +70,16 @@
 						<td data-title="'GIORNO DEL MESE'" filter="{dayOfMonth: 'text'}" sortable="'dayOfMonth'">
 							{{row.dayOfMonth}}
 						</td>
-					  <td data-title="'CLIENTE'" filter="{nomeCliente: 'text'}" sortable="'nomeCliente'">
+						<td data-title="'CLIENTE'" filter="{nomeCliente: 'text'}" sortable="'nomeCliente'">
 							{{row.nomeCliente}}
 						</td>
-					  <td data-title="'CODICE PROGETTO'" filter="{codiceProgetto: 'text'}" sortable="'codiceProgetto'">{{row.codiceProgetto}}</td>
-					  <td data-title="'PROGETTO'" filter="{nomeProgetto: 'text'}" sortable="'nomeProgetto'">{{row.nomeProgetto}}</td>
-					  <td data-title="'NOME'" filter="{nomeDipendente: 'text'}" sortable="'nomeDipendente'">
+						<td data-title="'CODICE PROGETTO'" filter="{codiceProgetto: 'text'}" sortable="'codiceProgetto'">
+							{{row.codiceProgetto}}
+						</td>
+						<td data-title="'PROGETTO'" filter="{nomeProgetto: 'text'}" sortable="'nomeProgetto'">
+							{{row.nomeProgetto}}
+						</td>
+						<td data-title="'NOME'" filter="{nomeDipendente: 'text'}" sortable="'nomeDipendente'">
 							{{row.nomeDipendente}}
 						</td>
 						<td data-title="'COGNOME'" filter="{cognomeDipendente: 'text'}" sortable="'cognomeDipendente'">
@@ -80,40 +94,24 @@
 					</tr>
 
 					<tr class="ggcommessautenteTableTotals" ng-repeat-end>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td class="text-success text-right">
+						<td colspan="9" class="text-success text-left">
 							<strong>Totali:</strong>
 						</td>
-            <td>
+						<td>
 							<em>{{ sumGrouped(group.data, "oreMese").toFixed(2).replace(".",",") }}</em>
 						</td>
-        	</tr>
+					</tr>
 
 					<tfoot ng-if="isLastPage()">
-	          <tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td class="text-success text-right">
+						<tr>
+							<td colspan="9" class="text-success text-left">
 								<strong>Totali complessivi:</strong>
 							</td>
-	            <td>
+							<td>
 								<em>{{ totalHours }}</em>
 							</td>
-	          </tr>
-	        </tfoot>
+						</tr>
+					</tfoot>
 
 			  </table>
 			</div>
