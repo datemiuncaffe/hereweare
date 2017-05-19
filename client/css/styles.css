@@ -10,49 +10,76 @@ body {
 }
 
 .headers {
+   display: flex;
   background-color: #165697;
   border-color: #080808;
   box-sizing: content-box;
   flex-basis: 100px;
   order: 1;
+  height: 10%;
+}
+
+/* ------------------------------------------------------ */
+/* -------------------------- LOGO -------------------------------- */
+/* ----------------------------------------------------- */
+.logo-container {
+   flex-basis: 20%;
+   flex-shrink: 0;
+   margin-right: auto;
+   border-color: #080808;
+   box-sizing: content-box;
+   order: 1;
+}
+.logo-container img.sensei-logo-png {
+   background-color: rgba(0, 0, 0, 1.0);
+   width: 100%;
+   padding: 16px;
 }
 
 .headers-container {
-  margin-left: 250px;
-}
-.headers-container a {
-	font-size: 20px;
-  color: #e3e39d;
-  /*text-transform: uppercase;*/
-}
-.headers-container a:hover {
-  background-color: transparent;
-  color: #fff;
-  text-decoration: none;
+   display: flex;
+   border-left-style: double;
+   flex-basis: 70%;
+   flex-grow: 1;
+   order: 2;
+   /*align-content: center;*/
+   align-items: center;
 }
 .headers-container > .headers-menu {
   border-left-color: cyan;
   border-left-width: medium;
   border-left-style: solid;
-  padding-top: 23px;
-  padding-bottom: 23px;
+  padding-top: 13px;
+  padding-bottom: 13px;
   padding-left: 15px;
   padding-right: 15px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  display: inline-block;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 .headers-container > .headers-menu.last {
   border-right-color: cyan;
   border-right-width: medium;
   border-right-style: solid;
 }
+
+/* ----------------------------------------------------- */
+/* ------------------- headers-menu content ------------------- */
+/* --------------------------------------------------------- */
+.headers-menu > a {
+   font-size: 18px;
+   color: #e3e39d;
+}
 .headers-menu > a.active {
-  color: #fff;
+   color: #fff;
+}
+.headers-menu > a:hover {
+   background-color: transparent;
+   color: #fff;
+   text-decoration: none;
 }
 .headers-menu .md-button {
   border-radius: 0;
-  font-size: 20px;
+  font-size: 18px;
   color: #e3e39d;
   cursor: pointer;
   font-weight: 400;
@@ -105,7 +132,7 @@ body {
 .headers-menu-content md-menu-item a {
   padding-left: 12px;
   padding-right: 30px;
-  font-size: 20px;
+  font-size: 16px;
   color: #e3e39d;
 }
 .headers-menu-content md-menu-item a:hover,
@@ -121,53 +148,68 @@ body {
   color: #fff;
 }
 
-.headers-container > .headers-logout {
+/* ------------------------------------------------------- */
+/* ------------------- logout ------------------------------------- */
+/* ------------------------------------------------------- */
+.headers > .headers-logout {
   border-left-color: cyan;
   border-left-width: medium;
   border-left-style: solid;
-  padding-top: 23px;
-  padding-bottom: 23px;
+  padding-top: 13px;
+  padding-bottom: 13px;
   padding-left: 15px;
   padding-right: 15px;
   margin-top: 10px;
   margin-bottom: 10px;
-  display: inline-block;
-  float: right;
+  display: flex;
+  border-left-style: double;
+  flex-basis: 10%;
+  flex-grow: 1;
+  order: 3;
+  /*align-content: center;*/
+  align-items: center;
 }
-.headers-container > .headers-logout {
+.headers > .headers-logout {
   border-right-color: cyan;
   border-right-width: medium;
   border-right-style: solid;
 }
-.headers-logout span {
-   font-size: 20px;
+
+.headers > .headers-logout button {
+   float: right;
+}
+.headers > .headers-logout span {
+   font-size: 18px;
    color: #e3e39d;
 }
-.headers-logout span:hover {
+.headers > .headers-logout span:hover {
    background-color: transparent;
    color: #fff;
    text-decoration: none;
 }
 
-/* ------------------------------------ */
+/* ------------------------------------------------------ */
+/* ---------------- BODY -------------------------------- */
+/* ------------------------------------------------------ */
 .bodycontent {
   display: flex;
   align-items: stretch;
-  /*height: 100%;*/
   flex-grow: 1;
   order: 2;
 }
+
+/* -------------------------------------------------------- */
+/* ------------------ MENUVERT ---------------------------- */
+/* -------------------------------------------------------- */
 .menuvert {
-	/*width: 250px;*/
-  flex-basis: 250px;
-	margin-right: auto;
-  margin-top: -101px;
-  background-color: #165697;
-  border-color: #080808;
-  box-sizing: content-box;
-  display: inline-block;
-  float: left;
-  order: 1;
+   flex-basis: 20%;
+   flex-shrink: 0;
+   margin-right: auto;
+   /*margin-top: -101px;*/
+   background-color: #165697;
+   border-color: #080808;
+   box-sizing: content-box;
+   order: 1;
 }
 
 .menuvert .menuvert-container {
@@ -184,32 +226,27 @@ body {
 }
 
 .menuvert p {
-  border-bottom-color: cyan;
-  border-bottom-width: medium;
-  border-bottom-style: solid;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 15px;
-  padding-right: 15px;
-	margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 15px;
-  margin-right: 15px;
-}
-.menuvert img.sensei-logo-png {
-  background-color: rgba(0, 0, 0, 1.0);
-  width: 250px;
-  padding: 16px;
+   border-bottom-color: cyan;
+   border-bottom-width: medium;
+   border-bottom-style: solid;
+   padding-top: 10px;
+   padding-bottom: 10px;
+   padding-left: 15px;
+   padding-right: 15px;
+   margin-top: 10px;
+   margin-bottom: 10px;
+   margin-left: 15px;
+   margin-right: 15px;
 }
 .menuvert .menuvert-container .menuvert-content > ul > li {
-	border-bottom-color: cyan;
-  border-bottom-style: solid;
-  border-bottom-width: medium;
-  margin-left: 10px;
-  margin-right: 5px;
+   border-bottom-color: cyan;
+   border-bottom-style: solid;
+   border-bottom-width: medium;
+   margin-left: 10px;
+   margin-right: 5px;
 }
 .menuvert .menuvert-container .menuvert-content button {
-	font-size: 20px;
+	font-size: 18px;
   color: #e3e39d;
 }
 .menuvert .menuvert-container .menuvert-content button:hover {
@@ -223,9 +260,9 @@ body {
   padding-left: 40px;
   padding-right: 40px;
   border-left-style: double;
-  display: inline-block;
-  flex-basis: 1200px;
-  flex-grow: 1;
+  /*display: inline-block;*/
+  flex-basis: 70%;
+  /*flex-grow: 1;*/
   order: 2;
 }
 
@@ -233,8 +270,43 @@ body {
   /*width: 1050px;*/
 }
 
-.rightbar {
-  /*width: 100%;*/
-  flex-basis: 100px;
-  order: 3;
+/* ---------------------------------------------------------------- */
+/* ---------------------- right BAR ------------------------------- */
+/* ---------------------------------------------------------------- */
+.bodycontent .rightbar {
+   flex-basis: 10%;
+   flex-shrink: 2;
+   margin-left: auto;
+   background-color: #165697;
+   border-color: #080808;
+   box-sizing: content-box;
+   /*display: inline-block;*/
+   order: 3;
+}
+.bodycontent .rightbar > .rightbar-info {
+  border-left-color: cyan;
+  border-left-width: medium;
+  border-left-style: solid;
+  padding-top: 23px;
+  padding-bottom: 23px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+  float: right;
+}
+.bodycontent .rightbar > .rightbar-info {
+  border-right-color: cyan;
+  border-right-width: medium;
+  border-right-style: solid;
+}
+.bodycontent .rightbar > .rightbar-info span {
+   font-size: 18px;
+   color: #e3e39d;
+}
+.bodycontent .rightbar > .rightbar-info span:hover {
+   background-color: transparent;
+   color: #fff;
+   text-decoration: none;
 }

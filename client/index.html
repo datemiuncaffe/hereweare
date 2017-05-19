@@ -106,6 +106,9 @@
   </head>
   <body ng-app="app" ng-controller="MainController">
     <div class="headers" role="navigation">
+      <div class="logo-container">
+         <img class="sensei-logo-png" src="img/sensei-logo_nobg.png"></img>
+      </div>
       <div class="headers-container">
 
         <div class="headers-menu" ng-class="{'last': $last}"
@@ -134,27 +137,19 @@
           </md-menu>
         </div>
 
-        <div class="headers-logout">
-           <md-button class="md-button-toggle" title="logout" ng-click="logout()">
-             <span aria-hidden="true">
-               LOGOUT
-             </span>
-           </md-button>
+      </div>
+      <div class="headers-logout">
+         <md-button class="md-button-toggle" title="logout" ng-click="logout()">
            <span aria-hidden="true">
-             role: {{hwAuthCookie.role.name}}
+             LOGOUT
            </span>
-           <span aria-hidden="true">
-             id: {{hwAuthCookie.role.id}}
-           </span>
-        </div>
-
+         </md-button>
       </div>
     </div>
 
     <div class="bodycontent">
 
       <div class="menuvert">
-        <img class="sensei-logo-png" src="img/sensei-logo_nobg.png"></img>
         <md-sidenav class="md-sidenav-left md-whiteframe-z1 menuvert-container"
           md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
           <md-content role="navigation" class="menuvert-content">
@@ -204,6 +199,14 @@
       </div>
 
       <div class="rightbar">
+         <div class="rightbar-info">
+            <span aria-hidden="true">
+              role: {{hwAuthCookie.role.name}}
+            </span>
+            <span aria-hidden="true">
+              id: {{hwAuthCookie.role.id}}
+            </span>
+         </div>
       </div>
     </div>
 

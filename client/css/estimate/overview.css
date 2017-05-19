@@ -1,78 +1,145 @@
 form[name=estimateForm] div.top {
-  font-family: Arial;
-  font-size: 14px;
-  width: 1000px;
-  float: left;
-  margin-bottom: 10px;
-  border-bottom: 1px solid black;
+   font-family: Arial;
+   font-size: 14px;
+   width: 100%;
+   float: left;
+   margin-bottom: 10px;
+   border-bottom: 1px solid black;
 }
+
+/* --------------------- customers ---------------------------- */
 form[name=estimateForm] div.top > div.customers {
-  float: left;
-  width: 400px;
-  margin-right: 20px;
+   float: left;
+   width: 40%;
+   margin-right: 20px;
 }
+form[name=estimateForm] div.top > div.customers select {
+   display: inline-block;
+   width: 80%;
+   margin-left: 10px;
+}
+
+/* --------------------- projects ----------------------------- */
 form[name=estimateForm] div.top > div.projects {
-  float: left;
-  width: 500px;
-  margin-right: 20px;
+   float: left;
+   width: 50%;
+   margin-right: 20px;
 }
 form[name=estimateForm] div.top > div.projects select {
-  overflow: hidden;
-  width: 350px;
+   display: inline-block;
+   overflow: hidden;
+   width: 70%;
+   margin-left: 10px;
 }
 form[name=estimateForm] div.top > div.projects select option {
-  overflow: hidden;
-  width: 350px;
-  text-overflow: ellipsis;
+   overflow: hidden;
+   text-overflow: ellipsis;
 }
+
+/* ------------------- projectcode ---------------------------- */
 form[name=estimateForm] div.top > div.projectcode {
   float: left;
-  width: 400px;
+  width: 40%;
   margin-right: 20px;
 }
+form[name=estimateForm] div.top > div.projectcode span {
+   margin-left: 10px;
+}
+
+/* --------------------- projectmanager -------------------------------- */
 form[name=estimateForm] div.top > div.projectmanager {
-  float: left;
-  width: 550px;
-  margin-right: 20px;
+   float: left;
+   width: 55%;
+   margin-right: 20px;
+}
+form[name=estimateForm] div.top > div.projectmanager span:nth-of-type(1) {
+   margin-left: 10px;
 }
 form[name=estimateForm] div.top > div.projectmanager span:nth-of-type(2) {
-  margin-left: 20px;
+   margin-left: 20px;
 }
 
+/* --------------------- budgettot ----------------------- */
 form[name=estimateForm] div.top > div.budgettot {
   float: left;
-  width: 400px;
+  width: 40%;
   margin-right: 20px;
 }
+form[name=estimateForm] div.top > div.budgettot span {
+   margin-left: 10px;
+}
+
+/* --------------------- daystot ----------------------- */
+form[name=estimateForm] div.top > div.daystot {
+  float: left;
+  width: 50%;
+  margin-right: 20px;
+}
+form[name=estimateForm] div.top > div.daystot span {
+   margin-left: 10px;
+}
+
+/* ------------------- general ------------------------------------ */
 form[name=estimateForm] div.top p {
-  width: 120px;
-  display: inline-block;
+   display: inline-block;
 }
 form[name=estimateForm] div.top span {
-  display: inline-block;
+   display: inline-block;
 }
 form[name=estimateForm] div.top select {
-  display: inline-block;
+   display: inline-block;
 }
 
+/* -------------------------- center -------------------------- */
 form[name=estimateForm] div.center {
-  font-family: Arial;
-  font-size: 14px;
-  width: 1000px;
-  float: left;
-  margin-bottom: 10px;
-  border-bottom: 1px solid black;
+   font-family: Arial;
+   font-size: 14px;
+   width: 100%;
+   float: left;
+   margin-bottom: 10px;
+   border-bottom: 1px solid black;
 }
 form[name=estimateForm] div.center table {
-  margin-top: 20px;
+   width: 100%;
+   margin-top: 20px;
 }
 
+form[name=estimateForm] div.center table thead {
+   width: 60%;
+}
+form[name=estimateForm] div.center table thead tr {
+   width: 60%;
+}
+form[name=estimateForm] div.center table thead tr > th {
+   width: 10%;
+   padding-left: 2px;
+   padding-right: 2px;
+   border: 1px solid black;
+}
+form[name=estimateForm] div.center table thead tr > th > input{
+   width: 100%;
+}
+
+form[name=estimateForm] div.center table tbody {
+   width: 60%;
+}
+form[name=estimateForm] div.center table tbody tr {
+   width: 60%;
+}
+form[name=estimateForm] div.center table tbody tr > td {
+   width: 10%;
+   padding-left: 2px;
+   padding-right: 2px;
+   border: 1px solid black;
+}
+
+/* ------------------------ bottom ---------------------------- */
 form[name=estimateForm] .bottom {
-  font-family: Arial;
-  font-size: 14px;
-  width: 1000px;
-  float: left;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  border-bottom: 1px solid black;
+   font-family: Arial;
+   font-size: 14px;
+   width: 100%;
+   float: left;
+   margin-bottom: 10px;
+   margin-top: 10px;
+   border-bottom: 1px solid black;
 }

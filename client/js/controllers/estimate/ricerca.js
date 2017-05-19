@@ -62,7 +62,7 @@ angular
 
 		var table = d3.select("form[name=ricercaForm] div.search_results")
 									.append("table")
-									.attr("style", "width:1000px; table-layout:fixed;"),
+									.attr("style", "width:100%; table-layout:fixed;"),
 				thead = table.append("thead"),
 				tbody = table.append("tbody");
 
@@ -72,7 +72,7 @@ angular
 				.data(["ID PROGETTO", "NOME PROGETTO", "CODICE PROGETTO", "ID CLIENTE"])
 				.enter()
 				.append("th")
-				.attr("style", "width:100px; word-wrap:break-word;")
+				.attr("style", "width:100%; word-wrap:break-word;")
 				.text(function(column) { return column; });
 
 		// The table generation function
@@ -97,7 +97,7 @@ angular
 			    })
 			    .enter()
 			    .append("td")
-			    .attr("style", "width:100px; word-wrap:break-word;") // sets the font style
+			    .attr("style", "width:100%; word-wrap:break-word;") // sets the font style
 				.html(function(d) { return d.value });
 
 			var rowsExit = rows.exit().remove();

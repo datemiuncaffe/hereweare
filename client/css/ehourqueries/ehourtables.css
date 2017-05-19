@@ -30,7 +30,7 @@ section.ehourtables div.center .saverdiv .xlssaver {
 /* -------------- grouping table -------------------- */
 /* -------------------------------------------------- */
 section.ehourtables table.grouping {
-   width: 1200px;
+   width: 100%;
    background-color: #165697;
    border: 1px solid #e3e39d;
 }
@@ -98,7 +98,7 @@ section.ehourtables table.grouping .groupingCheckboxes .item-checkbox.md-checked
 /* ------------- table data -----------------*/
 /* ----------------------------------------- */
 table.ehourdata {
-   width: 1200px;
+   width: 100%;
 }
 table.ehourdata thead,
 table.ehourdata tbody,
@@ -131,7 +131,7 @@ input.endMonthInputFilter {
    float: right;
    margin-left: 10px;
    margin-bottom: 0;
-   width: 60px;
+   width: 40%;
    padding: 0;
 }
 

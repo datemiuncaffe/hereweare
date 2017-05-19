@@ -1,46 +1,47 @@
 section[id=senseiprojects] div.top {
-  font-family: Arial;
-  font-size: 14px;
-  width: 1200px;
-  float: left;
-  margin-bottom: 10px;
-  /*border-bottom: 1px solid black;*/
+   font-family: Arial;
+   font-size: 14px;
+   width: 100%;
+   float: left;
+   margin-bottom: 10px;
+   /*border-bottom: 1px solid black;*/
 }
 section[id=senseiprojects] div.top table {
-  margin-top: 20px;
-  margin-bottom: 20px;
+   margin-top: 20px;
+   margin-bottom: 20px;
 }
 section[id=senseiprojects] div.top th {
-	padding-left: 5px;
-	padding-right: 20px;
+	padding-left: 2px;
+	padding-right: 2px;
 	border: 1px solid black;
 }
 
+/* --------------------------- center ------------------------------- */
 section[id=senseiprojects] div.center {
-  font-family: Arial;
-  font-size: 14px;
-  width: 1200px;
-  float: left;
-  margin-bottom: 10px;
-  border-bottom: 1px solid black;
+   font-family: Arial;
+   font-size: 14px;
+   width: 100%;
+   float: left;
+   margin-bottom: 10px;
+   border-bottom: 1px solid black;
 }
 section[id=senseiprojects] div.center .customer {
-  margin-bottom: 10px;
-  border-bottom-width: 1px;
-  border-bottom-style: ridge;
-  border-bottom-color: gray;
+   margin-bottom: 10px;
+   border-bottom-width: 1px;
+   border-bottom-style: ridge;
+   border-bottom-color: gray;
 }
 section[id=senseiprojects] div.center table {
-  margin-top: 20px;
-  margin-bottom: 20px;
+   margin-top: 20px;
+   margin-bottom: 20px;
 }
 section[id=senseiprojects] div.center th {
-	padding-left: 5px;
-	padding-right: 20px;
+	padding-left: 2px;
+	padding-right: 2px;
 	border: 1px solid black;
 }
 section[id=senseiprojects] div.center td {
-	padding-left: 5px;
-	padding-right: 20px;
+	padding-left: 2px;
+	padding-right: 2px;
 	border: 1px solid black;
 }
