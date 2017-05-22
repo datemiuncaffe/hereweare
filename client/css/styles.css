@@ -155,8 +155,8 @@ body {
   border-left-color: cyan;
   border-left-width: medium;
   border-left-style: solid;
-  padding-top: 13px;
-  padding-bottom: 13px;
+  /*padding-top: 13px;
+  padding-bottom: 13px;*/
   padding-left: 15px;
   padding-right: 15px;
   margin-top: 10px;
@@ -173,6 +173,8 @@ body {
   border-right-color: cyan;
   border-right-width: medium;
   border-right-style: solid;
+  line-height: 50px;
+  /*max-height: 40px;*/
 }
 
 .headers > .headers-logout button {

@@ -1,237 +1,255 @@
 form[name=projectModifyForm] div.top {
-  font-family: Arial;
-  font-size: 14px;
-  width: 1000px;
-  float: left;
-  margin-bottom: 10px;
-  border-bottom: 1px solid black;
+   font-family: Arial;
+   font-size: 14px;
+   width: 100%;
+   float: left;
+   margin-bottom: 10px;
+   border-bottom: 1px solid black;
 }
+
+/* --------------------------- customer ------------------------------ */
 form[name=projectModifyForm] div.top > div.customer {
-  float: left;
-  width: 350px;
+   float: left;
+   width: 35%;
 }
-form[name=projectModifyForm] div.top > div.project {
-  float: left;
-  width: 350px;
-  margin-right: 20px;
+form[name=projectModifyForm] div.top > div.customer p {
+   margin-right: 10px;
 }
+form[name=projectModifyForm] div.top > div.customer input {
+   width: 50%;
+}
+
+/* ------------------------- projectname ----------------------------- */
+form[name=projectModifyForm] div.top > div.projectname {
+   float: left;
+   width: 35%;
+   margin-right: 20px;
+}
+form[name=projectModifyForm] div.top > div.projectname p {
+   margin-right: 10px;
+}
+form[name=projectModifyForm] div.top > div.projectname input {
+   width: 50%;
+}
+
+/* ------------------------- projectcode ----------------------------- */
+form[name=projectModifyForm] div.top > div.projectcode {
+   float: left;
+   width: 35%;
+   margin-right: 20px;
+}
+form[name=projectModifyForm] div.top > div.projectcode p {
+   margin-right: 10px;
+}
+form[name=projectModifyForm] div.top > div.projectcode input {
+   width: 50%;
+}
+
+/* -------------------------------------------------------------------- */
+/* ---------------------------- general top ------------------------------- */
+/* -------------------------------------------------------------------- */
 form[name=projectModifyForm] div.top p {
-  width: 120px;
-  display: inline-block;
+   display: inline-block;
 }
 form[name=projectModifyForm] div.top span {
-  display: inline-block;
+   display: inline-block;
 }
 form[name=projectModifyForm] div.top input {
-  display: inline-block;
-  font-size: 14px;
-  color: #555;
-  height: 34px;
-  line-height: 1.42857;
-  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+   display: inline-block;
+   font-size: 14px;
+   color: #555;
+   height: 34px;
+   line-height: 1.42857;
+   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
 }
 form[name=projectModifyForm] div.top select {
-  display: inline-block;
+   display: inline-block;
 }
 form[name=projectModifyForm] div.top p.errormessage {
-  color: #a94442;
-  display: block;
-  margin-bottom: 10px;
-  margin-top: 5px;
-  width: 300px;
+   color: #a94442;
+   display: block;
+   margin-bottom: 10px;
+   margin-top: 5px;
+   width: 100%;
 }
 
-/* ----- center --------- */
+/* ---------------------------------------------------------------------- */
+/* --------------------------------- center ----------------------------- */
+/* ---------------------------------------------------------------------- */
 form[name=projectModifyForm] .center {
-  font-family: Arial;
-  font-size: 14px;
-  float: left;
-  margin-bottom: 10px;
-  border-bottom: 1px solid black;
+   font-family: Arial;
+   font-size: 14px;
+   float: left;
+   width: 100%;
+   margin-bottom: 10px;
+   border-bottom: 1px solid black;
 }
 form[name=projectModifyForm] .center .budget_def {
-  float: left;
-  width: 1000px;
-  display:flex;
+   float: left;
+   width: 100%;
+   display:flex;
 }
 form[name=projectModifyForm] .center .budget_def_left {
-  flex-basis: 450px;
-  order: 1;
-  border-right: 3px solid #23e2ea;
+   flex-basis: 45%;
+   order: 1;
+   border-right: 3px solid #23e2ea;
 }
-form[name=projectModifyForm] .center .budget_def_left
-.budgettot {
-  float: left;
-  width: 200px;
-  margin-right: 10px;
+/* ------------------- budgettot ------------------------------------------- */
+form[name=projectModifyForm] .center .budget_def_left .budgettot {
+   float: left;
+   width: 45%;
+   margin-right: 10px;
 }
-form[name=projectModifyForm] .center .budget_def_left
-.budgettot p {
-  float: left;
-  width: 95px;
+form[name=projectModifyForm] .center .budget_def_left .budgettot p {
+   margin-right: 10px;
 }
-form[name=projectModifyForm] .center .budget_def_left
-.budgettot input {
-  width: 100px;
+form[name=projectModifyForm] .center .budget_def_left .budgettot input {
+   width: 50%;
 }
-form[name=projectModifyForm] .center .budget_def_left
-.daystot {
-  float: left;
-  width: 200px;
+/* ------------------ daystot ----------------------------------------------- */
+form[name=projectModifyForm] .center .budget_def_left .daystot {
+   float: left;
+   width: 45%;
 }
-form[name=projectModifyForm] .center .budget_def_left
-.daystot p {
-  float: left;
-  width: 95px;
+form[name=projectModifyForm] .center .budget_def_left .daystot p {
+   margin-right: 10px;
 }
-form[name=projectModifyForm] .center .budget_def_left
-.daystot input {
-  width: 100px;
+form[name=projectModifyForm] .center .budget_def_left .daystot input {
+   width: 50%;
 }
-form[name=projectModifyForm] .center .budget_def_left
-.budget_period {
+/* -------------------------- budget_period -------------------------------- */
+form[name=projectModifyForm] .center .budget_def_left .budget_period {
+   float: left;
+   width: 100%;
+   margin-right: 20px;
+   margin-bottom: 10px;
+}
+form[name=projectModifyForm] .center .budget_def_left .budget_period .datepickerfrom {
 	float: left;
-	width: 480px;
-	margin-right: 20px;
-  margin-bottom: 10px;
-}
-form[name=projectModifyForm] .center .budget_def_left
-.budget_period .datepickerfrom {
-	float: left;
-	width: 220px;
+	width: 45%;
 	margin-right: 10px;
 }
-form[name=projectModifyForm] .center .budget_def_left
-.budget_period .datepickerfrom label {
-  margin-top: 10px;
+form[name=projectModifyForm] .center .budget_def_left .budget_period .datepickerfrom label {
+   margin-top: 10px;
 }
-form[name=projectModifyForm] .center .budget_def_left
-.budget_period .datepickerfrom img {
-  margin-bottom: 3px;
-  width: 26px;
-	height: 26px;
+form[name=projectModifyForm] .center .budget_def_left .budget_period .datepickerfrom input {
+   width: 55%;
 }
-form[name=projectModifyForm] .center .budget_def_left
-.budget_period .datepickerto {
+form[name=projectModifyForm] .center .budget_def_left .budget_period .datepickerfrom img {
+   margin-bottom: 3px;
+   width: 16%;
+   height: 16%;
+}
+form[name=projectModifyForm] .center .budget_def_left .budget_period .datepickerto {
 	float: left;
-	width: 220px;
+	width: 45%;
 	margin-right: 10px;
 }
-form[name=projectModifyForm] .center .budget_def_left
-.budget_period .datepickerto label {
-  margin-top: 10px;
+form[name=projectModifyForm] .center .budget_def_left .budget_period .datepickerto label {
+   margin-top: 10px;
 }
-form[name=projectModifyForm] .center .budget_def_left
-.budget_period .datepickerto img {
-  margin-bottom: 3px;
-  width: 26px;
-	height: 26px;
+form[name=projectModifyForm] .center .budget_def_left .budget_period .datepickerto input {
+   width: 55%;
+}
+form[name=projectModifyForm] .center .budget_def_left .budget_period .datepickerto img {
+   margin-bottom: 3px;
+   width: 16%;
+   height: 16%;
 }
 
-/*------------------------------------*/
-/*------- drag and drop ----------*/
-/*------------------------------------*/
+/*-------------------------------------------------------------------------*/
+/*------------------------------ drag and drop ----------------------------*/
+/*-------------------------------------------------------------------------*/
 form[name=projectModifyForm] .center .budget_def_right {
-  flex-basis: 450px;
-  order: 2;
+   flex-basis: 45%;
+   order: 2;
 }
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice {
+form[name=projectModifyForm] .center .budget_def_right .team_choice {
 
 }
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice .team {
-  float: left;
-  width: 45%;
-  min-height: 1px;
-  position: relative;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  background-color: #fff;
-  border: 1px solid #bce8f1;
-  border-radius: 4px;
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-bottom: 20px;
+form[name=projectModifyForm] .center .budget_def_right .team_choice .team {
+   float: left;
+   width: 45%;
+   min-height: 1px;
+   position: relative;
+   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+   background-color: #fff;
+   border: 1px solid #bce8f1;
+   border-radius: 4px;
+   margin-left: 5px;
+   margin-right: 5px;
+   margin-bottom: 20px;
 }
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice .team .team_header {
-  background-image: linear-gradient(to bottom, #d9edf7 0px, #c4e3f3 100%);
-  background-repeat: repeat-x;
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-  color: #31708f;
-  border-bottom: 1px solid transparent;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  padding: 10px 15px;
+form[name=projectModifyForm] .center .budget_def_right .team_choice .team .team_header {
+   background-image: linear-gradient(to bottom, #d9edf7 0px, #c4e3f3 100%);
+   background-repeat: repeat-x;
+   background-color: #d9edf7;
+   border-color: #bce8f1;
+   color: #31708f;
+   border-bottom: 1px solid transparent;
+   border-top-left-radius: 3px;
+   border-top-right-radius: 3px;
+   padding: 10px 15px;
 }
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice .team .team_header h3 {
-  color: inherit;
-  font-size: 16px;
-  margin-bottom: 0;
-  margin-top: 0;
-  line-height: 1.1;
+form[name=projectModifyForm] .center .budget_def_right .team_choice .team .team_header h3 {
+   color: inherit;
+   font-size: 16px;
+   margin-bottom: 0;
+   margin-top: 0;
+   line-height: 1.1;
 }
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice .team .team_body {
-  display: block;
-  height: 200px;
-  overflow: auto;
-  padding: 15px;
+form[name=projectModifyForm] .center .budget_def_right .team_choice .team .team_body {
+   display: block;
+   height: 100%;
+   overflow: auto;
+   padding: 15px;
 }
 
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice .choice {
-  float: left;
-  width: 45%;
-  min-height: 1px;
-  position: relative;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  background-color: #fff;
-  border: 1px solid #bce8f1;
-  border-radius: 4px;
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-bottom: 20px;
+form[name=projectModifyForm] .center .budget_def_right .team_choice .choice {
+   float: left;
+   width: 45%;
+   min-height: 1px;
+   position: relative;
+   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+   background-color: #fff;
+   border: 1px solid #bce8f1;
+   border-radius: 4px;
+   margin-left: 5px;
+   margin-right: 5px;
+   margin-bottom: 20px;
 }
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice .choice .choice_header {
-  background-image: linear-gradient(to bottom, #d9edf7 0px, #c4e3f3 100%);
-  background-repeat: repeat-x;
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-  color: #31708f;
-  border-bottom: 1px solid transparent;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  padding: 10px 15px;
+form[name=projectModifyForm] .center .budget_def_right .team_choice .choice .choice_header {
+   background-image: linear-gradient(to bottom, #d9edf7 0px, #c4e3f3 100%);
+   background-repeat: repeat-x;
+   background-color: #d9edf7;
+   border-color: #bce8f1;
+   color: #31708f;
+   border-bottom: 1px solid transparent;
+   border-top-left-radius: 3px;
+   border-top-right-radius: 3px;
+   padding: 10px 15px;
 }
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice .choice .choice_header h3 {
-  color: inherit;
-  font-size: 16px;
-  margin-bottom: 0;
-  margin-top: 0;
-  line-height: 1.1;
+form[name=projectModifyForm] .center .budget_def_right .team_choice .choice .choice_header h3 {
+   color: inherit;
+   font-size: 16px;
+   margin-bottom: 0;
+   margin-top: 0;
+   line-height: 1.1;
 }
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice .choice .choice_body {
-  display: block;
-  height: 200px;
-  overflow: auto;
-  /*display: table;*/
-  padding: 15px;
+form[name=projectModifyForm] .center .budget_def_right .team_choice .choice .choice_body {
+   display: block;
+   height: 100%;
+   overflow: auto;
+   /*display: table;*/
+   padding: 15px;
 }
 
 /**
  * For the correct positioning of the placeholder element, the dnd-list and
  * it's children must have position: relative
  */
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice ul[dnd-list],
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice ul[dnd-list] li {
+form[name=projectModifyForm] .center .budget_def_right .team_choice ul[dnd-list],
+form[name=projectModifyForm] .center .budget_def_right .team_choice ul[dnd-list] li {
   position: relative;
 }
 
@@ -239,8 +257,7 @@ form[name=projectModifyForm] .center .budget_def_right
  * The dnd-list should always have a min-height,
  * otherwise you can't drop to it once it's empty
  */
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice ul[dnd-list] {
+form[name=projectModifyForm] .center .budget_def_right .team_choice ul[dnd-list] {
   min-height: 42px;
   padding-left: 0px;
 }
@@ -251,8 +268,7 @@ form[name=projectModifyForm] .center .budget_def_right
  * sense to hide it to give the user the feeling
  * that he's actually moving it.
  */
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice ul[dnd-list] .dndDraggingSource {
+form[name=projectModifyForm] .center .budget_def_right .team_choice ul[dnd-list] .dndDraggingSource {
   display: none;
 }
 
@@ -261,8 +277,7 @@ form[name=projectModifyForm] .center .budget_def_right
  * added to the dnd-list while the user is dragging
  * over it.
  */
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice ul[dnd-list] .dndPlaceholder {
+form[name=projectModifyForm] .center .budget_def_right .team_choice ul[dnd-list] .dndPlaceholder {
   display: block;
   background-color: #ddd;
   /*padding: 10px 15px;
@@ -276,8 +291,7 @@ form[name=projectModifyForm] .center .budget_def_right
  * half of the element we are dragging over. In other
  * browsers we can use event.offsetY for this.
  */
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice ul[dnd-list] li {
+form[name=projectModifyForm] .center .budget_def_right .team_choice ul[dnd-list] li {
   background-color: #fff;
   border: 1px solid #ddd;
   border-top-right-radius: 4px;
@@ -305,8 +319,7 @@ form[name=projectModifyForm] .center .budget_def_right
 /**
  * Gender-specifc background
  */
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice ul[dnd-list] li.background-developer {
+form[name=projectModifyForm] .center .budget_def_right .team_choice ul[dnd-list] li.background-developer {
   /*background-color: #CAE0FC;*/
   /*background-color: #FFE2F5;*/
   /*background-color: #D8E9FF;*/
@@ -314,152 +327,138 @@ form[name=projectModifyForm] .center .budget_def_right
   color: #D84FA7;
 }
 
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice ul[dnd-list] li.background-projectOwner {
+form[name=projectModifyForm] .center .budget_def_right .team_choice ul[dnd-list] li.background-projectOwner {
 
 }
 
 /**
  * Handle positioning
  */
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice ul[dnd-list] .handle {
+form[name=projectModifyForm] .center .budget_def_right .team_choice ul[dnd-list] .handle {
   cursor: move;
   position: absolute;
   top: 14px;
 }
 
-form[name=projectModifyForm] .center .budget_def_right
-.team_choice ul[dnd-list] .name {
+form[name=projectModifyForm] .center .budget_def_right .team_choice ul[dnd-list] .name {
   margin-left: 20px;
 }
-/*------------------------------------*/
-/*------- end drag and drop ----------*/
-/*------------------------------------*/
+/*--------------------------------------------------------------------------*/
+/*----------------------------- end drag and drop --------------------------*/
+/*--------------------------------------------------------------------------*/
 
-/*----- budget distrib -----*/
+/*---....................-- budget distrib ---------------------------------*/
 form[name=projectModifyForm] .center .budget_distrib {
 	float: left;
-	width: 1000px;
+	width: 100%;
 }
 form[name=projectModifyForm] .center .budget_distrib .budgetvalues {
-	float: left;
-  clear: both;
-  margin-bottom: 10px;
-  border-bottom: 1px solid black;
+   margin-bottom: 10px;
+   border-bottom: 1px solid black;
 }
-form[name=projectModifyForm] .center .budget_distrib .budgetvalues
-.header {
-  float: left;
-  font-size: 18px;
+form[name=projectModifyForm] .center .budget_distrib .budgetvalues .header {
+   font-size: 18px;
 }
-form[name=projectModifyForm] .center .budget_distrib .budgetvalues
-.header span.month {
-  float: left;
-  font-size: 18px;
+form[name=projectModifyForm] .center .budget_distrib .budgetvalues .header span.month {
+   font-size: 18px;
 }
-form[name=projectModifyForm] .center .budget_distrib .budgetvalues
-.header .dateinterval {
-	float: left;
-  display: inline;
-  vertical-align: bottom;
-  margin-left: 5px;
+form[name=projectModifyForm] .center .budget_distrib .budgetvalues .header .dateinterval {
+   display: inline;
+   vertical-align: bottom;
+   margin-left: 5px;
 }
-form[name=projectModifyForm] .center .budget_distrib .budgetvalues
-.header .dateinterval span {
-  font-size: 16px;
+form[name=projectModifyForm] .center .budget_distrib .budgetvalues .header .dateinterval span {
+   font-size: 16px;
 }
-form[name=projectModifyForm] .center .budget_distrib .budgetvalues
-.globaldetail {
-	float: left;
-  clear: both;
-  line-height: 40px;
-  margin-bottom: 3px;
+form[name=projectModifyForm] .center .budget_distrib .budgetvalues .globaldetail {
+   line-height: 40px;
+   margin-bottom: 3px;
 }
-form[name=projectModifyForm] .center .budget_distrib .budgetvalues
-.globaldetail label {
-  height: 30px;
-  margin-bottom: 0;
+form[name=projectModifyForm] .center .budget_distrib .budgetvalues .globaldetail label {
+   height: 30px;
+   margin-bottom: 0;
+   margin-right: 10px;
 }
-form[name=projectModifyForm] .center .budget_distrib .budgetvalues
-.globaldetail input {
-	width: 100px;
-  height: 30px;
+form[name=projectModifyForm] .center .budget_distrib .budgetvalues .globaldetail input {
+   width: 20%;
+   /*height: 70%;*/
+   height: 30px;
+   margin-right: 20px;
 }
 
-form[name=projectModifyForm] .center .budget_distrib .budgetvalues
-.windowdetail {
-	float: left;
-  clear: both;
-  line-height: 40px;
-  margin-bottom: 3px;
+form[name=projectModifyForm] .center .budget_distrib .budgetvalues .windowdetail {
+   line-height: 40px;
+   margin-bottom: 3px;
 }
-form[name=projectModifyForm] .center .budget_distrib .budgetvalues
-.windowdetail table {
-  border-collapse: separate;
-  border-spacing: 2px;
+form[name=projectModifyForm] .center .budget_distrib .budgetvalues .windowdetail table {
+   border-collapse: separate;
+   border-spacing: 2px;
 }
-form[name=projectModifyForm] .center .budget_distrib .budgetvalues
-.windowdetail table td {
-  line-height: 25px;
-  width: 25px;
-  text-align: center;
-  border-color: black;
-  border-style: solid;
-  border-width: 1px;
-  /*float:left;
-  margin-right: 20px;*/
+form[name=projectModifyForm] .center .budget_distrib .budgetvalues .windowdetail table td {
+   line-height: 25px;
+   /*width: 15%;*/
+   text-align: center;
+   border-color: black;
+   border-style: solid;
+   border-width: 1px;
 }
-form[name=projectModifyForm] .center .budget_distrib .budgetvalues
-.windowdetail table td:nth-child(1) {
-  line-height: 25px;
-  width: 65px;
-  text-align: left;
-  border: none;
-  /*float:left;
-  margin-right: 20px;*/
+form[name=projectModifyForm] .center .budget_distrib .budgetvalues .windowdetail table td:nth-child(1) {
+   line-height: 25px;
+   width: 25%;
+   text-align: left;
+   border: none;
+   margin-right: 10px;
 }
 
 
 form[name=projectModifyForm] .center p.errormessage {
-  color: #a94442;
-  display: block;
-  margin-bottom: 10px;
-  margin-top: 5px;
-  width: 200px;
+   color: #a94442;
+   display: block;
+   margin-bottom: 10px;
+   margin-top: 5px;
+   width: 100px;
+}
+/* --------------------- general ------------------------------- */
+form[name=projectModifyForm] center p {
+   display: inline-block;
 }
 
-/* ---- bottom ---------- */
+/* --------------------------------------------------------------------- */
+/* -------------------------- bottom ----------------------------------- */
+/* --------------------------------------------------------------------- */
 form[name=projectModifyForm] .bottom {
-  font-family: Arial;
-  font-size: 14px;
-  width: 1000px;
-  float: left;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  border-bottom: 1px solid black;
+   font-family: Arial;
+   font-size: 14px;
+   width: 100%;
+   float: left;
+   margin-bottom: 10px;
+   margin-top: 10px;
+   border-bottom: 1px solid black;
 }
 form[name=projectModifyForm] .bottom p.errormessage {
-  color: #a94442;
-  background-color: #b88888;
-  display: block;
-  margin-bottom: 10px;
-  margin-top: 5px;
-  width: 200px;
-  font-size: 20px;
+   color: #a94442;
+   background-color: #b88888;
+   display: block;
+   margin-bottom: 10px;
+   margin-top: 5px;
+   width: 50%;
+   font-size: 20px;
 }
 
+/* -------------------------------------------------------------------- */
+/* -------------------------- general --------------------------------- */
+/* -------------------------------------------------------------------- */
 form[name=projectModifyForm] .spacer {
-	float: left;
-	width: 1000px;
-  height: 10px;
-  border-top-width: 1px;
-  border-top-style: solid;
-  border-top-color: black;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: black;
-  background-color: #23e2ea;
-  margin-top: 5px;
-  margin-bottom: 5px;
+   float: left;
+   width: 100%;
+   height: 10px;
+   border-top-width: 1px;
+   border-top-style: solid;
+   border-top-color: black;
+   border-bottom-width: 1px;
+   border-bottom-style: solid;
+   border-bottom-color: black;
+   background-color: #23e2ea;
+   margin-top: 5px;
+   margin-bottom: 5px;
 }

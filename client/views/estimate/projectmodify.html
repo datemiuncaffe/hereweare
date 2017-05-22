@@ -10,17 +10,19 @@
 			</div>
 		</div>
 		<div class="top">
-			<div class="form-group project" ng-class="{'has-error' : projectModifyForm.projectname.$invalid && submitted}">
+			<div class="form-group projectname" ng-class="{'has-error' : projectModifyForm.projectname.$invalid && submitted}">
 				<p>Nome progetto:</p>
 				<input class="ng-binding" ng-model="project.name" name="projectname" required></input>
 				<p ng-show="projectModifyForm.projectname.$invalid && submitted" class="errormessage">
-					Inserisci il nome del progetto</p>
+					Inserisci il nome del progetto
+				</p>
 			</div>
-			<div class="form-group project" ng-class="{'has-error' : projectModifyForm.projectcode.$invalid && submitted}">
+			<div class="form-group projectcode" ng-class="{'has-error' : projectModifyForm.projectcode.$invalid && submitted}">
 				<p>Codice progetto:</p>
 				<input class="ng-binding" ng-model="project.code" name="projectcode" required></input>
 				<p ng-show="projectModifyForm.projectcode.$invalid && submitted" class="errormessage">
-					Inserisci il codice del progetto</p>
+					Inserisci il codice del progetto
+				</p>
 			</div>
 		</div>
 		<div class="center">
@@ -167,6 +169,8 @@
 				</div>
 			</div>
 			<div class="spacer"></div>
+
+
 			<!--div class="sal">
 				<h4>Percentuale di avanzamento:</h4>
 				<div class="salvalues" ng-repeat="sal in project.sals">

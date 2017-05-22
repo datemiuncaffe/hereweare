@@ -1,52 +1,119 @@
-  form[name=projectDetailForm] div.top {
-  font-family: Arial;
-  font-size: 14px;
-  width: 1000px;
-  float: left;
-  margin-bottom: 10px;
-  border-bottom: 1px solid black;
+form[name=projectDetailForm] div.top {
+   font-family: Arial;
+   font-size: 14px;
+   width: 100%;
+   float: left;
+   margin-bottom: 10px;
+   border-bottom: 1px solid black;
 }
+
+/* ------------- customer div ----------------------------- */
 form[name=projectDetailForm] div.top > div.customer {
-  float: left;
-  width: 350px;
+   float: left;
+   width: 35%;
 }
-form[name=projectDetailForm] div.top > div.project {
-  float: left;
-  width: 350px;
-  margin-right: 20px;
+form[name=projectDetailForm] div.top > div.customer p {
+   margin-right: 10px;
 }
+
+/* ------------- projectname ------------------------------ */
+form[name=projectDetailForm] div.top > div.projectname {
+   float: left;
+   width: 35%;
+   margin-right: 20px;
+}
+form[name=projectDetailForm] div.top > div.projectname p {
+   margin-right: 10px;
+}
+
+/* ------------- projectcode ------------------------------ */
+form[name=projectDetailForm] div.top > div.projectcode {
+   float: left;
+   width: 35%;
+   margin-right: 20px;
+}
+form[name=projectDetailForm] div.top > div.projectcode p {
+   margin-right: 10px;
+}
+
+/* ---------------- budgettot ----------------------------- */
 form[name=projectDetailForm] div.top > div.budgettot {
-  float: left;
-  width: 350px;
-  margin-right: 20px;
+   float: left;
+   width: 35%;
+   margin-right: 20px;
 }
+form[name=projectDetailForm] div.top > div.budgettot p {
+   margin-right: 10px;
+}
+
+/* ---------------- daystot ----------------------------- */
+form[name=projectDetailForm] div.top > div.daystot {
+   float: left;
+   width: 35%;
+   margin-right: 20px;
+}
+form[name=projectDetailForm] div.top > div.daystot p {
+   margin-right: 10px;
+}
+
+/* --------------------- general ------------------------------- */
 form[name=projectDetailForm] div.top p {
-  width: 120px;
-  display: inline-block;
+   display: inline-block;
 }
 form[name=projectDetailForm] div.top span {
-  display: inline-block;
+   display: inline-block;
 }
 
 /*------- center -----*/
 form[name=projectDetailForm] div.center {
-  font-family: Arial;
-  font-size: 14px;
-  width: 1000px;
-  float: left;
-  margin-bottom: 10px;
-  border-bottom: 1px solid black;
+   font-family: Arial;
+   font-size: 14px;
+   width: 100%;
+   float: left;
+   margin-bottom: 10px;
+   border-bottom: 1px solid black;
 }
 form[name=projectDetailForm] div.center table {
-  margin-top: 20px;
+   width: 100%;
+   margin-top: 20px;
 }
 
+form[name=projectDetailForm] div.center table thead {
+   width: 60%;
+}
+form[name=projectDetailForm] div.center table thead tr {
+   width: 60%;
+}
+form[name=projectDetailForm] div.center table thead tr > th {
+   width: 10%;
+   padding-left: 2px;
+   padding-right: 2px;
+   border: 1px solid black;
+}
+form[name=projectDetailForm] div.center table thead tr > th > input{
+   width: 100%;
+}
+
+form[name=projectDetailForm] div.center table tbody {
+   width: 60%;
+}
+form[name=projectDetailForm] div.center table tbody tr {
+   width: 60%;
+}
+form[name=projectDetailForm] div.center table tbody tr > td {
+   width: 10%;
+   padding-left: 2px;
+   padding-right: 2px;
+   border: 1px solid black;
+}
+
+/* --------------------------- bottom div ------------------------------ */
 form[name=projectDetailForm] .bottom {
-  font-family: Arial;
-  font-size: 14px;
-  width: 1000px;
-  float: left;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  border-bottom: 1px solid black;
+   font-family: Arial;
+   font-size: 14px;
+   width: 100%;
+   float: left;
+   margin-bottom: 10px;
+   margin-top: 10px;
+   border-bottom: 1px solid black;
 }
