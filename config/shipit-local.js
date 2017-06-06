@@ -2,7 +2,7 @@ var config = {
 	default: {
 		workspace: '.',
 		dirToCopy: 'build/test',
-		deployTo: '/opt/hereweare',
+		deployTo: '/opt/hereweare-backend',
 		ignores: ['.git', 'node_modules'],
 		keepReleases: 5,
 		key: '/home/federico/.ssh/id_rsa_sensei',
