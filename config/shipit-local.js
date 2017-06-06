@@ -9,7 +9,7 @@ var config = {
 		branch: 'nuovolayout'
 	},
 	staging: {
-		servers: 'centos@192.168.88.158'
+		servers: 'centos@192.168.88.184'
 	}
 };
 module.exports.config = config;
