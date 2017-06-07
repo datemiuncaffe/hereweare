@@ -39,15 +39,21 @@ else
     NUMACTL=""
 fi
 
-# things from mongod.conf get there by mongod reading it
+# reading settings from config file
 PIDFILEPATH=`awk -F'[:=]' -v IGNORECASE=1 '/^[[:blank:]]*(processManagement\.)?pidfilepath[[:blank:]]*[:=][[:blank:]]*/{print $2}' "$CONFIGFILE" | tr -d "[:blank:]\"'" | awk -F'#' '{print $1}'`
 PIDDIR=`dirname $PIDFILEPATH`
+LOGFILEPATH=`awk -F'[:=]' -v IGNORECASE=1 '/^[[:blank:]]*logfilepath[[:blank:]]*[:=][[:blank:]]*/{print $2}' "$CONFIGFILE" | tr -d "[:blank:]\"'"`
+LOGDIR=`dirname $LOGFILEPATH`
 
 start()
 {
   # Make sure the default pidfile directory exists
   if [ ! -d $PIDDIR ]; then
     install -d -m 0755 -o $HEREWEARE_USER -g $HEREWEARE_GROUP $PIDDIR
+  fi
+  # Make sure the default logfile directory exists
+  if [ ! -d $LOGDIR ]; then
+    install -d -m 0755 -o $HEREWEARE_USER -g $HEREWEARE_GROUP $LOGDIR
   fi
 
   # Recommended ulimit values for hereweare-backend??

@@ -1,8 +1,8 @@
 var winston = require('winston');
 
 var logdir = $logpath$;
-var logpath = logdir + '/hereweare.log';
-var exceptionslogpath = logdir + '/hereweare-exceptions.log';
+var logpath = logdir + '/hereweare-backend.log';
+var exceptionslogpath = logdir + '/hereweare-backend-exceptions.log';
 
 var console = new (winston.transports.Console)({
 	json: false,
