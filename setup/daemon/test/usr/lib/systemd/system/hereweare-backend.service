@@ -1,0 +1,23 @@
+[Unit]
+Description=hereweare-backend application for Sensei reporting
+#After=network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=forking
+#PIDFile=/run/nginx.pid
+# Nginx will fail to start if /run/nginx.pid already exists but has the wrong
+# SELinux context. This might happen when running `nginx -t` from the cmdline.
+# https://bugzilla.redhat.com/show_bug.cgi?id=1268621
+#ExecStartPre=/usr/bin/rm -f /run/nginx.pid
+#ExecStartPre=/usr/sbin/nginx -t
+ExecStart=/etc/init.d/hereweare-backend start
+ExecReload=/etc/init.d/hereweare-backend reload
+#ExecStop=/etc/init.d/hereweare-backend stop
+#KillSignal=SIGQUIT
+TimeoutStartSec=10
+TimeoutStopSec=5
+#KillMode=process
+#PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

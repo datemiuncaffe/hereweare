@@ -1,30 +1,30 @@
 #!/bin/bash
 
-# hereweare - Startup script for hereweare
+# hereweare-backend - Startup script for hereweare-backend
 
 # chkconfig: 35 85 15
 # description: start stop hereweare script.
-# processname: hereweared
-# config: /etc/hereweared.conf
-# pidfile: /var/run/hereweare/hereweared.pid
+# processname: hereweare-backend
+# config: /etc/hereweare-backend.conf
+# pidfile: /var/run/hereweare/hereweare-backend.pid
 
 . /etc/rc.d/init.d/functions
 
 # NOTE: if you change any OPTIONS here, you get what you pay for:
 # this script assumes all options are in the config file.
-CONFIGFILE="/etc/hereweared.conf"
-OPTIONS="/opt/hereweare/current"
-LOCKFILE="/var/lock/subsys/hereweared"
+CONFIGFILE="/etc/hereweare-backend.conf"
+OPTIONS="/opt/hereweare-backend/current"
+LOCKFILE="/var/lock/subsys/hereweare-backend.lock"
 
-node=${NODE-/usr/local/bin/node}
+node=${NODE-/usr/bin/node}
 
-HEREWEARE_USER=hereweared
-HEREWEARE_GROUP=hereweared
+HEREWEARE_USER=hereweare
+HEREWEARE_GROUP=hereweare
 
 # All variables set before this point can be overridden by users, by
 # setting them directly in the SYSCONFIG file. Use this to explicitly
 # override these values, at your own risk.
-SYSCONFIG="/etc/sysconfig/hereweared"
+SYSCONFIG="/etc/sysconfig/hereweare-backend.sys.conf"
 if [ -f "$SYSCONFIG" ]; then
     . "$SYSCONFIG"
 fi
@@ -50,7 +50,7 @@ start()
     install -d -m 0755 -o $HEREWEARE_USER -g $HEREWEARE_GROUP $PIDDIR
   fi
 
-  # Recommended ulimit values for hereweared??
+  # Recommended ulimit values for hereweare-backend??
   # See http://?????.org/manual/reference/ulimit/#recommended-settings
   #
   ulimit -f unlimited
@@ -60,7 +60,7 @@ start()
   ulimit -m unlimited
   ulimit -u 64000
 
-  echo -n $"Starting hereweared: "
+  echo -n $"Starting hereweare-backend: "
   daemon --user "$HEREWEARE_USER" --check $node "$NUMACTL $node $OPTIONS & echo \$! > $PIDFILEPATH"
   RETVAL=$?
   #echo $!
@@ -71,10 +71,10 @@ start()
 
 stop()
 {
-  echo -n $"Stopping hereweared: "
+  echo -n $"Stopping hereweare-backend: "
   echo "calling killproc"
   echo "pidfile: $PIDFILEPATH; process: $node"
-  mongo_killproc "$PIDFILEPATH" $node
+  hereweare-backend_killproc "$PIDFILEPATH" $node
   RETVAL=$?
   echo
   [ $RETVAL -eq 0 ] && rm -f $LOCKFILE
@@ -90,7 +90,7 @@ restart () {
 # Built-in killproc() (found in /etc/init.d/functions) is on certain versions of Linux
 # where it sleeps for the full $delay seconds if process does not respond fast enough to
 # the initial TERM signal.
-mongo_killproc()
+hereweare-backend_killproc()
 {
   local pid_file=$1
   local procname=$2
@@ -131,7 +131,7 @@ case "$1" in
     restart
     ;;
   condrestart)
-    [ -f /var/lock/subsys/mongod ] && restart || :
+    [ -f $LOCKFILE ] && restart || :
     ;;
   status)
     status $node
