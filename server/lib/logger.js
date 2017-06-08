@@ -10,11 +10,13 @@ var console = new (winston.transports.Console)({
 });
 var logfile = new (winston.transports.File)({
 	filename: logpath,
-	json: false
+	json: false,
+	prettyPrint: true
 });
 var exceptionsfile = new winston.transports.File({
 	filename: exceptionslogpath,
-	json: false
+	json: false,
+	prettyPrint: true
 });
 
 var loggerProps = {
