@@ -18,7 +18,8 @@ var MysqlPool = function() {
 					queueLimit: 8,
 				  	connectionLimit : 4,
 					host : "192.168.88.55",
-					user : "centos",
+					user : "ehour",
+					password: "ehour",
 					database : "ehour"
 				});
 				logger.info('create pool: ' + pool);
