@@ -14,10 +14,11 @@ var MongoPool = function() {
 			MongoClient.connect(url, mongoParams, function(err, db) {
 				if (err) {
 					logger.info('mongo db connection failed. err: ' + err);
-					throw err;
+					cb(err, null, options);
+				} else {
+					logger.info('acquired connection');
+					cb(err, db, options);
 				}
-				logger.info('acquired connection');
-				cb(err, db, options);
 			});
 		},
 		releaseConnection: function(db) {

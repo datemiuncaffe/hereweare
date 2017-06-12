@@ -34,48 +34,68 @@ module.exports = function(options) {
 		var dataBudgets = data[1];
 		var zero2 = new Padder(2);
 
-		dataBudgets.forEach(function(customerBudgets) {
-			var customerId = customerBudgets.customerId;
-			logger.info('customerId: ' + customerId);
-			var budgets = customerBudgets.datatable;
-			logger.info('budgets: ' + JSON.stringify(budgets, null, '\t'));
-
-			var customerCosts = dataCosts.filter(function(dataCost) {
-				return (dataCost.customerId == customerId);
-			});
-			var costs = customerCosts[0].datatable;
-			logger.info('costs: ' + JSON.stringify(costs, null, '\t'));
-
-			var result = customerBudgets;
-			if ((budgets != null && budgets.length > 0) ||
-					(costs != null && costs.length > 0)) {
-				costs.forEach(function(cost) {
-					var corrbudget = budgets.filter(function(budget) {
-						return (budget.projectId == cost.projectId &&
-										budget.projectname == cost.projectname &&
-										budget.year == cost.year &&
-										budget.month == months[cost.month - 1]);
-					});
-					logger.info('corrbudget: ' + JSON.stringify(corrbudget, null, '\t'));
-					if (corrbudget.length == 1) {
-						corrbudget[0].id += '-' + cost.projectId + '-' + cost.year + '-' + zero2.pad(cost.month);
-						corrbudget[0].costdays = cost.costdays;
-						corrbudget[0].costhours = cost.costhours;
-						logger.info('corrbudget MODIFIED: ' + JSON.stringify(corrbudget, null, '\t'));
-					} else if (corrbudget.length == 0) {
-						cost.id = '-' + cost.projectId + '-' + cost.year + '-' + zero2.pad(cost.month);
-						cost.month = months[cost.month - 1];
-						cost.budgetfrom = null;
-						cost.budgetto = null;
-						cost.budgetamount = null;
-						cost.budgetdays = null;
-						result.datatable.push(cost);
+		if (dataBudgets != null) {
+			if (dataBudgets.length == 1 &&
+				 dataBudgets[0].error != null) {
+				dataCosts.forEach(function(customerCosts) {
+					var costs = customerCosts.datatable;
+					if (costs != null && costs.length > 0) {
+						costs.forEach(function(cost) {
+							cost.id = '-' + cost.projectId + '-' + cost.year + '-' + zero2.pad(cost.month);
+							cost.month = months[cost.month - 1];
+							cost.budgetfrom = null;
+							cost.budgetto = null;
+							cost.budgetamount = null;
+							cost.budgetdays = null;
+						});
+						results.push(customerCosts);
 					}
 				});
-				logger.info('result: ' + JSON.stringify(result, null, '\t'));
-				results.push(result);
+			} else {
+				dataBudgets.forEach(function(customerBudgets) {
+					var customerId = customerBudgets.customerId;
+					logger.info('customerId: ' + customerId);
+					var budgets = customerBudgets.datatable;
+					logger.info('budgets: ' + JSON.stringify(budgets, null, '\t'));
+
+					var customerCosts = dataCosts.filter(function(dataCost) {
+						return (dataCost.customerId == customerId);
+					});
+					var costs = customerCosts[0].datatable;
+					logger.info('costs: ' + JSON.stringify(costs, null, '\t'));
+
+					var result = customerBudgets;
+					if ((budgets != null && budgets.length > 0) ||
+							(costs != null && costs.length > 0)) {
+						costs.forEach(function(cost) {
+							var corrbudget = budgets.filter(function(budget) {
+								return (budget.projectId == cost.projectId &&
+												budget.projectname == cost.projectname &&
+												budget.year == cost.year &&
+												budget.month == months[cost.month - 1]);
+							});
+							logger.info('corrbudget: ' + JSON.stringify(corrbudget, null, '\t'));
+							if (corrbudget.length == 1) {
+								corrbudget[0].id += '-' + cost.projectId + '-' + cost.year + '-' + zero2.pad(cost.month);
+								corrbudget[0].costdays = cost.costdays;
+								corrbudget[0].costhours = cost.costhours;
+								logger.info('corrbudget MODIFIED: ' + JSON.stringify(corrbudget, null, '\t'));
+							} else if (corrbudget.length == 0) {
+								cost.id = '-' + cost.projectId + '-' + cost.year + '-' + zero2.pad(cost.month);
+								cost.month = months[cost.month - 1];
+								cost.budgetfrom = null;
+								cost.budgetto = null;
+								cost.budgetamount = null;
+								cost.budgetdays = null;
+								result.datatable.push(cost);
+							}
+						});
+						logger.info('result: ' + JSON.stringify(result, null, '\t'));
+						results.push(result);
+					}
+				});
 			}
-		});
+		}
 
 		logger.info("results: " + JSON.stringify(results, null, '\t'));
 		return results;
@@ -179,60 +199,67 @@ module.exports = function(options) {
 					MongoPool.getConnection(getData, customerIds);
 					function getData(err, db, customerIds) {
 						var budgetsresults = [];
-						async.each(customerIds, function(custId, callbk) {
-							db.collection('Project', function(err, collection) {
-								collection.aggregate([
-									{
-										$match: {customerId:parseInt(custId)}
-									},
-									{
-										$lookup: {
-											from: "Budget",
-											localField: "_id",
-											foreignField: "projectId",
-											as: "budgets"
+						if( err ) {
+							logger.info('mongo connection error: ' +
+								JSON.stringify(err, null, '\t'));
+							budgetsresults.push({error: err});
+							callback(null, budgetsresults);
+						} else {
+							async.each(customerIds, function(custId, callbk) {
+								db.collection('Project', function(err, collection) {
+									collection.aggregate([
+										{
+											$match: {customerId:parseInt(custId)}
+										},
+										{
+											$lookup: {
+												from: "Budget",
+												localField: "_id",
+												foreignField: "projectId",
+												as: "budgets"
+											}
+										},
+										{
+											$unwind : "$budgets"
+										},
+										{
+								     	$project: {
+												_id: 0,
+												projectId: "$_id",
+												projectname: "$name",
+												projectcode: "$code",
+												year: "$budgets.year",
+												month: "$budgets.month",
+												budgetfrom: "$budgets.from",
+												budgetto: "$budgets.to",
+												budgetamount: "$budgets.amount",
+												budgetdays: "$budgets.days",
+												costdays: { $literal: null },
+												costhours: { $literal: null },
+												id: "$budgets._id"
+								      }
 										}
-									},
-									{
-										$unwind : "$budgets"
-									},
-									{
-							     	$project: {
-											_id: 0,
-											projectId: "$_id",
-											projectname: "$name",
-											projectcode: "$code",
-											year: "$budgets.year",
-											month: "$budgets.month",
-											budgetfrom: "$budgets.from",
-											budgetto: "$budgets.to",
-											budgetamount: "$budgets.amount",
-											budgetdays: "$budgets.days",
-											costdays: { $literal: null },
-											costhours: { $literal: null },
-											id: "$budgets._id"
-							      }
-									}
-								], function(err, projects) {
-									logger.info('customer ' + custId + ' projects : ' + JSON.stringify(projects, null, '\t'));
-									var result = {customerId:custId,datatable:projects};
-									budgetsresults.push(result);
-									callbk();
-								});
+									], function(err, projects) {
+										logger.info('customer ' + custId + ' projects : ' + JSON.stringify(projects, null, '\t'));
+										var result = {customerId:custId,datatable:projects};
+										budgetsresults.push(result);
+										callbk();
+									});
 
+								});
+							}, function(err) {
+									if( err ) {
+										logger.info('error: ' + JSON.stringify(err, null, '\t'));
+										budgetsresults.push({error: err});
+									}
+									MongoPool.releaseConnection(db);
+									callback(null, budgetsresults);
 							});
-						}, function(err) {
-								if( err ) {
-									logger.info('error: ' + JSON.stringify(err, null, '\t'));
-									budgetsresults.push({error: err});
-								}
-								MongoPool.releaseConnection(db);
-								callback(null, budgetsresults);
-						});
+						}
 					};
 		    }
 			], function(err, data) {
-		    logger.info('data: ' + JSON.stringify(data, null, '\t'));
+		    	logger.info('data: ' + JSON.stringify(data, null, '\t'));
 				var datatable = processData(data);
 				jp.apply(datatable, '$[*].datatable[*].costdays', function(item) {
 					logger.info('costdays: ' + item +

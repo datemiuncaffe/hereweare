@@ -31,7 +31,7 @@ var MysqlPool = function() {
 			pool.getConnection(function(err, connection) {
 				if (err) {
 					logger.info('err: ' + err);
-					throw err;
+					cb(err, null, options);
 				}
 				logger.info('acquired connection');
 				cb(err, connection, options);
