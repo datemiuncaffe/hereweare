@@ -6,13 +6,14 @@ form[name=employeeReportForm] div.top {
   margin-bottom: 10px;
 }
 
+/* ---------------- center -------------------------- */
 form[name=employeeReportForm] div.center {
   font-family: Arial;
   font-size: 14px;
   float: left;
   margin-bottom: 10px;
   border-bottom: 1px solid black;
-  width: 1150px;
+  width: 100%;
 }
 form[name=employeeReportForm] div.center table {
   margin-top: 20px;
@@ -23,73 +24,81 @@ form[name=employeeReportForm] div.center table {
     color: #ff0000;
 }
 
-form[name=employeeReportForm] div.search_results {
+form[name=employeeReportForm] div.center div.search_results {
 	margin-bottom: 8px;
 }
-form[name=employeeReportForm] div.search_results h4 {
-  width: 1200px;
+form[name=employeeReportForm] div.center div.search_results h4 {
+  width: 100%;
 }
-form[name=employeeReportForm] div.search_results h4 .XLSExporter {
+form[name=employeeReportForm] div.center div.search_results h4 .XLSExporter {
   float: right;
   margin-top: -6px;
   margin-right: 6px;
 }
-form[name=employeeReportForm] div.search_results h4 .CSVExporter {
+form[name=employeeReportForm] div.center div.search_results h4 .CSVExporter {
   float: right;
   margin-top: -6px;
 }
-form[name=employeeReportForm] div.search_results table {
-  border-collapse: separate;
-  width: 1200px;
+form[name=employeeReportForm] div.center div.search_results table {
+   border-collapse: separate;
+   width: 100%;
 }
-form[name=employeeReportForm] div.search_results th {
+form[name=employeeReportForm] div.center div.search_results th {
 	padding-left: 5px;
 	padding-right: 5px;
 	border: 1px solid black;
-  background-color: cyan;
+   background-color: cyan;
+   word-wrap: break-word;
+   font-size: 16px;
 }
-form[name=employeeReportForm] div.search_results th:first-child {
-  border-radius: 80px 0 0 0;
-  padding-left: 20px;
-	padding-right: 5px;
-  width: 80px;
+form[name=employeeReportForm] div.center div.search_results th:first-child {
+   border-radius: 2em 0 0 0;
+   padding-left: 20px;
+   padding-right: 5px;
+   width: 10%;
 }
-form[name=employeeReportForm] div.search_results th:nth-child(5) {
-  /*width: 150px;*/
-  white-space: nowrap;
+form[name=employeeReportForm] div.center div.search_results th:nth-child(5) {
+   /*width: 150px;*/
+   /*white-space: nowrap;*/
 }
-form[name=employeeReportForm] div.search_results th:nth-child(6) {
-  width: 170px;
+form[name=employeeReportForm] div.center div.search_results th:nth-child(6) {
+   width: 20%;
 }
-form[name=employeeReportForm] div.search_results th:nth-child(7) {
-  width: 210px;
+form[name=employeeReportForm] div.center div.search_results th:nth-child(7) {
+   width: 20%;
 }
-form[name=employeeReportForm] div.search_results th:last-child {
-  border-radius: 0 80px 0 0;
-  width: 60px;
+form[name=employeeReportForm] div.center div.search_results th:last-child {
+   border-radius: 0 2em 0 0;
+   width: 10%;
 }
-form[name=employeeReportForm] div.search_results td {
+
+form[name=employeeReportForm] div.center div.search_results td {
 	padding-left: 5px;
 	padding-right: 5px;
 	border: 1px solid black;
 }
-form[name=employeeReportForm] div.search_results table tfoot td {
-  background-color: cyan;
-  font-weight: bold;
+form[name=employeeReportForm] div.center div.search_results table tfoot td {
+   background-color: cyan;
+   font-weight: bold;
 }
-form[name=employeeReportForm] div.search_results table tbody td:first-child {
-  padding-left: 10px;
-  padding-right: 0;
+form[name=employeeReportForm] div.center div.search_results table tbody td:first-child {
+   padding-left: 10px;
+   padding-right: 0;
 }
-form[name=employeeReportForm] div.search_results table tbody td:nth-child(5) {
-  white-space: nowrap;
+form[name=employeeReportForm] div.center div.search_results table tbody td:nth-child(5) {
+   /*white-space: nowrap;*/
 }
-form[name=employeeReportForm] div.search_results table tfoot td:first-child {
-  border-radius: 0 0 0 80px;
-  padding-left: 20px;
-	padding-right: 5px;
-  text-align: right;
+
+/* --------------- footer ----------------------- */
+form[name=employeeReportForm] div.center div.search_results table tfoot td {
+   font-size: 16px;
 }
-form[name=employeeReportForm] div.search_results table tfoot td:last-child {
-  border-radius: 0 0 80px 0;
+form[name=employeeReportForm] div.center div.search_results table tfoot td:first-child {
+   border-radius: 0 0 0 2em;
+   padding-left: 20px;
+   padding-right: 5px;
+   text-align: left;
+}
+form[name=employeeReportForm] div.center div.search_results table tfoot td:last-child {
+   border-radius: 0 0 2em 0;
 }

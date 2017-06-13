@@ -27,20 +27,20 @@ angular
 				]
 			},
 			options: {
-			  width: 1100,
-			  height: 400,
+				//width: 1100,
+				//height: 400,
 				//fullWidth: true,
 				axisX: {
 					//divisor: 4
-	  			//ticks: ['01/06/16', '10/06/16']
+					//ticks: ['01/06/16', '10/06/16']
 					labelInterpolationFnc: null
-		    },
+				},
 				axisY: {
 					//type: Chartist.FixedScaleAxis
-			    //onlyInteger: true,
+					//onlyInteger: true,
 					//ticks: [2, 4],
-			    //offset: 0
-			  }
+					//offset: 0
+				}
 			},
 			object: null
 		},
@@ -53,11 +53,11 @@ angular
 				]
 			},
 			options: {
-			  width: 1100,
-			  height: 400,
+				//width: 1100,
+				//height: 400,
 				axisX: {
 					labelInterpolationFnc: null
-		    }
+				}
 			},
 			object: null
 		}];

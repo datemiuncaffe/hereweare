@@ -32,6 +32,7 @@ form[name=employeeFilterForm] div.top > div.intervals > div > label {
   margin-top: 7px;
 }
 
+/* ------------------ center ------------------------ */
 form[name=employeeFilterForm] div.center {
   font-family: Arial;
   font-size: 14px;

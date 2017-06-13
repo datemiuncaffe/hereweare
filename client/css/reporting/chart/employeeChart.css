@@ -1,30 +1,32 @@
 form[name=employeeChartForm] div.top {
-  font-family: Arial;
-  font-size: 14px;
-  float: left;
-  margin-top: 10px;
-  margin-bottom: 10px;
+   font-family: Arial;
+   font-size: 14px;
+   float: left;
+   margin-top: 10px;
+   margin-bottom: 10px;
 }
 
+/* --------------------- center ----------------------------- */
 form[name=employeeChartForm] div.center {
-  font-family: Arial;
-  font-size: 14px;
-  float: left;
-  margin-bottom: 10px;
-  border-bottom: 1px solid black;
-  width: 1200px;
+   font-family: Arial;
+   font-size: 14px;
+   float: left;
+   margin-bottom: 10px;
+   border-bottom: 1px solid black;
+   width: 100%;
 }
 
 .highlight {
     color: #ff0000;
 }
 
-form[name=employeeChartForm] div.ct-chart {
+form[name=employeeChartForm] div.center div.ct-chart {
 	margin-bottom: 8px;
+   width: 100%;
 }
-form[name=employeeChartForm] div.ct-chart .ct-label {
-	color: rgba(0, 0, 0, 0.87);
-  font-size: 14px;
+form[name=employeeChartForm] div.center div.ct-chart .ct-label {
+   color: rgba(0, 0, 0, 0.87);
+   font-size: 14px;
 }
 
 form[name=employeeChartForm] div.center svg.ct-chart-line {

@@ -118,7 +118,7 @@ angular
 						 	 "COMMENTO", "ORE"])
 				.enter()
 				.append("th")
-				.attr("style", "white-space: nowrap;")
+				.attr("style", "white-space: normal;")
 				.text(function(column) {
 					return column;
 				});
