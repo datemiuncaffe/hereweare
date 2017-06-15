@@ -82,7 +82,7 @@ function modifyTestFn() {
     //.pipe(replace('$resourceBaseUrl$', '89.96.126.46:3002'))
 	 //.pipe(replace('$resourceBaseUrl$', '192.168.88.184:3002'))
 	 //.pipe(replace('$resourceBaseUrl$', 'localhost:3002'))
-	 .pipe(replace('$resourceBaseUrl$', 'hereweare/hereweare-backend'))
+	 .pipe(replace('$resourceBaseUrl$', '89.96.126.46/hereweare/hereweare-backend'))
     .pipe(gulp.dest(config.test.modify[0].dest));
 
 	gutil.log('modify ricerca.html file in test...');
@@ -90,7 +90,7 @@ function modifyTestFn() {
     //.pipe(replace('$resourceBaseUrl$', '89.96.126.46:3002'))
 	 //.pipe(replace('$resourceBaseUrl$', '192.168.88.184:3002'))
 	 //.pipe(replace('$resourceBaseUrl$', 'localhost:3002'))
-	 .pipe(replace('$resourceBaseUrl$', 'hereweare/hereweare-backend'))
+	 .pipe(replace('$resourceBaseUrl$', '89.96.126.46/hereweare/hereweare-backend'))
     .pipe(gulp.dest(config.test.modify[1].dest));
 }
 
