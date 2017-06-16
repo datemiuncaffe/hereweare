@@ -213,7 +213,10 @@ angular
    .controller('MainController',
       ['$rootScope', '$scope', '$window', '$location', 'crud', '$cookies', 'menu',
       function ($rootScope, $scope, $window, $location, crud, $cookies, menu) {
-         $scope.loginPageUrl = 'http://' + $window.location.host + '/login.html';
+         var currentPageUrl = $window.location.href;
+         $scope.loginPageUrl =
+            currentPageUrl.slice(0, currentPageUrl.lastIndexOf('/')) +
+            '/login.html';
 
          $scope.hwAuthCookie = $cookies.getObject('hwAuth');
          console.log('hwAuthCookie: ' +

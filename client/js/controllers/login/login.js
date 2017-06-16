@@ -60,8 +60,11 @@
          JSON.stringify($cookies.get('hwAuth'), null, '\t'));
         $cookies.put('hwAuth', JSON.stringify($scope.hwuser));
 
-        var url = 'http://' + $window.location.host + '/';
-        $window.location.href = url;
+        var loginPageUrl = $window.location.href;
+        var homePageUrl =
+            loginPageUrl.slice(0, loginPageUrl.lastIndexOf('/')) +
+            '/';
+        $window.location.href = homePageUrl;
         //$location.path(url);
         //$location.url(url);
         //$location.path('/');
