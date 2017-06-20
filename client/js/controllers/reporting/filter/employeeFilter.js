@@ -208,9 +208,9 @@ angular
 			console.log('(search) selectedEmployee: ' +
 				JSON.stringify($scope.selectedEmployee, null, '\t'));
 			console.log('projectCodes: ' + projectCodes);
-
-			var url = 'http://' + $window.location.host +
-					'/#/reporting/report/employee' +
+			var currentPageUrl = $window.location.href;
+         var url = currentPageUrl.slice(0, currentPageUrl.lastIndexOf('#')) +
+					'#/reporting/report/employee' +
 					'?cognomeDipendente=' +
 					$scope.selectedEmployee.cognomeDipendente +
 					'&nomeDipendente=' +
@@ -338,8 +338,9 @@ angular
 		};
 
 		$scope.viewChart = function() {
-			var url = 'http://' + $window.location.host +
-					'/#/reporting/chart/employee' +
+			var currentPageUrl = $window.location.href;
+         var url = currentPageUrl.slice(0, currentPageUrl.lastIndexOf('#')) +
+					'#/reporting/chart/employee' +
 					'?cognomeDipendente=' +
 					$scope.selectedEmployee.cognomeDipendente +
 					'&nomeDipendente=' +
