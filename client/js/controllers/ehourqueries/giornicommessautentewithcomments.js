@@ -85,7 +85,7 @@ angular
 
              // console.log('$columns: ' + JSON.stringify(elemScope.$columns, null, '\t'));
              // elemScope.$ctrl.groupBy(selectedGroup);
-          }          
+          }
         }
       }
     };
@@ -143,8 +143,8 @@ angular
     		}
     	});
     ref.monthFilterByInterval = {
-      meseIn: './../../../templates/table/filters/startMonth.html',
-      meseFin: './../../../templates/table/filters/endMonth.html'
+      meseIn: 'templates/table/filters/startMonth.html',
+      meseFin: 'templates/table/filters/endMonth.html'
     };
 
     $scope.isLastPage = function() {
