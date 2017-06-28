@@ -71,7 +71,7 @@ angular
     		url: '/oremese',
     		views:{
     		  'oremeseview': {
-    	         templateUrl: 'views/ehourqueries/oremese.html',
+    	         templateUrl: 'views/riepiloghi/dipendenti/oremese.html',
     	         controller: 'OreMeseController'
     		  }
     		}
@@ -80,7 +80,7 @@ angular
     		url: '/giornicommessautente?year&month&projectCode',
     		views:{
     		  'giornicommessautenteview': {
-    	         templateUrl: 'views/ehourqueries/giornicommessautente.html',
+    	         templateUrl: 'views/riepiloghi/dipendenti/giornicommessautente.html',
     	         controller: 'GiorniCommessaUtenteController'
     		  }
     		}
@@ -89,7 +89,7 @@ angular
     		url: '/giornicommessautentewithcomments?year&month&projectCode',
     		views:{
     		  'giornicommessautentewithcommentsview': {
-    	         templateUrl: 'views/ehourqueries/giornicommessautentewithcomments.html',
+    	         templateUrl: 'views/riepiloghi/dipendenti/giornicommessautentewithcomments.html',
     	         controller: 'giorniCommessaUtenteWithCommentsController'
     		  }
     		}
@@ -98,7 +98,7 @@ angular
     		url: '/giornicommessa',
     		views:{
     		  'giornicommessaview': {
-    	         templateUrl: 'views/ehourqueries/giornicommessa.html',
+    	         templateUrl: 'views/riepiloghi/commesse/giornicommessa.html',
     	         controller: 'GiorniCommessaController'
     		  }
     		}
@@ -107,7 +107,7 @@ angular
     		url: '/giorni',
     		views:{
     		  'giorniview': {
-    	         templateUrl: 'views/ehourqueries/giorni.html',
+    	         templateUrl: 'views/riepiloghi/commesse/giorni.html',
     	         controller: 'GiorniController'
     		  }
     		}
@@ -116,7 +116,7 @@ angular
     		url: '/giornicliente',
     		views:{
     		  'giorniclienteview': {
-    	         templateUrl: 'views/ehourqueries/giornicliente.html',
+    	         templateUrl: 'views/riepiloghi/commesse/giornicliente.html',
     	         controller: 'GiorniClienteController'
     		  }
     		}
@@ -125,7 +125,7 @@ angular
     		url: '/giorniclienteprogetto',
     		views:{
     		  'giorniclienteprogettoview': {
-    	         templateUrl: 'views/ehourqueries/giorniclienteprogetto.html',
+    	         templateUrl: 'views/riepiloghi/commesse/giorniclienteprogetto.html',
     	         controller: 'GiorniClienteProgettoController'
     		  }
     		}

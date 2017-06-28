@@ -1,5 +1,5 @@
 angular
-  .module('ehourqueries')
+  .module('riepiloghi')
   .controller('giorniCommessaUtenteWithCommentsController',
       ['$scope', '$state', 'NgTableParams', '$resource', 'resourceBaseUrl',
        '$stateParams', 'FileSaver', 'Blob', 'excelgen',

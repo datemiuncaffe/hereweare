@@ -14,13 +14,13 @@ angular.module('app', [
     'crudService',
     'common.services',
     'table.service',
-    'ehourqueries',
+    'riepiloghi',
     'export-service',
     'menu.directives'
   ]);
 
 angular.module('common.services',[]);
 angular.module('table.service',[]);
-angular.module('ehourqueries', ['ngFileSaver']);
+angular.module('riepiloghi', ['ngFileSaver']);
 angular.module('export-service',[]);
 angular.module('menu.directives', []);
