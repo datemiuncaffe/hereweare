@@ -4,21 +4,25 @@
 	<div class="top">
 	</div>
 	<div class="center">
-		<div class="list-group">
-			<div ng-controller="GiorniClienteController as oremese">
-			  <table ng-table="oremese.tableParams"
+	<div class="list-group">
+		<div ng-controller="GiorniClienteController as ggclienteCtrl">
+			<table ng-table="ggclienteCtrl.tableParams"
 					class="table table-bordered table-striped table-condensed ehourdata"
 					show-filter="true">
 				<tr ng-repeat="row in $data">
-				  <td data-title="'ANNO'" filter="{anno: 'text'}" sortable="'anno'">{{row.anno}}</td>
-				  <td data-title="'MESE'" filter="{mese: 'text'}" sortable="'mese'">{{row.mese}}</td>
-				  <td data-title="'ID CLIENTE'" filter="{idCliente: 'text'}" sortable="'idCliente'">{{row.idCliente}}</td>
-				  <td data-title="'CLIENTE'" filter="{nomeCliente: 'text'}" sortable="'nomeCliente'">{{row.nomeCliente}}</td>
-				  <td data-title="'GIORNATE EROGATE'" sortable="'giornateMese'">{{row.giornateMese}}</td>
+					<td data-title="'ANNO'" filter="ggclienteCtrl.yearFilterByInterval" sortable="'anno'">
+						{{row.anno}}
+					</td>
+					<td data-title="'MESE'" filter="ggclienteCtrl.monthFilterByInterval" sortable="'mese'">
+						{{row.mese}}
+					</td>
+					<td data-title="'ID CLIENTE'" filter="{idCliente: 'text'}" sortable="'idCliente'">{{row.idCliente}}</td>
+					<td data-title="'CLIENTE'" filter="{nomeCliente: 'text'}" sortable="'nomeCliente'">{{row.nomeCliente}}</td>
+					<td data-title="'GIORNATE EROGATE'" sortable="'giornateMese'">{{row.giornateMese}}</td>
 				</tr>
-			  </table>
-			</div>
+			</table>
 		</div>
+	</div>
 	</div>
 	<hr>
 </section>

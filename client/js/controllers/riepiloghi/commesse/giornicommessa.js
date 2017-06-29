@@ -6,16 +6,22 @@ angular
 
     var now = moment();
     var currentYear = now.year();
-    var currentMonth = now.month();
+    var previousMonth = now.month();
+    var currentMonth = now.month() + 1;
     console.log('inside GiorniCommessaController: year = ' + currentYear + '; month = ' + currentMonth);
+
+    // set table filter
+    var tablefilter = {
+      yearIn: currentYear,
+      yearFin: currentYear,
+      meseIn: currentMonth,
+      meseFin: currentMonth
+    };
 
     var query = $resource('http://' + resourceBaseUrl + '/query_giorni_lav_commessa_mese');
 
     ref.tableParams = new NgTableParams({
-        filter: {
-          anno: currentYear,
-          mese: currentMonth
-        }
+        filter: tablefilter
       },
       {
     		getData : function(params) {
@@ -32,5 +38,14 @@ angular
     				return res;
     			});
     		}
-    	});
+    	}
+    );
+    ref.monthFilterByInterval = {
+      meseIn: 'templates/table/filters/startMonth.html',
+      meseFin: 'templates/table/filters/endMonth.html'
+    };
+    ref.yearFilterByInterval = {
+      yearIn: 'templates/table/filters/startYear.html',
+      yearFin: 'templates/table/filters/endYear.html'
+    };
   }]);

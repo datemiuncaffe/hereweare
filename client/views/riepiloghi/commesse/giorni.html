@@ -5,13 +5,17 @@
 	</div>
 	<div class="center">
 		<div class="list-group">
-			<div ng-controller="GiorniController as oremese">
-			  <table ng-table="oremese.tableParams"
+			<div ng-controller="GiorniController as giorni">
+			  <table ng-table="giorni.tableParams"
 					class="table table-bordered table-striped table-condensed ehourdata"
 					show-filter="true">
 				<tr ng-repeat="row in $data">
-				  <td data-title="'ANNO'" filter="{anno: 'text'}" sortable="'anno'">{{row.anno}}</td>
-				  <td data-title="'MESE'" filter="{mese: 'text'}" filter-data="'8'" sortable="'mese'">{{row.mese}}</td>
+				  <td data-title="'ANNO'" filter="giorni.yearFilterByInterval" sortable="'anno'">
+					  {{row.anno}}
+				  </td>
+				  <td data-title="'MESE'" filter="giorni.monthFilterByInterval" filter-data="'8'" sortable="'mese'">
+					  {{row.mese}}
+				  </td>
 				  <td data-title="'GIORNATE EROGATE'" sortable="'giornateMese'">{{row.giornateMese}}</td>
 				</tr>
 			  </table>

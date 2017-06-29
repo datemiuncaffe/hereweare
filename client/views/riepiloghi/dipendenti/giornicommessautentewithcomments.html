@@ -61,7 +61,7 @@
 					</tr>
 
 					<tr ng-hide="group.$hideRows" ng-repeat="row in group.data">
-						<td data-title="'ANNO'" filter="{anno: 'text'}" sortable="'anno'">
+						<td data-title="'ANNO'" filter="ggCommessaUtWCommCtrl.yearFilterByInterval" sortable="'anno'">
 							{{row.anno}}
 						</td>
 						<td data-title="'MESE'" filter="ggCommessaUtWCommCtrl.monthFilterByInterval" sortable="'mese'">

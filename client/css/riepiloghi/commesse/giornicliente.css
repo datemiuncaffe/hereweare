@@ -1,0 +1,55 @@
+/* --------------------------------------------------------------------- */
+/* ---------------------- giornicliente ------------------------- */
+/* --------------------------------------------------------------------- */
+section#ggcliente table.grouping .groupingCheckboxes
+td:nth-child(1) { /* blank */
+   /*width: 80px;*/
+   width: 15%;
+}
+section#ggcliente table.grouping .groupingCheckboxes
+td:nth-child(2) { /* mese */
+   /*width: 110px;*/
+   width: 15%;
+}
+section#ggcliente table.grouping .groupingCheckboxes
+td:nth-child(3) { /* id cliente */
+   /*width: 170px;*/
+   width: 10%;
+}
+section#ggcliente table.grouping .groupingCheckboxes
+td:nth-child(4) { /* cliente */
+   /*width: 170px;*/
+   width: 40%;
+}
+section#ggcliente table.grouping .groupingCheckboxes
+td:nth-child(5) { /* giornate erogate */
+   /*width: 200px;*/
+   width: 20%;
+}
+
+
+section#ggcliente table.ehourdata thead tr th:nth-child(1),
+section#ggcliente table.ehourdata tbody tr td:nth-child(1) { /* anno */
+   /*width: 80px;*/
+   width: 15%;
+}
+section#ggcliente table.ehourdata thead tr th:nth-child(2),
+section#ggcliente table.ehourdata tbody tr td:nth-child(2) { /* mese */
+   /*width: 110px;*/
+   width: 15%;
+}
+section#ggcliente table.ehourdata thead tr th:nth-child(3),
+section#ggcliente table.ehourdata tbody tr td:nth-child(3) { /* id cliente */
+   /*width: 170px;*/
+   width: 10%;
+}
+section#ggcliente table.ehourdata thead tr th:nth-child(4),
+section#ggcliente table.ehourdata tbody tr td:nth-child(4) { /* cliente */
+   /*width: 170px;*/
+   width: 40%;
+}
+section#ggcliente table.ehourdata thead tr th:nth-child(5),
+section#ggcliente table.ehourdata tbody tr td:nth-child(5) { /* giornate erogate */
+   /*width: 200px;*/
+   width: 20%;
+}

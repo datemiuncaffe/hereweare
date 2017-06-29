@@ -5,13 +5,17 @@
 	</div>
 	<div class="center">
 		<div class="list-group">
-			<div ng-controller="GiorniCommessaController as oremese">
-			  <table ng-table="oremese.tableParams"
+			<div ng-controller="GiorniCommessaController as ggCommessaCtrl">
+			  <table ng-table="ggCommessaCtrl.tableParams"
 					class="table table-bordered table-striped table-condensed ehourdata"
 					show-filter="true">
 				<tr ng-repeat="row in $data">
-				  <td data-title="'ANNO'" filter="{anno: 'text'}" sortable="'anno'">{{row.anno}}</td>
-				  <td data-title="'MESE'" filter="{mese: 'text'}" sortable="'mese'">{{row.mese}}</td>
+				  <td data-title="'ANNO'" filter="ggCommessaCtrl.yearFilterByInterval" sortable="'anno'">
+					  {{row.anno}}
+				  </td>
+				  <td data-title="'MESE'" filter="ggCommessaCtrl.monthFilterByInterval" sortable="'mese'">
+					  {{row.mese}}
+				  </td>
 				  <td data-title="'CLIENTE'" filter="{nomeCliente: 'text'}" sortable="'nomeCliente'">{{row.nomeCliente}}</td>
 				  <td data-title="'CODICE PROGETTO'" filter="{codiceProgetto: 'text'}" sortable="'codiceProgetto'">{{row.codiceProgetto}}</td>
 				  <td data-title="'PROGETTO'" filter="{nomeProgetto: 'text'}" sortable="'nomeProgetto'">{{row.nomeProgetto}}</td>

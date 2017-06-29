@@ -99,6 +99,7 @@ section.ehourtables table.grouping .groupingCheckboxes .item-checkbox.md-checked
 /* ----------------------------------------- */
 table.ehourdata {
    width: 100%;
+   table-layout: fixed;
 }
 table.ehourdata thead,
 table.ehourdata tbody,
@@ -113,6 +114,8 @@ table.ehourdata tfoot tr {
 table.ehourdata td {
    font-family: Arial;
 }
+
+/* -------------------------- filters ---------------------------------------*/
 table.ehourdata thead tr.ng-table-filters th:nth-child(2) div.filter-cell
 label.startMonthFilterLabel {
    float: left;
@@ -135,6 +138,27 @@ input.endMonthInputFilter {
    padding: 0;
 }
 
+table.ehourdata thead tr.ng-table-filters th:nth-child(1) div.filter-cell
+label.startYearFilterLabel {
+   float: left;
+   margin-top: 7px;
+}
+table.ehourdata thead tr.ng-table-filters th:nth-child(1) div.filter-cell
+label.endYearFilterLabel {
+   float: left;
+   margin-top: 7px;
+   margin-left: 8px;
+}
+table.ehourdata thead tr.ng-table-filters th:nth-child(1) div.filter-cell
+input.startYearInputFilter,
+table.ehourdata thead tr.ng-table-filters th:nth-child(1) div.filter-cell
+input.endYearInputFilter {
+   float: right;
+   margin-left: 10px;
+   margin-bottom: 0;
+   width: 60%;
+   padding: 0;
+}
 
 /* ---------------------------------------------------------- */
 /* ----------------------------- specific tables ----------------------- */
@@ -146,7 +170,7 @@ input.endMonthInputFilter {
 section#ggcommessautente table.grouping .groupingCheckboxes
 td:nth-child(1) { /* blank */
    /*width: 80px;*/
-   width: 7%;
+   width: 12%;
 }
 section#ggcommessautente table.grouping .groupingCheckboxes
 td:nth-child(2) { /* mese */
@@ -186,7 +210,7 @@ td:nth-child(8) { /* blank */
 section#ggcommessautente table.grouping .groupingCheckboxes
 td:nth-child(9) { /* blank */
    /*width: 150px;*/
-   width: 15%;
+   width: 10%;
 }
 
 
@@ -194,7 +218,7 @@ td:nth-child(9) { /* blank */
 section#ggcommessautente table.ehourdata thead tr th:nth-child(1),
 section#ggcommessautente table.ehourdata tbody tr td:nth-child(1) { /* anno */
    /*width: 80px;*/
-   width: 7%;
+   width: 12%;
 }
 section#ggcommessautente table.ehourdata thead tr th:nth-child(2),
 section#ggcommessautente table.ehourdata tbody tr td:nth-child(2) { /* mese */
@@ -237,7 +261,7 @@ section#ggcommessautente table.ehourdata tbody tr td:nth-child(8) { /* ore */
 section#ggcommessautente table.ehourdata thead tr th:nth-child(9),
 section#ggcommessautente table.ehourdata tbody tr td:nth-child(9) { /* giornate */
    /*width: 150px;*/
-   width: 15%;
+   width: 10%;
 }
 /* ---- totals ------------ */
 section#ggcommessautente table.ehourdata tbody
@@ -263,7 +287,7 @@ section#ggcommessautente table.ehourdata tfoot tr td:nth-child(3) { /* giornate 
 section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
 td:nth-child(1) { /* blank */
    /*width: 80px;*/
-   width: 7%;
+   width: 12%;
 }
 section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
 td:nth-child(2) { /* mese */
@@ -298,12 +322,12 @@ td:nth-child(7) { /* nome */
 section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
 td:nth-child(8) { /* cognome */
    /*width: 150px;*/
-   width: 10%;
+   width: 9%;
 }
 section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
 td:nth-child(9) { /* blank */
    /*width: 200px;*/
-   width: 14%;
+   width: 10%;
 }
 section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
 td:nth-child(10) { /* blank */
@@ -317,7 +341,7 @@ thead tr th:nth-child(1),
 section#ggcommessautentewithcomments table.ehourdata
 tbody tr td:nth-child(1) { /* anno */
    /*width: 80px;*/
-   width: 7%;
+   width: 12%;
 }
 section#ggcommessautentewithcomments table.ehourdata
 thead tr th:nth-child(2),
@@ -366,14 +390,17 @@ thead tr th:nth-child(8),
 section#ggcommessautentewithcomments table.ehourdata
 tbody tr td:nth-child(8) { /* cognome */
    /*width: 150px;*/
-   width: 10%;
+   width: 9%;
 }
 section#ggcommessautentewithcomments table.ehourdata
 thead tr th:nth-child(9),
 section#ggcommessautentewithcomments table.ehourdata
 tbody tr td:nth-child(9) { /* commento */
    /*width: 200px;*/
-   width: 14%;
+   width: 10%;
+   max-width: 10%;
+   word-wrap: break-word;
+   /*word-break: ;*/
 }
 section#ggcommessautentewithcomments table.ehourdata
 thead tr th:nth-child(10),

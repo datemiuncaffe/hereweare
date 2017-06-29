@@ -10,13 +10,15 @@ angular
 
     var now = moment();
     var currentYear = now.year();
+    var previousMonth = now.month();
     var currentMonth = now.month() + 1;
-    console.log('inside giorniCommessaUtenteWithCommentsController: year = ' +
-        currentYear + '; month = ' + currentMonth);
+    console.log('inside giorniCommessaUtenteWithCommentsController: ' +
+         '; year = ' + currentYear + '; month = ' + currentMonth);
 
     // set table filter
     var tablefilter = {
-      anno: currentYear,
+      yearIn: currentYear,
+      yearFin: currentYear,
       meseIn: currentMonth,
       meseFin: currentMonth
     };
@@ -141,10 +143,15 @@ angular
     				return res;
     			});
     		}
-    	});
+    	}
+    );
     ref.monthFilterByInterval = {
       meseIn: 'templates/table/filters/startMonth.html',
       meseFin: 'templates/table/filters/endMonth.html'
+    };
+    ref.yearFilterByInterval = {
+      yearIn: 'templates/table/filters/startYear.html',
+      yearFin: 'templates/table/filters/endYear.html'
     };
 
     $scope.isLastPage = function() {
