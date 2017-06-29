@@ -63,25 +63,25 @@
     "./middleware/ehourqueries/queryActiveUsers": {
       "paths": "/query_active_users"
     },
-    "./middleware/ehourqueries/queryGiorni": {
+    "./middleware/ehourqueries/commesse/queryGiorni": {
       "paths": "/query_giorni_lav_mese"
     },
-    "./middleware/ehourqueries/queryGiorniCliente": {
+    "./middleware/ehourqueries/commesse/queryGiorniCliente": {
       "paths": "/query_giorni_lav_cliente_mese"
     },
-    "./middleware/ehourqueries/queryGiorniClienteProgetto": {
+    "./middleware/ehourqueries/commesse/queryGiorniClienteProgetto": {
       "paths": "/query_giorni_lav_cliente_progetto_mese"
     },
-    "./middleware/ehourqueries/queryGiorniCommessa": {
+    "./middleware/ehourqueries/commesse/queryGiorniCommessa": {
       "paths": "/query_giorni_lav_commessa_mese"
     },
-    "./middleware/ehourqueries/queryGiorniCommessaUtente": {
+    "./middleware/ehourqueries/dipendenti/queryGiorniCommessaUtente": {
       "paths": "/query_giorni_lav_commessa_utente_mese"
     },
-    "./middleware/ehourqueries/queryGiorniCommessaUtenteWithComments": {
+    "./middleware/ehourqueries/dipendenti/queryGiorniCommessaUtenteWithComments": {
       "paths": "/query_giorni_lav_commessa_utente_mese_with_comments"
     },
-    "./middleware/ehourqueries/queryOreLavUtenteMese": {
+    "./middleware/ehourqueries/dipendenti/queryOreLavUtenteMese": {
       "paths": "/query_ore_lav_utente_mese"
     },
     "./middleware/ehourqueries/queryReportsByUserNameAndDateIntervalAndProjects": {

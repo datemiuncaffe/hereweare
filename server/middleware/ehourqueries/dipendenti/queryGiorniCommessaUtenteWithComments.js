@@ -1,10 +1,11 @@
 module.exports = function(options) {
 	var jp = require('jsonpath');
-	var MysqlPool = require('./../../lib/mysql-pool').pool();
-	var logger = require('./../../lib/logger');
+	var MysqlPool = require('./../../../lib/mysql-pool').pool();
+	var logger = require('./../../../lib/logger');
 
 	var filterParametersMap = {
-		anno: 'year(ENTRY_DATE)',
+		yearIn: 'year(ENTRY_DATE)',
+		yearFin: 'year(ENTRY_DATE)',
 		meseIn: 'month(ENTRY_DATE)',
 		meseFin: 'month(ENTRY_DATE)',
 		dayOfMonth: 'dayofmonth(ENTRY_DATE)',
@@ -41,11 +42,13 @@ module.exports = function(options) {
 			var keys = Object.keys(queryparams.filter);
 			var keysNotInDate = keys.filter(function(key){
 				return (key !== 'meseIn' && key !== 'meseFin' &&
-								key !== 'anno' && key !== 'dayOfMonth');
+						  key !== 'yearIn' && key !== 'yearFin' &&
+						  key !== 'dayOfMonth');
 			});
 			var keysInDate = keys.filter(function(key){
 				return (key == 'meseIn' || key == 'meseFin' ||
-								key == 'anno' || key == 'dayOfMonth');
+						  key == 'yearIn' || key == 'yearFin' ||
+						  key == 'dayOfMonth');
 			});
 			query += ' where';
 			if (keysNotInDate.length > 0) {
@@ -60,8 +63,11 @@ module.exports = function(options) {
 				for (var i = 0; i < keysInDate.length; i++) {
 					query += ' and ' + filterParametersMap[keysInDate[i]];
 					switch (keysInDate[i]) {
-						case 'anno':
-							query += ' = ';
+						case 'yearIn':
+							query += ' >= ';
+							break;
+						case 'yearFin':
+							query += ' <= ';
 							break;
 						case 'meseIn':
 							query += ' >= ';
@@ -82,8 +88,11 @@ module.exports = function(options) {
 				for (var i = 0; i < keys.length; i++) {
 					query += ' ' + filterParametersMap[keys[i]];
 					switch (keys[i]) {
-						case 'anno':
-							query += ' = ';
+						case 'yearIn':
+							query += ' >= ';
+							break;
+						case 'yearFin':
+							query += ' <= ';
 							break;
 						case 'meseIn':
 							query += ' >= ';
@@ -106,7 +115,7 @@ module.exports = function(options) {
 			}
 		} else {
 			query += ' where ' +
-							 filterParametersMap[anno] + ' = year(now())' +
+							 filterParametersMap[yearIn] + ' = year(now())' +
 							 ' and ' +
 							 filterParametersMap[meseIn] + ' = month(now()) - 1';
 		}

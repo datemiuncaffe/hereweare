@@ -1,43 +1,45 @@
 module.exports = function(options) {
 	var jp = require('jsonpath');
-	var MysqlPool = require('./../../lib/mysql-pool').pool();
-	var logger = require('./../../lib/logger');
+	var MysqlPool = require('./../../../lib/mysql-pool').pool();
+	var logger = require('./../../../lib/logger');
 
-	return function queryOreLavUtenteMese(req, res, next) {
+	return function queryGiorniClienteProgetto(req, res, next) {
 		var resList = {
-			oreLav : []
+			giorniClienteProgetto : []
 		};
 		// parse query string parameters
 		var queryparams = req.query;
 		logger.info('queryparams: ' + JSON.stringify(queryparams, null, '\t'));
 
-		var query = 'select year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, u.FIRST_NAME as nomeDipendente, u.LAST_NAME as cognomeDipendente, sum(HOURS) as oreMese from TIMESHEET_ENTRY t join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID join PROJECT p on a.PROJECT_ID = p.PROJECT_ID join USERS u on u.USER_ID = a.USER_ID join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID group by anno, mese, u.USER_ID';
+		var query = 'select c.NAME as nomeCliente, p.PROJECT_CODE as codiceProgetto, ' +
+			'p.NAME as nomeProgetto, round(sum(HOURS)/8,2) as giornateMese ' +
+			'from TIMESHEET_ENTRY t ' +
+			'join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID ' +
+			'join PROJECT p on a.PROJECT_ID = p.PROJECT_ID ' +
+			'join USERS u on u.USER_ID = a.USER_ID ' +
+			'join CUSTOMER c on p.CUSTOMER_ID = c.CUSTOMER_ID ' +
+			'group by c.CUSTOMER_ID, p.PROJECT_ID';
 		if (queryparams != null && queryparams.filter != null) {
 			query += ' having ';
 			var keys = Object.keys(queryparams.filter);
 			for (var i = 0; i < keys.length; i++) {
-				query += keys[i] + ' like \'%' + queryparams.filter[keys[i]]
-						+ '%\'';
+				query += keys[i] + ' like \'%' + queryparams.filter[keys[i]] + '%\'';
 				if (i !== (keys.length - 1)) {
 					query += ' and ';
 				}
 			}
-		} else {
-			query += ' having anno = year(now()) and mese = month(now()) - 1';
 		}
-		// ordering
+
+		/* -------------------- sorting ------------------------ */
 		var sorting = {
-			anno: 'ASC',
-			mese: 'ASC'
+			nomeCliente: 'ASC',
+			codiceProgetto: 'ASC'
 		};
 		if (queryparams != null && queryparams.sorting != null) {
 			var sortingParamskeys = Object.keys(queryparams.sorting);
 			sortingParamskeys.forEach(function(key) {
 				sorting[key] = queryparams.sorting[key];
 			});
-		}
-		if (Object.keys(sorting).length == 2) {
-			sorting.cognomeDipendente = 'ASC';
 		}
 		logger.info('sorting: ' + JSON.stringify(sorting, null, '\t'));
 		query += ' order by ';
@@ -48,6 +50,8 @@ module.exports = function(options) {
 				query += ', ';
 			}
 		}
+		/* ------------------ end sorting ---------------------- */
+
 		logger.info('sql query: ' + JSON.stringify(query, null, '\t'));
 
 		MysqlPool.getPool(getConnection);
@@ -57,7 +61,7 @@ module.exports = function(options) {
 		};
 
 		function getData(err, connection, query) {
-			connection.query(query, function(err, oreLav) {
+			connection.query(query, function(err, giorniClienteProgetto) {
 				if (err) {
 					logger.info('err: ' + JSON.stringify(err));
 					MysqlPool.releaseConnection(connection);
@@ -65,17 +69,17 @@ module.exports = function(options) {
 				}
 
 				MysqlPool.releaseConnection(connection);
-				logger.info('queryOreLavUtenteMese performed ...');
-				logger.info('oreLav: ' + JSON.stringify(oreLav, null, '\t'));
+				logger.info('queryGiorniClienteProgetto performed ...');
+				logger.info('giorni cliente progetto: ' + JSON.stringify(giorniClienteProgetto, null, '\t'));
 
-				resList['oreLav'] = oreLav;
+				resList['giorniClienteProgetto'] = giorniClienteProgetto;
 				logger.info('resList: ' + JSON.stringify(resList));
-				jp.apply(resList, '$.oreLav[*].oreMese', function(item) {
-					logger.info('oreMese: ' + item +
+				jp.apply(resList, '$.giorniClienteProgetto[*].giornateMese', function(item) {
+					logger.info('giornateMese: ' + item +
 						'; typeof: ' + typeof item);
 					if (item != null && typeof item == 'number') {
 						var formattedItem = item.toString().replace(".", ",");
-						logger.info('oreMese formatted: ' + formattedItem);
+						logger.info('giornateMese formatted: ' + formattedItem);
 						return formattedItem;
 					}
 				});
