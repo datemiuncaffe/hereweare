@@ -45,8 +45,11 @@
     "./middleware/ehourqueries/queryCustomers": {
       "paths": "/query_customers"
     },
-    "./middleware/ehourqueries/queryProjectsByCustomerId": {
+    "./middleware/ehourqueries/project/queryProjectsByCustomerId": {
       "paths": "/query_projects_by_customer_id"
+    },
+    "./middleware/ehourqueries/project/queryProjectById": {
+      "paths": "/query_project_by_id"
     },
     "./middleware/ehourqueries/queryProjectsAndCustomersByUserNameAndDateInterval": {
       "paths": "/query_projects_customers_by_username_dateinterval"
@@ -57,7 +60,7 @@
     "./middleware/ehourqueries/queryActiveCustomers": {
       "paths": "/query_active_customers"
     },
-    "./middleware/ehourqueries/queryActiveProjects": {
+    "./middleware/ehourqueries/project/queryActiveProjects": {
       "paths": "/query_active_projects"
     },
     "./middleware/ehourqueries/queryActiveUsers": {

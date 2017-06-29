@@ -1,6 +1,7 @@
+var MysqlPool = require('./../../../lib/mysql-pool').pool();
+var logger = require('./../../../lib/logger');
+
 module.exports = function(options) {
-	var MysqlPool = require('./../../lib/mysql-pool').pool();
-	var logger = require('./../../lib/logger');
 
 	return function queryProjectsByCustomerId(req, res, next) {
 		// parse query string parameters
