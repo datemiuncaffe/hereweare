@@ -23,8 +23,10 @@ angular
     			// ajax request to back end
     			return query.get(params.url()).$promise.then(function(data) {
     				var res = [];
-    				if (data != null && data.giorniClienteProgetto != null && data.giorniClienteProgetto.length >0) {
-    					console.log('data giorni cliente Progetto: ' + JSON.stringify(data.giorniClienteProgetto, null, '\t'));
+    				if (data != null && data.giorniClienteProgetto != null &&
+                   data.giorniClienteProgetto.length >0) {
+    					console.log('data giorni cliente Progetto: ' +
+                     JSON.stringify(data.giorniClienteProgetto, null, '\t'));
     					res = data.giorniClienteProgetto;
     				}
     				return res;

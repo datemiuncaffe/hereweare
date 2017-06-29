@@ -74,10 +74,14 @@
 							{{row.nomeCliente}}
 						</td>
 						<td data-title="'CODICE PROGETTO'" filter="{codiceProgetto: 'text'}" sortable="'codiceProgetto'">
-							{{row.codiceProgetto}}
+							<a ui-sref="projectdetail({projectId: {{row.idProgetto}}})">
+								{{row.codiceProgetto}}
+							</a>
 						</td>
 						<td data-title="'PROGETTO'" filter="{nomeProgetto: 'text'}" sortable="'nomeProgetto'">
-							{{row.nomeProgetto}}
+							<a ui-sref="projectdetail({projectId: {{row.idProgetto}}})">
+								{{row.nomeProgetto}}
+							</a>
 						</td>
 						<td data-title="'NOME'" filter="{nomeDipendente: 'text'}" sortable="'nomeDipendente'">
 							{{row.nomeDipendente}}

@@ -8,7 +8,7 @@ angular
         url: '/activeprojects',
         views:{
           'activeprojectsview': {
-              templateUrl: 'views/projects/activeprojects.html',
+              templateUrl: 'views/project/list/activeprojects.html',
               controller: 'ActiveProjectsController'
            }
         }
@@ -17,7 +17,7 @@ angular
         url: '/senseiprojects',
         views:{
           'senseiprojectsview': {
-              templateUrl: 'views/projects/senseiprojects.html',
+              templateUrl: 'views/project/list/senseiprojects.html',
               controller: 'SenseiProjectsController'
            }
         }
@@ -26,7 +26,7 @@ angular
         url: '/newprojects',
         views:{
           'newprojectsview': {
-              templateUrl: 'views/projects/newprojects.html',
+              templateUrl: 'views/project/list/newprojects.html',
               controller: 'NewProjectsController'
            }
         }
@@ -53,7 +53,7 @@ angular
         url: '/projectdetail?customerId&customerName&projectId&projectName&projectCode',
         views:{
           'projectdetailview': {
-              templateUrl: 'views/estimate/projectdetail.html',
+              templateUrl: 'views/project/detail.html',
               controller: 'ProjectDetailController'
            }
         }
@@ -62,7 +62,7 @@ angular
         url: '/projectmodify?customerId&customerName&projectId&projectName&projectCode',
         views:{
           'projectmodifyview': {
-              templateUrl: 'views/estimate/projectmodify.html',
+              templateUrl: 'views/project/modify.html',
               controller: 'ProjectModifyController'
            }
         }
