@@ -20,6 +20,7 @@ module.exports = function(options) {
 
 		var query = 'select year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, ' +
 			'c.NAME as nomeCliente, concat(c.CODE, \' - \', c.NAME) as codiceNomeCliente, ' +
+			'p.PROJECT_ID as idProgetto, ' +
 			'p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, ' +
 			'u.FIRST_NAME as nomeDipendente, u.LAST_NAME as cognomeDipendente, ' +
 			'concat(u.LAST_NAME, \', \', u.FIRST_NAME) as cognomeNomeDipendente, ' +

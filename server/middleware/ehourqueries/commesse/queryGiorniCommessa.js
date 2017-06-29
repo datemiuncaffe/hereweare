@@ -21,6 +21,7 @@ module.exports = function(options) {
 
 		var query = 'select year(ENTRY_DATE) as anno, month(ENTRY_DATE) as mese, ' +
 			'c.NAME as nomeCliente, p.PROJECT_CODE as codiceProgetto, ' +
+			'p.PROJECT_ID as idProgetto, ' +
 			'p.NAME as nomeProgetto, round(sum(HOURS)/8,2) as giornateMese ' +
 			'from TIMESHEET_ENTRY t ' +
 			'join PROJECT_ASSIGNMENT a on t.ASSIGNMENT_ID = a.ASSIGNMENT_ID ' +

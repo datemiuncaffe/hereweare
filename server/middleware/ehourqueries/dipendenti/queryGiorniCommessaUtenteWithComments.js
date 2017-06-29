@@ -30,6 +30,7 @@ module.exports = function(options) {
 			'dayofmonth(ENTRY_DATE) as dayOfMonth, ' +
 			'c.NAME as nomeCliente, concat(c.CODE, \' - \', c.NAME) as codiceNomeCliente, ' +
 			'p.PROJECT_CODE as codiceProgetto, p.NAME as nomeProgetto, ' +
+			'p.PROJECT_ID as idProgetto, ' +
 			'u.FIRST_NAME as nomeDipendente, u.LAST_NAME as cognomeDipendente, ' +
 			'concat(u.LAST_NAME, \', \', u.FIRST_NAME) as cognomeNomeDipendente, ' +
 			'HOURS as oreMese, COMMENT as comment ' +
