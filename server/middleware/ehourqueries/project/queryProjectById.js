@@ -32,17 +32,20 @@ module.exports = function(options) {
 						MysqlPool.releaseConnection(connection);
 						throw err;
 					}
+					if (data.length > 1) {
+						throw new Error('two projects with the same id');
+					}
 
 					MysqlPool.releaseConnection(connection);
 					logger.info('queryProjectById performed ...');
 					logger.info('data: ' + JSON.stringify(data, null, '\t'));
 
-					res.json(data);
+					res.json(data[0]);
 				});
 			};
 			return res;
 		} else {
-			res.json([]);
+			res.json({});
 			return res;
 		}
 
