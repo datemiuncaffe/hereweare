@@ -17,7 +17,7 @@
 				<p>Progetti</p>
 				<select
 					ng-model="selectedProject"
-					ng-options="project as project.name for project in selectedCustomer.projects"
+					ng-options="project as project.name + ' - ' + project.code for project in selectedCustomer.projects"
 					ng-change="onProjectChange(selectedProject)">
 				</select>
 			</div>

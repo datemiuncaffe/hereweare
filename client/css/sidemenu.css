@@ -108,3 +108,7 @@ md-sidenav {
   padding-top: 6px;
   padding-bottom: 12px;
 }
+
+.side-menu .menu-toggle-list a.md-button {
+   font-size: 14px;
+}

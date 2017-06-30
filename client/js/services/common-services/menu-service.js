@@ -98,12 +98,12 @@
     						     "projectId: " + project.id +
     						  "})";
             var projectSection = {
-              id: project.id,
-              code: project.code,
-              name: project.name,
-              type: 'link',
-              state: link,
-              icon: ''
+               id: project.id,
+               code: project.code,
+               name: project.name + ' - ' + project.code,
+               type: 'link',
+               state: link,
+               icon: ''
             };
             section.pages.push(projectSection);
           });
