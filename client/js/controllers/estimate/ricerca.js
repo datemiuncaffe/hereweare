@@ -55,7 +55,7 @@ angular
 
 					// render the table
 					tabulate(projects,
-							["id", "name", "code", "customerId"]);
+							["name", "code"]);
 				});
 			}
 		};
@@ -69,7 +69,7 @@ angular
 		// append the header row
 		thead.append("tr")
 				.selectAll("th")
-				.data(["ID PROGETTO", "NOME PROGETTO", "CODICE PROGETTO", "ID CLIENTE"])
+				.data(["NOME PROGETTO", "CODICE PROGETTO"])
 				.enter()
 				.append("th")
 				.attr("style", "width:100%; word-wrap:break-word;")
