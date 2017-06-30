@@ -115,12 +115,8 @@ angular
 			var rowlinks = [];
 			tbody.selectAll("tr").each(function(d){
 				var link = "projectdetail({" +
-									 "customerId: " + $scope.selectedCustomer.id + "," +
-									 "customerName: '" + $scope.selectedCustomer.name + "'," +
-									 "projectId: " + d.id + "," +
-									 "projectName: '" + d.name + "'," +
-									 "projectCode: '" + d.code + "'" +
-									 "})";
+									"projectId: " + d.id +
+							  "})";
 				rowlinks.push(link);
 			});
 			console.log('rowlinks = ' + JSON.stringify(rowlinks));

@@ -1,82 +1,59 @@
 angular
 	.module("app")
-	.controller("ProjectDetailController", ['$scope', '$window', '$log', '$resource', '$q', '$stateParams', 'crud',
-	                                        function($scope, $window, $log, $resource, $q, $stateParams, crud) {
-    /* entities */
-    $scope.customer = {
-    	name: null
-    };
+	.controller("ProjectDetailController",
+		['$scope', '$window', '$log', '$resource', '$q', '$stateParams', 'crud',
+	    function($scope, $window, $log, $resource, $q, $stateParams, crud) {
 
-    $scope.project = {
-    	name: null,
-    	code: null,
-    	from: null,
-    	to: null,
-    	budgettot: null,
-    	daystot: null,
-    	customerId: null,
-    	budgets: []
-    };
-    /* end entities */
-
-		function Padder(len, pad) {
-			if (len === undefined) {
-				len = 1;
-			} else if (pad === undefined) {
-				pad = '0';
-			}
-
-			var pads = '';
-			while (pads.length < len) {
-				pads += pad;
-			}
-
-			this.pad = function(what) {
-				var s = what.toString();
-				return pads.substring(0, pads.length - s.length) + s;
-			};
-		}
-
-		console.log('$stateParams.customerId: ' + $stateParams.customerId);
-		console.log('$stateParams.customerName: ' + $stateParams.customerName);
-
-		if ($stateParams.customerId != null && $stateParams.customerId > 0) {
-			$scope.customer.id = parseInt($stateParams.customerId);
-		}
-		if ($stateParams.customerName != null && $stateParams.customerName.length > 0) {
-			$scope.customer.name = $stateParams.customerName;
-		}
+		/* entities */
+		$scope.customer = {
+			name: null
+		};
+		$scope.project = {
+			id: null,
+			name: null,
+			code: null,
+			from: null,
+			to: null,
+			budgettot: null,
+			daystot: null,
+			customerId: null,
+			budgets: []
+		};
+		$scope.modifyButton = {
+		};
+		/* end entities */
 
 		if ($stateParams.projectId != null && $stateParams.projectId > 0) {
 			$scope.project.id = parseInt($stateParams.projectId);
+			$scope.modifyButton.link = "projectmodify({projectId: " + $scope.project.id + "})";
 		}
-		if ($stateParams.projectName != null && $stateParams.projectName.length > 0) {
-			$scope.project.name = $stateParams.projectName;
-		}
-		if ($stateParams.projectCode != null && $stateParams.projectCode.length > 0) {
-			$scope.project.code = $stateParams.projectCode;
-		}
+		console.log('$stateParams.projectId: ' + $stateParams.projectId);
 
-		var modifyLink = "projectmodify({" +
-								"customerId: " + $scope.customer.id + "," +
-								"customerName: '" + $scope.customer.name + "'," +
-								"projectId: " + $scope.project.id + "," +
-								"projectName: '" + $scope.project.name + "'," +
-								"projectCode: '" + $scope.project.code + "'" +
-								"})";
-		var modifyLabel = "Vai a " + $scope.project.name;
-		$scope.modifyButton = {
-			link: modifyLink,
-			label: modifyLabel
-		};
+		/* loading data */
+		if ($scope.project.id != null && $scope.project.id > 0) {
+			crud.GET.EHOUR.getProjectById({ projectId: $scope.project.id }).then(
+				function(data) {
+					if (data != null) {
+						$log.log('data: ' + JSON.stringify(data, null, '\t'));
+						if (data.projectName != null) {
+							$scope.project.name = data.projectName;
+							$scope.modifyButton.label = "Vai a " + $scope.project.name;
+						}
+						if (data.projectCode != null) {
+							$scope.project.code = data.projectCode;
+						}
+						if (data.customerId != null) {
+							$scope.customer.id = data.customerId;
+						}
+						if (data.customerName != null) {
+							$scope.customer.name = data.customerName;
+						}
+					}
+				}
+			);
 
-		$log.log('modifyLink: ' + $scope.modifyButton.link +
-					'; modifyLabel: ' + $scope.modifyButton.label);
-
-    /* loading data */
-    if ($scope.project.id != null && $scope.project.id > 0) {
-    	// perform queries
-    	$q.all([
+			// perform queries
+			$q.all([
 				crud.GET.LOCAL.getBudgets({id:$scope.project.id})
 						.then(function(res){
 							console.log('success res: ' + JSON.stringify(res, null, '\t'));
@@ -101,15 +78,14 @@ angular
 							console.log('error: ' + JSON.stringify(res, null, '\t'));
 							return res;
 						})
-			])
-			.then(function(data) {
+			]).then(function(data) {
 				console.log('data: ' + JSON.stringify(data, null, '\t'));
 				showData(data);
 			}, function(error){
 				console.log('error: ' + JSON.stringify(error, null, '\t'));
 			});
-    }
-    /* end loading data */
+		}
+		/* end loading data */
 
     function showData(data) {
 			var budgets = [];
@@ -344,6 +320,24 @@ angular
 			});
 			console.log('filteredrows: ' + JSON.stringify(filteredrows, null, '\t'));
 			return filteredrows;
+		}
+
+		function Padder(len, pad) {
+			if (len === undefined) {
+				len = 1;
+			} else if (pad === undefined) {
+				pad = '0';
+			}
+
+			var pads = '';
+			while (pads.length < len) {
+				pads += pad;
+			}
+
+			this.pad = function(what) {
+				var s = what.toString();
+				return pads.substring(0, pads.length - s.length) + s;
+			};
 		}
 
 	}]);

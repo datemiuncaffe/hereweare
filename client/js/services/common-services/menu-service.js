@@ -95,12 +95,8 @@
           sortProjectsByName(projects);
           projects.forEach(function(project) {
             var link = "projectmodify({" +
-    									 "customerId: " + section.id + "," +
-    									 "customerName: '" + section.name + "'," +
-    									 "projectId: " + project.id + "," +
-    									 "projectName: '" + project.name + "'," +
-    									 "projectCode: '" + project.code + "'" +
-    									 "})";
+    						     "projectId: " + project.id +
+    						  "})";
             var projectSection = {
               id: project.id,
               code: project.code,

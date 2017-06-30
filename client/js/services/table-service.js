@@ -366,12 +366,8 @@
             var rowlinks = [];
       			table.select("tbody").selectAll("tr").each(function(d){
       				var link = "projectmodify({" +
-      									 "customerId: " + customerId + "," +
-      									 "customerName: '" + customerName + "'," +
-      									 "projectId: " + d.projectId + "," +
-      									 "projectName: '" + d.projectname + "'," +
-      									 "projectCode: '" + d.projectcode + "'" +
-      									 "})";
+      							     "projectId: " + d.projectId +
+      							  "})";
       				rowlinks.push(link);
       			});
       			console.log('rowlinks = ' + JSON.stringify(rowlinks));

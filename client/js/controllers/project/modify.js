@@ -1,200 +1,207 @@
 angular
 	.module("app")
 	.controller("ProjectModifyController",
-				['$scope', '$resource', '$q', '$stateParams', 'crud', 'internalCosts',
-		    function($scope, $resource, $q, $stateParams, crud, internalCosts) {
+			['$scope', '$log', '$resource', '$q', '$stateParams', 'crud', 'internalCosts',
+		   function($scope, $log, $resource, $q, $stateParams, crud, internalCosts) {
 
-			/* entities */
-	    $scope.customer = {
-	    	name: null
-	    };
-
-	    $scope.project = {
-	    	name: null,
-	    	code: null,
-	    	from: null,
-	    	to: null,
-	    	budgettot: null,
-	    	daystot: null,
-	    	customerId: null,
-				team: {
-					label: "Project team",
-					allowedTypes: ["developer", "projectOwner"],
-					max: 100,
-					members: []
-				},
-	    	budgets: []
-	    };
-			var budgetsStatus = [];
-
-			$scope.employeesWithCosts = {
-				label: "Sensei developers",
+		/* entities */
+		$scope.customer = {
+			name: null
+		};
+		$scope.project = {
+			id: null,
+			name: null,
+			code: null,
+			from: null,
+			to: null,
+			budgettot: null,
+			daystot: null,
+			customerId: null,
+			team: {
+				label: "Project team",
 				allowedTypes: ["developer", "projectOwner"],
 				max: 100,
-				items: []
-			};			
-	    /* end entities */
+				members: []
+			},
+			budgets: []
+		};
+		var budgetsStatus = [];
 
-			/* datepickers */
-			var datepickerfrom = new Pikaday({
-				field : document.getElementById('datepickerfrom'),
-				firstDay : 1,
-				minDate : new Date(2000, 0, 1),
-				maxDate : new Date(2020, 12, 31),
-				yearRange : [ 2000, 2020 ]
-				// defaultDate : moment($scope.project.from, "YYYY-MM-DD").toDate()
-			});
-			var datepickerto = new Pikaday({
-				field : document.getElementById('datepickerto'),
-				firstDay : 1,
-				minDate : new Date(2000, 0, 1),
-				maxDate : new Date(2020, 12, 31),
-				yearRange : [ 2000, 2020 ],
-				// setDefaultDate : true,
-				// defaultDate : moment($scope.project.to, "YYYY-MM-DD").toDate(),
-				// startRange : moment($scope.project.from, "YYYY-MM-DD").toDate(),
-				// startRange : new Date(2016, 5, 10),
-				// endRange : moment($scope.project.to, "YYYY-MM-DD").toDate(),
-				onSelect: function(bdays) {
-						console.log(this.getMoment().format('Do MMMM YYYY'));
-						// this.gotoDate(new Date(2016, 1));
-						// var years = Array.from(bdays.keys());
-						// console.log('years: ' + years);
-				},
-				onOpen: function() {
-					console.log(this._o.defaultDate);
-				}
-			});
-			$scope.datepickerfrom = datepickerfrom;
-			$scope.datepickerto = datepickerto;
-			/* end datepickers */
+		$scope.employeesWithCosts = {
+			label: "Sensei developers",
+			allowedTypes: ["developer", "projectOwner"],
+			max: 100,
+			items: []
+		};
+		/* end entities */
 
-			console.log('$stateParams.customerId: ' + $stateParams.customerId);
-			console.log('$stateParams.customerName: ' + $stateParams.customerName);
-
-			if ($stateParams.customerId != null && $stateParams.customerId > 0) {
-				$scope.customer.id = parseInt($stateParams.customerId);
+		/* datepickers */
+		var datepickerfrom = new Pikaday({
+			field : document.getElementById('datepickerfrom'),
+			firstDay : 1,
+			minDate : new Date(2000, 0, 1),
+			maxDate : new Date(2020, 12, 31),
+			yearRange : [ 2000, 2020 ]
+			// defaultDate : moment($scope.project.from, "YYYY-MM-DD").toDate()
+		});
+		var datepickerto = new Pikaday({
+			field : document.getElementById('datepickerto'),
+			firstDay : 1,
+			minDate : new Date(2000, 0, 1),
+			maxDate : new Date(2020, 12, 31),
+			yearRange : [ 2000, 2020 ],
+			// setDefaultDate : true,
+			// defaultDate : moment($scope.project.to, "YYYY-MM-DD").toDate(),
+			// startRange : moment($scope.project.from, "YYYY-MM-DD").toDate(),
+			// startRange : new Date(2016, 5, 10),
+			// endRange : moment($scope.project.to, "YYYY-MM-DD").toDate(),
+			onSelect: function(bdays) {
+					console.log(this.getMoment().format('Do MMMM YYYY'));
+					// this.gotoDate(new Date(2016, 1));
+					// var years = Array.from(bdays.keys());
+					// console.log('years: ' + years);
+			},
+			onOpen: function() {
+				console.log(this._o.defaultDate);
 			}
-			if ($stateParams.customerName != null && $stateParams.customerName.length > 0) {
-				$scope.customer.name = $stateParams.customerName;
-			}
+		});
+		$scope.datepickerfrom = datepickerfrom;
+		$scope.datepickerto = datepickerto;
+		/* end datepickers */
 
-			if ($stateParams.projectId != null && $stateParams.projectId > 0) {
-				$scope.project.id = parseInt($stateParams.projectId);
-			}
-			if ($stateParams.projectName != null && $stateParams.projectName.length > 0) {
-				$scope.project.name = $stateParams.projectName;
-			}
-			if ($stateParams.projectCode != null && $stateParams.projectCode.length > 0) {
-				$scope.project.code = $stateParams.projectCode;
-			}
+		if ($stateParams.projectId != null && $stateParams.projectId > 0) {
+			$scope.project.id = parseInt($stateParams.projectId);
+		}
 
-			/* loading data */
-	    if ($scope.project.id != null && $scope.project.id > 0) {
-				loadData($scope.project.id);
-	    }
-	    /* end loading data */
+		/* loading data */
+		if ($scope.project.id != null && $scope.project.id > 0) {
+			loadProjectData($scope.project.id);
+			loadData($scope.project.id);
+		}
+		/* end loading data */
 
-			function getEmployeeCosts() {
-		    var deferred = $q.defer();
-
-				internalCosts.getEmployeeCosts(null, function(err, data) {
-					if (err) {
-						deferred.reject('error: ' + err);
-					} else {
-						deferred.resolve(data);
-					}
-				});
-
-		    return deferred.promise;
-			};
-
-			function loadData(project_id) {
-				var projectId = {
-					id: project_id
-				};
-	    	// perform queries
-	    	$q.all([
-					crud.GET.LOCAL.getBudgets(projectId)
-							.then(function(res){
-								//console.log('success res: ' + JSON.stringify(res, null, '\t'));
-								return res;
-							}, function(error){
-								var res = {
-									status: error.status,
-									statusText: error.statusText
-								}
-								console.log('error: ' + JSON.stringify(res, null, '\t'));
-								return res;
-							}),
-					getEmployeeCosts()
-							.then(function(res){
-								//console.log('success res: ' + JSON.stringify(res, null, '\t'));
-								return res;
-							}, function(error){
-								var res = {
-									error: JSON.stringify(error, null, '\t')
-								}
-								console.log('error: ' + JSON.stringify(res, null, '\t'));
-								return res;
-							})
-				])
-				.then(function(data) {
-					console.log('data: ' + JSON.stringify(data, null, '\t'));
-					showData(data);
-				}, function(error){
-					console.log('error: ' + JSON.stringify(error, null, '\t'));
-				});
-			};
-
-			function showData(data) {
-				if (data[0] != null) {
-					if (data[0].budgettot != null && data[0].budgettot > 0) {
-						$scope.project.budgettot = data[0].budgettot;
-					}
-					if (data[0].daystot != null && data[0].daystot > 0) {
-						$scope.project.daystot = data[0].daystot;
-					}
-					if (data[0].from != null && data[0].from.length > 0) {
-						$scope.project.from = data[0].from;
-						// set datepickers default dates
-						datepickerfrom.setDate(moment($scope.project.from, "DD/MM/YYYY").toDate());
-					}
-					if (data[0].to != null && data[0].to.length > 0) {
-						$scope.project.to = data[0].to;
-						// set datepickers default dates
-						datepickerto.setDate(moment($scope.project.to, "DD/MM/YYYY").toDate());
-					}
-					if (data[0].budgets != null) {
-						budgetsStatus = data[0].budgets;
-						$scope.project.budgets = data[0].budgets;
-						// set budgets days
-						setBudgetsDays();
-						console.log('budgets: ' + JSON.stringify($scope.project.budgets, null, '\t'));
-					}
-				}
-				if (data[1] && data[1].internalCosts &&
-						data[1].internalCosts.length > 0) {
-					//$scope.employeesWithCosts.max = data[1].internalCosts.length;
-					$scope.employeesWithCosts.max = 4;
-					data[1].internalCosts.forEach(function(internalCost, index) {
-						var item = {};
-						item.id = index;
-						if (internalCost.lastName &&
-								internalCost.lastName.length > 0 &&
-								internalCost.firstName &&
-								internalCost.firstName.length > 0) {
-							item.name = internalCost.lastName + '-' +
-													internalCost.firstName;
+		function loadProjectData(project_id) {
+			crud.GET.EHOUR.getProjectById({ projectId: project_id }).then(
+				function(data) {
+					if (data != null) {
+						$log.log('project data: ' + JSON.stringify(data, null, '\t'));
+						if (data.projectName != null) {
+							$scope.project.name = data.projectName;
 						}
-						if (internalCost.internalCost) {
-							item.internalCost = internalCost.internalCost;
+						if (data.projectCode != null) {
+							$scope.project.code = data.projectCode;
 						}
-						item.type = "developer";
-						$scope.employeesWithCosts.items.push(item);
-					});
+						if (data.customerId != null) {
+							$scope.customer.id = data.customerId;
+						}
+						if (data.customerName != null) {
+							$scope.customer.name = data.customerName;
+						}
+					}
 				}
+			);
+		};
+
+		function getEmployeeCosts() {
+			var deferred = $q.defer();
+
+			internalCosts.getEmployeeCosts(null, function(err, data) {
+				if (err) {
+					deferred.reject('error: ' + err);
+				} else {
+					deferred.resolve(data);
+				}
+			});
+
+			return deferred.promise;
+		};
+
+		function loadData(project_id) {
+			var projectId = {
+				id: project_id
 			};
+			// perform queries
+			$q.all([
+				crud.GET.LOCAL.getBudgets(projectId)
+						.then(function(res){
+							//console.log('success res: ' + JSON.stringify(res, null, '\t'));
+							return res;
+						}, function(error){
+							var res = {
+								status: error.status,
+								statusText: error.statusText
+							}
+							console.log('error: ' + JSON.stringify(res, null, '\t'));
+							return res;
+						}),
+				getEmployeeCosts()
+						.then(function(res){
+							//console.log('success res: ' + JSON.stringify(res, null, '\t'));
+							return res;
+						}, function(error){
+							var res = {
+								error: JSON.stringify(error, null, '\t')
+							}
+							console.log('error: ' + JSON.stringify(res, null, '\t'));
+							return res;
+						})
+			])
+			.then(function(data) {
+				console.log('data: ' + JSON.stringify(data, null, '\t'));
+				showData(data);
+			}, function(error){
+				console.log('error: ' + JSON.stringify(error, null, '\t'));
+			});
+		};
+
+		function showData(data) {
+			if (data[0] != null) {
+				if (data[0].budgettot != null && data[0].budgettot > 0) {
+					$scope.project.budgettot = data[0].budgettot;
+				}
+				if (data[0].daystot != null && data[0].daystot > 0) {
+					$scope.project.daystot = data[0].daystot;
+				}
+				if (data[0].from != null && data[0].from.length > 0) {
+					$scope.project.from = data[0].from;
+					// set datepickers default dates
+					datepickerfrom.setDate(moment($scope.project.from, "DD/MM/YYYY").toDate());
+				}
+				if (data[0].to != null && data[0].to.length > 0) {
+					$scope.project.to = data[0].to;
+					// set datepickers default dates
+					datepickerto.setDate(moment($scope.project.to, "DD/MM/YYYY").toDate());
+				}
+				if (data[0].budgets != null) {
+					budgetsStatus = data[0].budgets;
+					$scope.project.budgets = data[0].budgets;
+					// set budgets days
+					setBudgetsDays();
+					console.log('budgets: ' + JSON.stringify($scope.project.budgets, null, '\t'));
+				}
+			}
+			if (data[1] && data[1].internalCosts &&
+					data[1].internalCosts.length > 0) {
+				//$scope.employeesWithCosts.max = data[1].internalCosts.length;
+				$scope.employeesWithCosts.max = 4;
+				data[1].internalCosts.forEach(function(internalCost, index) {
+					var item = {};
+					item.id = index;
+					if (internalCost.lastName &&
+							internalCost.lastName.length > 0 &&
+							internalCost.firstName &&
+							internalCost.firstName.length > 0) {
+						item.name = internalCost.lastName + '-' +
+												internalCost.firstName;
+					}
+					if (internalCost.internalCost) {
+						item.internalCost = internalCost.internalCost;
+					}
+					item.type = "developer";
+					$scope.employeesWithCosts.items.push(item);
+				});
+			}
+		};
 
 			// set budgets days
 			function setBudgetsDays() {
