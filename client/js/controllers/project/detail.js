@@ -4,6 +4,13 @@ angular
 		['$scope', '$window', '$log', '$resource', '$q', '$stateParams', 'crud',
 	    function($scope, $window, $log, $resource, $q, $stateParams, crud) {
 
+		var now = moment();
+		var currentYear = now.year();
+		var currentMonth = now.month();
+		var months = ['Gennaio','Febbraio','Marzo','Aprile','Maggio',
+				  		  'Giugno','Luglio','Agosto','Settembre','Ottobre',
+				  		  'Novembre','Dicembre'];
+
 		/* entities */
 		$scope.customer = {
 			name: null
@@ -118,8 +125,6 @@ angular
 			if (budgets.length > 0 || costs.length > 0) {
 				var zero2 = new Padder(2);
 				var map = new Map();
-				var months = ['Gennaio','Febbraio','Marzo','Aprile','Maggio',
-				'Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
 				budgets.forEach(function(budget){
 					var value = {
 						id: budget.id,
@@ -185,7 +190,7 @@ angular
    		tbody = table.append("tbody");
 
 		var headers = ['ANNO', 'MESE', 'DETTAGLIO \r\n DA', 'DETTAGLIO \r\n A', 'BUDGET MENSILE', 'GIORNATE PREVISTE', 'GIORNATE EROGATE'],
-				superheaders = ['', '', 'PREVENTIVO', 'CONSUNTIVO'];
+			superheaders = ['', '', 'PREVENTIVO', 'CONSUNTIVO'];
 
 		// append the superheader row
 		thead.append("tr")
@@ -241,10 +246,16 @@ angular
 			var tablefilters = d3.select("tr.tablefilters")
 					.selectAll("input")
 					.attr("value", function(d, i) {
-						if (d == 'ANNO') {
-							return '2016';
+						switch (d) {
+							case 'ANNO':
+								return currentYear;
+								break;
+							case 'MESE':
+								return months[currentMonth];
+								break;
+							default:
+								return '';
 						}
-						return '';
 					})
 					.on("input", function(d, i) {
 						var filtereddata = filterTable(data, columns);

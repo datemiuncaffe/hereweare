@@ -1,32 +1,36 @@
 angular
 	.module("app")
 	.controller("OverviewController", ['$scope', '$resource', '$q', 'crud', '$window', '$log',
-																		function($scope, $resource, $q, crud, $window, $log) {
+					function($scope, $resource, $q, crud, $window, $log) {
+		var now = moment();
+		var currentYear = now.year();
+		var currentMonth = now.month();
+		var months = ['Gennaio','Febbraio','Marzo','Aprile','Maggio',
+						  'Giugno','Luglio','Agosto','Settembre','Ottobre',
+						  'Novembre','Dicembre'];
+
 		$scope.customers = null;
 		$scope.selectedCustomer = null;
 		$scope.selectedProject = null;
 
-    $q
-		.all([
-		    crud.GET.EHOUR.getCustomers()
-		])
-		.then(
-			function(data) {
-				var customers = data[0];
-				$scope.customers = customers;
-				$scope.selectedCustomer = customers[0];
-				$scope.searchProjects($scope.selectedCustomer);
-			});
+		$q.all([
+			crud.GET.EHOUR.getCustomers()
+		]).then(function(data) {
+			var customers = data[0];
+			$scope.customers = customers;
+			$scope.selectedCustomer = customers[0];
+			$scope.searchProjects($scope.selectedCustomer);
+		});
 
 		/* loading project data */
- 		function loadingProject(selectedProject) {
+		function loadingProject(selectedProject) {
 			console.log('selectedProject: ' + JSON.stringify(selectedProject));
 			if (selectedProject != null &&
-	    		selectedProject.id != null && selectedProject.id > 0) {
-    		console.log('Project id: ' + selectedProject.id);
+				selectedProject.id != null && selectedProject.id > 0) {
+				console.log('Project id: ' + selectedProject.id);
 
 				// perform queries
-	    	$q.all([
+				$q.all([
 					crud.GET.LOCAL.getBudgets({id:selectedProject.id})
 							.then(function(res){
 								console.log('success res: ' + JSON.stringify(res, null, '\t'));
@@ -51,14 +55,13 @@ angular
 								console.log('error: ' + JSON.stringify(res, null, '\t'));
 								return res;
 							})
-				])
-				.then(function(data) {
+				]).then(function(data) {
 					console.log('data: ' + JSON.stringify(data, null, '\t'));
 					showData(data);
 				}, function(error){
 					console.log('error: ' + JSON.stringify(error, null, '\t'));
 				});
-	    }
+			}
 		};
 
 		function showData(data) {
@@ -92,8 +95,6 @@ angular
 			if (budgets.length > 0 || costs.length > 0) {
 						var zero2 = new Padder(2);
 						var map = new Map();
-						var months = ['Gennaio','Febbraio','Marzo','Aprile','Maggio',
-						'Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
 						budgets.forEach(function(budget){
 							var value = {
 								id: budget.id,
@@ -157,7 +158,7 @@ angular
 			tbody = table.append("tbody");
 
 		var headers = ['ANNO', 'MESE', 'DETTAGLIO \r\n DA', 'DETTAGLIO \r\n A', 'BUDGET MENSILE', 'GIORNATE PREVISTE', 'GIORNATE EROGATE'],
-				superheaders = ['', '', 'PREVENTIVO', 'CONSUNTIVO'];
+			superheaders = ['', '', 'PREVENTIVO', 'CONSUNTIVO'];
 
 		// append the superheader row
 		thead.append("tr")
@@ -213,10 +214,16 @@ angular
 			var tablefilters = d3.select("tr.tablefilters")
 					.selectAll("input")
 					.attr("value", function(d, i) {
-						if (d == 'ANNO') {
-							return '2016';
+						switch (d) {
+							case 'ANNO':
+								return currentYear;
+								break;
+							case 'MESE':
+								return months[currentMonth];
+								break;
+							default:
+								return '';
 						}
-						return '';
 					})
 					.on("input", function(d, i) {
 						var filtereddata = filterTable(data, columns);
