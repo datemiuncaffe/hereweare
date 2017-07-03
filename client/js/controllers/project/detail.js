@@ -4,9 +4,6 @@ angular
 		['$scope', '$window', '$log', '$resource', '$q', '$stateParams', 'crud',
 	    function($scope, $window, $log, $resource, $q, $stateParams, crud) {
 
-		var now = moment();
-		var currentYear = now.year();
-		var currentMonth = now.month();
 		var months = ['Gennaio','Febbraio','Marzo','Aprile','Maggio',
 				  		  'Giugno','Luglio','Agosto','Settembre','Ottobre',
 				  		  'Novembre','Dicembre'];
@@ -245,18 +242,7 @@ angular
 		function setFilters(data, columns) {
 			var tablefilters = d3.select("tr.tablefilters")
 					.selectAll("input")
-					.attr("value", function(d, i) {
-						switch (d) {
-							case 'ANNO':
-								return currentYear;
-								break;
-							case 'MESE':
-								return months[currentMonth];
-								break;
-							default:
-								return '';
-						}
-					})
+					.attr("value", '')
 					.on("input", function(d, i) {
 						var filtereddata = filterTable(data, columns);
 						renderTable(filtereddata, columns);
