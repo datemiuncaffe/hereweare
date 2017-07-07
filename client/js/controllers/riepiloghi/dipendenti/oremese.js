@@ -19,10 +19,13 @@ angular
          meseFin: currentMonth
       };
 
+      $scope.totalHours = 0;
+
       var query = $resource('http://' + resourceBaseUrl + '/query_ore_lav_utente_mese');
 
       ref.tableParams = new NgTableParams({
-            filter: tablefilter
+            filter: tablefilter,
+            group: "mese"
          },
          {
          	getData : function(params) {
@@ -33,9 +36,15 @@ angular
          		return query.get(params.url()).$promise.then(function(data) {
          			var res = [];
          			if (data != null && data.oreLav != null && data.oreLav.length > 0) {
-         				console.log('data ore lav: ' + JSON.stringify(data.oreLav, null, '\t'));
+         				console.log('data ore lav: ' +
+                        JSON.stringify(data.oreLav, null, '\t'));
          				res = data.oreLav;
          			}
+
+                  $scope.totalHours =
+                     $scope.sumGrouped(res, "oreMese")
+                        .toFixed(2).replace(".",",");
+                  
          			return res;
          		});
          	}
@@ -48,6 +57,27 @@ angular
       ref.yearFilterByInterval = {
         yearIn: 'templates/table/filters/startYear.html',
         yearFin: 'templates/table/filters/endYear.html'
+      };
+
+      $scope.isLastPage = function() {
+        return ref.tableParams.page() === $scope.totalPages();
+      };
+
+      $scope.totalPages = function(){
+        return Math.ceil(ref.tableParams.total() /
+          ref.tableParams.count());
+      };
+
+      $scope.sumGrouped = function(data, field) {
+        var sum = 0;
+        data.forEach(function(item){
+          if (item[field] != null &&
+              item[field].length > 0) {
+            var dottedValue = item[field].replace(",",".");
+            sum += parseFloat(dottedValue);
+          }
+        });
+        return sum;
       };
 
    }]);

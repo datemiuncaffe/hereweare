@@ -8,18 +8,58 @@
 			<div ng-controller="OreMeseController as oremese">
 			  <table ng-table="oremese.tableParams"
 					class="table table-bordered table-striped table-condensed ehourdata"
-					show-filter="true" width="400">
-					<tr ng-repeat="row in $data">
-						<td data-title="'ANNO'" filter="oremese.yearFilterByInterval" sortable="'anno'">
+					template-header="templates/table/header/header.html"
+					show-filter="true">
+
+					<tr class="ng-table-group" ng-repeat-start="group in $groups">
+						<td colspan="5">
+							<a href="" ng-click="group.$hideRows = !group.$hideRows">
+								<span class="glyphicon"
+									ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }">
+								</span>
+								<strong>{{ group.value }}</strong>
+							</a>
+						</td>
+					</tr>
+
+					<tr ng-hide="group.$hideRows" ng-repeat="row in group.data">
+						<td data-title="'ANNO'" filter="oremese.yearFilterByInterval" sortable="'anno'" groupable="'anno'">
 							{{row.anno}}
 						</td>
-						<td data-title="'MESE'" filter="oremese.monthFilterByInterval" sortable="'mese'">
+						<td data-title="'MESE'" filter="oremese.monthFilterByInterval" sortable="'mese'" groupable="'mese'">
 							{{row.mese}}
 						</td>
-						<td data-title="'NOME'" filter="{nomeDipendente: 'text'}" sortable="'nomeDipendente'">{{row.nomeDipendente}}</td>
-						<td data-title="'COGNOME'" filter="{cognomeDipendente: 'text'}" sortable="'cognomeDipendente'">{{row.cognomeDipendente}}</td>
-						<td data-title="'ORE CARICATE'" sortable="'oreMese'">{{row.oreMese}}</td>
+						<td data-title="'NOME'" filter="{nomeDipendente: 'text'}" sortable="'nomeDipendente'" groupable="'nomeDipendente'">
+							{{row.nomeDipendente}}
+						</td>
+						<td data-title="'COGNOME'" filter="{cognomeDipendente: 'text'}" sortable="'cognomeDipendente'" groupable="'cognomeDipendente'">
+							{{row.cognomeDipendente}}
+						</td>
+						<td data-title="'ORE CARICATE'" sortable="'oreMese'">
+							{{row.oreMese}}
+						</td>
 					</tr>
+
+					<tr class="oremeseTableTotals" ng-repeat-end>
+						<td colspan="4" class="text-success text-left">
+							<strong>Totali:</strong>
+						</td>
+            		<td>
+							<em>{{ sumGrouped(group.data, "oreMese").toFixed(2).replace(".",",") }}</em>
+						</td>
+        			</tr>
+
+					<tfoot ng-if="isLastPage()">
+	          		<tr>
+							<td colspan="4" class="text-success text-left">
+								<strong>Totali complessivi:</strong>
+							</td>
+	            		<td>
+								<em>{{ totalHours }}</em>
+							</td>
+	          		</tr>
+	        		</tfoot>
+
 			  </table>
 			</div>
 		</div>

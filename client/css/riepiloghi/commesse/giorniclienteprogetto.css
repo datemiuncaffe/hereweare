@@ -1,0 +1,35 @@
+/* --------------------------------------------------------------------- */
+/* ---------------------- giornicliente ------------------------- */
+/* --------------------------------------------------------------------- */
+section#ggclienteprogetto table.ehourdata thead tr th:nth-child(1),
+section#ggclienteprogetto table.ehourdata tbody tr td:nth-child(1) { /* cliente */
+   /*width: 80px;*/
+   width: 30%;
+}
+section#ggclienteprogetto table.ehourdata thead tr th:nth-child(2),
+section#ggclienteprogetto table.ehourdata tbody tr td:nth-child(2) { /* codice progetto */
+   /*width: 110px;*/
+   width: 15%;
+}
+section#ggclienteprogetto table.ehourdata thead tr th:nth-child(4),
+section#ggclienteprogetto table.ehourdata tbody tr td:nth-child(4) { /* progetto */
+   /*width: 170px;*/
+   width: 40%;
+}
+section#ggclienteprogetto table.ehourdata thead tr th:nth-child(5),
+section#ggclienteprogetto table.ehourdata tbody tr td:nth-child(5) { /* giornate erogate */
+   /*width: 200px;*/
+   width: 15%;
+}
+
+/* ---------------------------- totals ---------------------------------- */
+section#ggclienteprogetto table.ehourdata tbody
+tr.ggclienteprogettoTableTotals td:nth-child(1),
+section#ggclienteprogetto table.ehourdata tfoot tr td:nth-child(1) { /* totali: */
+   width: 85%;
+}
+section#ggclienteprogetto table.ehourdata tbody
+tr.ggclienteprogettoTableTotals td:nth-child(3),
+section#ggclienteprogetto table.ehourdata tfoot tr td:nth-child(3) { /* giornate */
+   width: 15%;
+}

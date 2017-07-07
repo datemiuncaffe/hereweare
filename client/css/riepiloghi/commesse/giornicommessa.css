@@ -1,38 +1,6 @@
 /* --------------------------------------------------------------------- */
 /* ---------------------- giornicommessa ------------------------- */
 /* --------------------------------------------------------------------- */
-section#ggcommessa table.grouping .groupingCheckboxes
-td:nth-child(1) { /* blank */
-   /*width: 80px;*/
-   width: 12%;
-}
-section#ggcommessa table.grouping .groupingCheckboxes
-td:nth-child(2) { /* mese */
-   /*width: 110px;*/
-   width: 10%;
-}
-section#ggcommessa table.grouping .groupingCheckboxes
-td:nth-child(3) { /* cliente */
-   /*width: 170px;*/
-   width: 23%;
-}
-section#ggcommessa table.grouping .groupingCheckboxes
-td:nth-child(4) { /* codice progetto */
-   /*width: 170px;*/
-   width: 15%;
-}
-section#ggcommessa table.grouping .groupingCheckboxes
-td:nth-child(5) { /* progetto */
-   /*width: 200px;*/
-   width: 30%;
-}
-section#ggcommessa table.grouping .groupingCheckboxes
-td:nth-child(6) { /* giornate erogate */
-   /*width: 150px;*/
-   width: 10%;
-}
-
-
 section#ggcommessa table.ehourdata thead tr th:nth-child(1),
 section#ggcommessa table.ehourdata tbody tr td:nth-child(1) { /* anno */
    /*width: 80px;*/
@@ -61,5 +29,17 @@ section#ggcommessa table.ehourdata tbody tr td:nth-child(5) { /* progetto */
 section#ggcommessa table.ehourdata thead tr th:nth-child(6),
 section#ggcommessa table.ehourdata tbody tr td:nth-child(6) { /* giornate erogate */
    /*width: 150px;*/
+   width: 10%;
+}
+
+/* ---------------------------- totals ---------------------------------- */
+section#ggcommessa table.ehourdata tbody
+tr.ggcommessaTableTotals td:nth-child(1),
+section#ggcommessa table.ehourdata tfoot tr td:nth-child(1) { /* totali: */
+   width: 90%;
+}
+section#ggcommessa table.ehourdata tbody
+tr.ggcommessaTableTotals td:nth-child(3),
+section#ggcommessa table.ehourdata tfoot tr td:nth-child(3) { /* giornate */
    width: 10%;
 }

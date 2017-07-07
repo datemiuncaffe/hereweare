@@ -8,27 +8,70 @@
 			<div ng-controller="GiorniCommessaController as ggCommessaCtrl">
 				<table ng-table="ggCommessaCtrl.tableParams"
 						class="table table-bordered table-striped table-condensed ehourdata"
+						template-header="templates/table/header/header.html"
 						show-filter="true">
-					<tr ng-repeat="row in $data">
-						<td data-title="'ANNO'" filter="ggCommessaCtrl.yearFilterByInterval" sortable="'anno'">
+
+					<tr class="ng-table-group" ng-repeat-start="group in $groups">
+						<td colspan="6">
+							<a href="" ng-click="group.$hideRows = !group.$hideRows">
+								<span class="glyphicon"
+									ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }">
+								</span>
+								<strong>{{ group.value }}</strong>
+							</a>
+						</td>
+					</tr>
+
+					<tr ng-hide="group.$hideRows" ng-repeat="row in group.data">
+						<td data-title="'ANNO'" filter="ggCommessaCtrl.yearFilterByInterval"
+							sortable="'anno'" groupable="'anno'">
 							{{row.anno}}
 						</td>
-						<td data-title="'MESE'" filter="ggCommessaCtrl.monthFilterByInterval" sortable="'mese'">
+						<td data-title="'MESE'" filter="ggCommessaCtrl.monthFilterByInterval"
+							sortable="'mese'" groupable="'mese'">
 							{{row.mese}}
 						</td>
-						<td data-title="'CLIENTE'" filter="{nomeCliente: 'text'}" sortable="'nomeCliente'">{{row.nomeCliente}}</td>
-						<td data-title="'CODICE PROGETTO'" filter="{codiceProgetto: 'text'}" sortable="'codiceProgetto'">
+						<td data-title="'CLIENTE'" filter="{nomeCliente: 'text'}"
+							sortable="'nomeCliente'" groupable="'nomeCliente'">
+							{{row.nomeCliente}}
+						</td>
+						<td data-title="'CODICE PROGETTO'" filter="{codiceProgetto: 'text'}"
+							sortable="'codiceProgetto'" groupable="'codiceProgetto'">
 							<a ui-sref="projectdetail({projectId: {{row.idProgetto}}})">
 								{{row.codiceProgetto}}
 							</a>
 						</td>
-						<td data-title="'PROGETTO'" filter="{nomeProgetto: 'text'}" sortable="'nomeProgetto'">
+						<td data-title="'PROGETTO'" filter="{nomeProgetto: 'text'}"
+							sortable="'nomeProgetto'" groupable="'nomeProgetto'">
 							<a ui-sref="projectdetail({projectId: {{row.idProgetto}}})">
 								{{row.nomeProgetto}}
 							</a>
 						</td>
-						<td data-title="'GIORNATE EROGATE'" sortable="'giornateMese'">{{row.giornateMese}}</td>
+						<td data-title="'GIORNATE EROGATE'" sortable="'giornateMese'">
+							{{row.giornateMese}}
+						</td>
 					</tr>
+
+					<tr class="ggcommessaTableTotals" ng-repeat-end>
+						<td colspan="5" class="text-success text-left">
+							<strong>Totali:</strong>
+						</td>
+						<td>
+							<em>{{ sumGrouped(group.data, "giornateMese").toFixed(2).replace(".",",") }}</em>
+						</td>
+        			</tr>
+
+					<tfoot ng-if="isLastPage()">
+	          		<tr>
+							<td colspan="5" class="text-success text-left">
+								<strong>Totali complessivi:</strong>
+							</td>
+							<td>
+								<em>{{ totalDays }}</em>
+							</td>
+	          		</tr>
+	        		</tfoot>
+
 				</table>
 			</div>
 		</div>

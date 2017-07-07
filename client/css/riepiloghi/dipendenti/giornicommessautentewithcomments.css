@@ -1,0 +1,140 @@
+/* --------------------------------------------------------------------- */
+/* ---------------------- giornicommessautentewithcomments ------------- */
+/* --------------------------------------------------------------------- */
+section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
+td:nth-child(1) { /* blank */
+   /*width: 80px;*/
+   width: 12%;
+}
+section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
+td:nth-child(2) { /* mese */
+   /*width: 110px;*/
+   width: 9%;
+}
+section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
+td:nth-child(3) { /* giorno del mese */
+   /*width: 200px;*/
+   width: 10%;
+}
+section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
+td:nth-child(4) { /* cliente */
+   /*width: 170px;*/
+   width: 12%;
+}
+section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
+td:nth-child(5) { /* codice progetto */
+   /*width: 200px;*/
+   width: 12%;
+}
+section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
+td:nth-child(6) { /* progetto */
+   /*width: 200px;*/
+   width: 12%;
+}
+section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
+td:nth-child(7) { /* nome */
+   /*width: 120px;*/
+   width: 8%;
+}
+section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
+td:nth-child(8) { /* cognome */
+   /*width: 150px;*/
+   width: 9%;
+}
+section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
+td:nth-child(9) { /* blank */
+   /*width: 200px;*/
+   width: 10%;
+}
+section#ggcommessautentewithcomments table.grouping .groupingCheckboxes
+td:nth-child(10) { /* blank */
+   /*width: 80px;*/
+   width: 6%;
+}
+
+
+section#ggcommessautentewithcomments table.ehourdata
+thead tr th:nth-child(1),
+section#ggcommessautentewithcomments table.ehourdata
+tbody tr td:nth-child(1) { /* anno */
+   /*width: 80px;*/
+   width: 12%;
+}
+section#ggcommessautentewithcomments table.ehourdata
+thead tr th:nth-child(2),
+section#ggcommessautentewithcomments table.ehourdata
+tbody tr td:nth-child(2) { /* mese */
+   /*width: 110px;*/
+   width: 9%;
+}
+section#ggcommessautentewithcomments table.ehourdata
+thead tr th:nth-child(3),
+section#ggcommessautentewithcomments table.ehourdata
+tbody tr td:nth-child(3) { /* giorno del mese */
+   /*width: 200px;*/
+   width: 10%;
+}
+section#ggcommessautentewithcomments table.ehourdata
+thead tr th:nth-child(4),
+section#ggcommessautentewithcomments table.ehourdata
+tbody tr td:nth-child(4) { /* cliente */
+   /*width: 170px;*/
+   width: 12%;
+}
+section#ggcommessautentewithcomments table.ehourdata
+thead tr th:nth-child(5),
+section#ggcommessautentewithcomments table.ehourdata
+tbody tr td:nth-child(5) { /* codice progetto */
+   /*width: 200px;*/
+   width: 12%;
+}
+section#ggcommessautentewithcomments table.ehourdata
+thead tr th:nth-child(6),
+section#ggcommessautentewithcomments table.ehourdata
+tbody tr td:nth-child(6) { /* progetto */
+   /*width: 200px;*/
+   width: 12%;
+}
+section#ggcommessautentewithcomments table.ehourdata
+thead tr th:nth-child(7),
+section#ggcommessautentewithcomments table.ehourdata
+tbody tr td:nth-child(7) { /* nome */
+   /*width: 120px;*/
+   width: 8%;
+}
+section#ggcommessautentewithcomments table.ehourdata
+thead tr th:nth-child(8),
+section#ggcommessautentewithcomments table.ehourdata
+tbody tr td:nth-child(8) { /* cognome */
+   /*width: 150px;*/
+   width: 9%;
+}
+section#ggcommessautentewithcomments table.ehourdata
+thead tr th:nth-child(9),
+section#ggcommessautentewithcomments table.ehourdata
+tbody tr td:nth-child(9) { /* commento */
+   /*width: 200px;*/
+   width: 10%;
+   max-width: 10%;
+   word-wrap: break-word;
+   /*word-break: ;*/
+}
+section#ggcommessautentewithcomments table.ehourdata
+thead tr th:nth-child(10),
+section#ggcommessautentewithcomments table.ehourdata
+tbody tr td:nth-child(10) { /* ore */
+   /*width: 80px;*/
+   width: 6%;
+}
+
+/* ------------------- totals ------------ */
+section#ggcommessautentewithcomments table.ehourdata tbody
+tr.ggcommessautentewithcommentsTableTotals td:nth-child(1),
+section#ggcommessautentewithcomments table.ehourdata tfoot tr td:nth-child(1) { /* totali: */
+   width: 94%;
+}
+section#ggcommessautentewithcomments table.ehourdata tbody
+tr.ggcommessautentewithcommentsTableTotals td:nth-child(2),
+section#ggcommessautentewithcomments table.ehourdata tfoot tr td:nth-child(2) { /* ore */
+   width: 6%;
+}

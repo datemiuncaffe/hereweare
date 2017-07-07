@@ -1,22 +1,6 @@
 /* --------------------------------------------------------------------- */
 /* ---------------------- giorni ------------------------- */
 /* --------------------------------------------------------------------- */
-section#giorni table.grouping .groupingCheckboxes
-td:nth-child(1) { /* blank */
-   /*width: 80px;*/
-   width: 30%;
-}
-section#giorni table.grouping .groupingCheckboxes
-td:nth-child(2) { /* mese */
-   /*width: 110px;*/
-   width: 30%;
-}
-section#giorni table.grouping .groupingCheckboxes
-td:nth-child(3) { /* giornate erogate */
-   /*width: 170px;*/
-   width: 40%;
-}
-
 section#giorni table.ehourdata thead tr th:nth-child(1),
 section#giorni table.ehourdata tbody tr td:nth-child(1) { /* anno */
    /*width: 80px;*/
@@ -30,5 +14,17 @@ section#giorni table.ehourdata tbody tr td:nth-child(2) { /* mese */
 section#giorni table.ehourdata thead tr th:nth-child(3),
 section#giorni table.ehourdata tbody tr td:nth-child(3) { /* giornate erogate */
    /*width: 170px;*/
+   width: 40%;
+}
+
+/* ---------------------------- totals ---------------------------------- */
+section#giorni table.ehourdata tbody
+tr.giorniTableTotals td:nth-child(1),
+section#giorni table.ehourdata tfoot tr td:nth-child(1) { /* totali: */
+   width: 60%;
+}
+section#giorni table.ehourdata tbody
+tr.giorniTableTotals td:nth-child(3),
+section#giorni table.ehourdata tfoot tr td:nth-child(3) { /* giornate */
    width: 40%;
 }

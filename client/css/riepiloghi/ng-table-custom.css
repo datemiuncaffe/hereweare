@@ -1,0 +1,135 @@
+.ng-table tr.ng-table-sort-header-custom {
+   background-color: #71DEE4;
+   background: linear-gradient(#71DEE4, #EFEFFF);
+}
+.ng-table tr.ng-table-sort-header-custom th {
+   position: relative;
+}
+
+/* ---------------------------------------------------------------- */
+/* ---------------------------- sorting ---------------------------------- */
+/* ---------------------------------------------------------------- */
+.ng-table tr.ng-table-sort-header-custom div.sortable {
+   cursor: pointer;
+   display: inline;
+}
+.ng-table tr.ng-table-sort-header-custom div.sortable .sort-indicator {
+   padding-right: 18px;
+   position: relative;
+}
+.ng-table tr.ng-table-sort-header-custom div.sortable .sort-indicator:after,
+.ng-table tr.ng-table-sort-header-custom div.sortable .sort-indicator:before {
+   content: "";
+   border-width: 0 4px 4px;
+   border-style: solid;
+   border-color: #000 transparent;
+   visibility: visible;
+   right: 5px;
+   top: 50%;
+   position: absolute;
+   opacity: .3;
+   margin-top: -4px;
+}
+.ng-table tr.ng-table-sort-header-custom div.sortable .sort-indicator:before {
+   margin-top: 2px;
+   border-bottom: none;
+   border-left: 4px solid transparent;
+   border-right: 4px solid transparent;
+   border-top: 4px solid #000;
+}
+.ng-table tr.ng-table-sort-header-custom div.sortable .sort-indicator:hover:after,
+.ng-table tr.ng-table-sort-header-custom div.sortable .sort-indicator:hover:before {
+   opacity: 1;
+   visibility: visible;
+}
+.ng-table tr.ng-table-sort-header-custom div.sortable.sort-desc,
+.ng-table tr.ng-table-sort-header-custom div.sortable.sort-asc {
+   background-color: rgba(141, 192, 219, 0.25);
+   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+}
+.ng-table tr.ng-table-sort-header-custom div.sortable.sort-desc .sort-indicator:after,
+.ng-table tr.ng-table-sort-header-custom div.sortable.sort-asc .sort-indicator:after {
+   margin-top: -2px;
+}
+.ng-table tr.ng-table-sort-header-custom div.sortable.sort-desc .sort-indicator:before,
+.ng-table tr.ng-table-sort-header-custom div.sortable.sort-asc .sort-indicator:before {
+   visibility: hidden;
+}
+.ng-table tr.ng-table-sort-header-custom div.sortable.sort-asc .sort-indicator:after,
+.ng-table tr.ng-table-sort-header-custom div.sortable.sort-asc .sort-indicator:hover:after {
+   visibility: visible;
+   filter: alpha(opacity=60);
+   -khtml-opacity: 0.6;
+   -moz-opacity: 0.6;
+   opacity: 0.6;
+}
+.ng-table tr.ng-table-sort-header-custom div.sortable.sort-desc .sort-indicator:after {
+   border-bottom: none;
+   border-left: 4px solid transparent;
+   border-right: 4px solid transparent;
+   border-top: 4px solid #000;
+   visibility: visible;
+   -webkit-box-shadow: none;
+   -moz-box-shadow: none;
+   box-shadow: none;
+   filter: alpha(opacity=60);
+   -khtml-opacity: 0.6;
+   -moz-opacity: 0.6;
+   opacity: 0.6;
+}
+
+/* -------------------------------------------------------------- */
+/* ------------------------ grouping ---------------------------- */
+/* -------------------------------------------------------------- */
+.ng-table tr.ng-table-sort-header-custom div.groupable *,
+.ng-table tr.ng-table-sort-header-custom div.groupable *::after,
+.ng-table tr.ng-table-sort-header-custom div.groupable *::before {
+   box-sizing: border-box;
+}
+.ng-table tr.ng-table-sort-header-custom div.groupable {
+   display: inline-block;
+   margin-left: 5%;
+   position: absolute;
+   right: 5%;
+}
+.ng-table tr.ng-table-sort-header-custom div.groupable .group-indicator {
+   position: relative;
+   display: inline;
+}
+.ng-table tr.ng-table-sort-header-custom div.groupable .group-icon {
+   transition: 240ms;
+   position: relative;
+   width: 18px;
+   height: 18px;
+   border-width: 2px;
+   border-style: solid;
+   border-radius: 2px;
+}
+
+.ng-table tr.ng-table-sort-header-custom div.groupable.group-checked .group-icon {
+   border-top-color: currentcolor;
+   border-right-color: currentcolor;
+   border-bottom-color: currentcolor;
+   border-left-color: currentcolor;
+   border-width: 1px;
+}
+
+.ng-table tr.ng-table-sort-header-custom div.groupable.group-checked .group-icon::after {
+   -webkit-transform: rotate(45deg);
+   transform: rotate(45deg);
+   position: absolute;
+   left: 6px;
+   bottom: 2px;
+   display: table;
+   width: 6px;
+   height: 14px;
+   border-width: 2px;
+   border-top-width: 2px;
+   border-left-width: 2px;
+   border-style: solid;
+   border-top-style: solid;
+   border-left-style: solid;
+   border-top: 0;
+   border-left: 0;
+   content: '';
+}

@@ -26,98 +26,7 @@ angular
     $scope.totalHours = 0;
     $scope.totalDays = 0;
 
-	/* ---------------------------- */
-    /* ---- custom table grouping ---- */
-    /* ---------------------------- */
-    //var tablegroups = "mese";
-    // var groupByMonth = function(item) {
-    //   return item.mese;
-    // };
-    // groupByMonth.title = "Mese";
-    // groupByMonth.sortDirection = "asc";
-
-    $scope.tableGrouping = {
-      items: [
-        {label: "MESE", group: "mese"},
-        {label: "CLIENTE", group: "nomeCliente"},
-        {label: "CODICE PROGETTO", group: "codiceProgetto"},
-        {label: "PROGETTO", group: "nomeProgetto"},
-        {label: "NOME", group: "nomeDipendente"},
-        {label: "COGNOME", group: "cognomeDipendente"}
-      ],
-      selected: ["mese"],
-      toggle: function(item, list) {
-        var idx = list.indexOf(item.group);
-        if (idx > -1) {
-          list.splice(idx, 1);
-        } else {
-          list.splice(0);
-          list.push(item.group);
-        }
-        $scope.tableGrouping.grouptable();
-      },
-      exists: function(item, list) {
-        //console.log('exists');
-        //console.log('item group: ' + item.group);
-        //console.log('list: ' + JSON.stringify(list, null, '\t'));
-        return list.indexOf(item.group) > -1;
-      },
-      // isIndeterminate: function() {
-      //   return ($scope.tableGrouping.selected.length !== 0 &&
-      //           $scope.tableGrouping.selected.length !==
-      //           $scope.tableGrouping.items.length);
-      // },
-      // isChecked: function() {
-      //   return $scope.tableGrouping.selected.length ===
-      //          $scope.tableGrouping.items.length;
-      // },
-      // toggleAll: function() {
-      //   if ($scope.tableGrouping.selected.length ===
-      //       $scope.tableGrouping.items.length) {
-      //     $scope.tableGrouping.selected = [];
-      //   } else if ($scope.tableGrouping.selected.length === 0 ||
-      //              $scope.tableGrouping.selected.length > 0) {
-      //     $scope.tableGrouping.selected =
-      //       $scope.tableGrouping.items.slice(0);
-      //   }
-      // },
-      hideGroupRow: function() {
-        //var selector = "section#ggcommessautente table.ehourdata thead";
-        var selector = "section#ggcommessautente table.ehourdata";
-        var elem = angular.element(selector);
-        var elemScope = elem.scope();
-        elemScope.$groupRow.show = false;
-      },
-      grouptable: function(row) {
-         if (row != null) {
-            return row["mese"];
-         } else {
-            var selector = "section#ggcommessautente table.ehourdata thead";
-            var elem = angular.element(selector);
-            var elemScope = elem.scope().$$childHead;
-            if (elemScope && elemScope.$ctrl &&
-                  angular.isFunction(elemScope.$ctrl.groupBy) &&
-                  $scope.tableGrouping.selected.length > 0) {
-               console.log('tableGrouping selected: ' +
-               $scope.tableGrouping.selected[0]);
-
-               elemScope.params.group($scope.tableGrouping.selected[0]);
-
-               //var selectedGroup = elemScope.$ctrl
-               //.findGroupColumn($scope.tableGrouping.selected[0]);
-
-               // console.log('$columns: ' + JSON.stringify(elemScope.$columns, null, '\t'));
-               // elemScope.$ctrl.groupBy(selectedGroup);
-            }
-         }
-      }
-    };
-
-    /* ------------------------------- */
-    /* ---- end custom table grouping ---- */
-    /* ------------------------------- */
-
-    if ($stateParams.year != null && $stateParams.year.length > 0) {
+	 if ($stateParams.year != null && $stateParams.year.length > 0) {
 			tablefilter.anno = $stateParams.year;
 		}
     if ($stateParams.month != null && $stateParams.month.length > 0) {
@@ -132,19 +41,17 @@ angular
 
     ref.tableParams = new NgTableParams({
         filter: tablefilter,
-        //group: "cognomeDipendente"
-        group: $scope.tableGrouping.grouptable
+        group: "mese"
       },
       {
     		getData : function(params) {
     			//console.log('params: ' + JSON.stringify(params, null, '\t'));
     			/*console.log('params.url(): ' +
             JSON.stringify(params.url(), null, '\t'));
-          console.log('params.group(): ' +
+               console.log('params.group(): ' +
             JSON.stringify(params.group(), null, '\t'));*/
 
-          $scope.tableGrouping.hideGroupRow();
-    			// ajax request to back end
+            // ajax request to back end
     			return query.get(params.url()).$promise.then(function(data) {
     				var res = [];
     				if (data != null && data.giorniCommessaUtente != null &&

@@ -17,36 +17,9 @@
 					</button>
 				</form>
 
-				<form>
-					<table class="grouping">
-						<thead>
-							<tr class="groupingLegend">
-								<th colspan="10">
-									<h4>
-										Raggruppa per:
-									</h4>
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="groupingCheckboxes">
-								<td></td>
-								<td ng-repeat="item in tableGrouping.items">
-									<md-checkbox class="item-checkbox"
-										ng-checked="tableGrouping.exists(item, tableGrouping.selected)"
-										ng-click="tableGrouping.toggle(item, tableGrouping.selected)">
-										{{ item.label }}
-									</md-checkbox>
-								</td>
-								<td></td>
-								<td></td>
-							</tr>
-						</tbody>
-					</table>
-				</form>
-
 				<table ng-table="ggCommessaUtWCommCtrl.tableParams"
 					class="table table-bordered table-striped table-condensed ehourdata"
+					template-header="templates/table/header/header.html"
 					show-filter="true">
 
 					<tr class="ng-table-group" ng-repeat-start="group in $groups">
@@ -61,32 +34,32 @@
 					</tr>
 
 					<tr ng-hide="group.$hideRows" ng-repeat="row in group.data">
-						<td data-title="'ANNO'" filter="ggCommessaUtWCommCtrl.yearFilterByInterval" sortable="'anno'">
+						<td data-title="'ANNO'" filter="ggCommessaUtWCommCtrl.yearFilterByInterval" sortable="'anno'" groupable="'anno'">
 							{{row.anno}}
 						</td>
-						<td data-title="'MESE'" filter="ggCommessaUtWCommCtrl.monthFilterByInterval" sortable="'mese'">
+						<td data-title="'MESE'" filter="ggCommessaUtWCommCtrl.monthFilterByInterval" sortable="'mese'" groupable="'mese'">
 							{{row.mese}}
 						</td>
-						<td data-title="'GIORNO DEL MESE'" filter="{dayOfMonth: 'text'}" sortable="'dayOfMonth'">
+						<td data-title="'GIORNO DEL MESE'" filter="{dayOfMonth: 'text'}" sortable="'dayOfMonth'" groupable="'dayOfMonth'">
 							{{row.dayOfMonth}}
 						</td>
-						<td data-title="'CLIENTE'" filter="{nomeCliente: 'text'}" sortable="'nomeCliente'">
+						<td data-title="'CLIENTE'" filter="{nomeCliente: 'text'}" sortable="'nomeCliente'" groupable="'nomeCliente'">
 							{{row.nomeCliente}}
 						</td>
-						<td data-title="'CODICE PROGETTO'" filter="{codiceProgetto: 'text'}" sortable="'codiceProgetto'">
+						<td data-title="'CODICE PROGETTO'" filter="{codiceProgetto: 'text'}" sortable="'codiceProgetto'" groupable="'codiceProgetto'">
 							<a ui-sref="projectdetail({projectId: {{row.idProgetto}}})">
 								{{row.codiceProgetto}}
 							</a>
 						</td>
-						<td data-title="'PROGETTO'" filter="{nomeProgetto: 'text'}" sortable="'nomeProgetto'">
+						<td data-title="'PROGETTO'" filter="{nomeProgetto: 'text'}" sortable="'nomeProgetto'" groupable="'nomeProgetto'">
 							<a ui-sref="projectdetail({projectId: {{row.idProgetto}}})">
 								{{row.nomeProgetto}}
 							</a>
 						</td>
-						<td data-title="'NOME'" filter="{nomeDipendente: 'text'}" sortable="'nomeDipendente'">
+						<td data-title="'NOME'" filter="{nomeDipendente: 'text'}" sortable="'nomeDipendente'" groupable="'nomeDipendente'">
 							{{row.nomeDipendente}}
 						</td>
-						<td data-title="'COGNOME'" filter="{cognomeDipendente: 'text'}" sortable="'cognomeDipendente'">
+						<td data-title="'COGNOME'" filter="{cognomeDipendente: 'text'}" sortable="'cognomeDipendente'" groupable="'cognomeDipendente'">
 							{{row.cognomeDipendente}}
 						</td>
 						<td data-title="'COMMENTO'" sortable="'comment'">
@@ -97,7 +70,7 @@
 						</td>
 					</tr>
 
-					<tr class="ggcommessautenteTableTotals" ng-repeat-end>
+					<tr class="ggcommessautentewithcommentsTableTotals" ng-repeat-end>
 						<td colspan="9" class="text-success text-left">
 							<strong>Totali:</strong>
 						</td>

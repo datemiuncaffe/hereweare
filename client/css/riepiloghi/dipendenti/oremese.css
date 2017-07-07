@@ -54,3 +54,15 @@ section#oremese table.ehourdata tbody tr td:nth-child(5) { /* ore caricate */
    /*width: 200px;*/
    width: 15%;
 }
+
+/* ------------------------------- totals -------------------------- */
+section#oremese table.ehourdata tbody
+tr.oremeseTableTotals td:nth-child(1),
+section#oremese table.ehourdata tfoot tr td:nth-child(1) { /* totali: */
+   width: 85%;
+}
+section#oremese table.ehourdata tbody
+tr.oremeseTableTotals td:nth-child(2),
+section#oremese table.ehourdata tfoot tr td:nth-child(2) { /* ore */
+   width: 15%;
+}

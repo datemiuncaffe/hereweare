@@ -1,0 +1,68 @@
+/* --------------------------------------------------------------------- */
+/* ---------------------- giornicommessautente ------------------------- */
+/* --------------------------------------------------------------------- */
+section#ggcommessautente table.ehourdata thead tr th:nth-child(1),
+section#ggcommessautente table.ehourdata tbody tr td:nth-child(1) { /* anno */
+   /*width: 80px;*/
+   width: 12%;
+}
+section#ggcommessautente table.ehourdata thead tr th:nth-child(2),
+section#ggcommessautente table.ehourdata tbody tr td:nth-child(2) { /* mese */
+   /*width: 110px;*/
+   width: 10%;
+}
+section#ggcommessautente table.ehourdata thead tr th:nth-child(3),
+section#ggcommessautente table.ehourdata tbody tr td:nth-child(3) { /* cliente */
+   /*width: 170px;*/
+   width: 13%;
+}
+section#ggcommessautente table.ehourdata thead tr th:nth-child(4),
+section#ggcommessautente table.ehourdata tbody tr td:nth-child(4) { /* codice progetto */
+   /*width: 170px;*/
+   width: 12%;
+}
+section#ggcommessautente table.ehourdata thead tr th:nth-child(5),
+section#ggcommessautente table.ehourdata tbody tr td:nth-child(5) { /* progetto */
+   /*width: 200px;*/
+   width: 15%;
+}
+section#ggcommessautente table.ehourdata thead tr th:nth-child(6),
+section#ggcommessautente table.ehourdata tbody tr td:nth-child(6) { /* nome */
+   /*width: 150px;*/
+   width: 11%;
+}
+section#ggcommessautente table.ehourdata tfoot tr td:nth-child(6) {
+   white-space: nowrap;
+}
+section#ggcommessautente table.ehourdata thead tr th:nth-child(7),
+section#ggcommessautente table.ehourdata tbody tr td:nth-child(7) { /* cognome */
+   /*width: 150px;*/
+   width: 11%;
+}
+section#ggcommessautente table.ehourdata thead tr th:nth-child(8),
+section#ggcommessautente table.ehourdata tbody tr td:nth-child(8) { /* ore */
+   /*width: 100px;*/
+   width: 6%;
+}
+section#ggcommessautente table.ehourdata thead tr th:nth-child(9),
+section#ggcommessautente table.ehourdata tbody tr td:nth-child(9) { /* giornate */
+   /*width: 150px;*/
+   width: 10%;
+}
+
+/* ---------------------------- totals ---------------------------------- */
+section#ggcommessautente table.ehourdata tbody
+tr.ggcommessautenteTableTotals td:nth-child(1),
+section#ggcommessautente table.ehourdata tfoot tr td:nth-child(1) { /* totali: */
+   width: 79%;
+}
+section#ggcommessautente table.ehourdata tbody
+tr.ggcommessautenteTableTotals td:nth-child(2),
+section#ggcommessautente table.ehourdata tfoot tr td:nth-child(2) { /* ore */
+   width: 6%;
+}
+section#ggcommessautente table.ehourdata tbody
+tr.ggcommessautenteTableTotals td:nth-child(3),
+section#ggcommessautente table.ehourdata tfoot tr td:nth-child(3) { /* giornate */
+   width: 15%;
+}

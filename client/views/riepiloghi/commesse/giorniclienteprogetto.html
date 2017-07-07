@@ -8,17 +8,33 @@
 			<div ng-controller="GiorniClienteProgettoController as oremese">
 				<table ng-table="oremese.tableParams"
 						class="table table-bordered table-striped table-condensed ehourdata"
+						template-header="templates/table/header/header.html"
 						show-filter="true">
-					<tr ng-repeat="row in $data">
-						<td data-title="'CLIENTE'" filter="{nomeCliente: 'text'}" sortable="'nomeCliente'">
+
+					<tr class="ng-table-group" ng-repeat-start="group in $groups">
+						<td colspan="4">
+							<a href="" ng-click="group.$hideRows = !group.$hideRows">
+								<span class="glyphicon"
+									ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }">
+								</span>
+								<strong>{{ group.value }}</strong>
+							</a>
+						</td>
+					</tr>
+
+					<tr ng-hide="group.$hideRows" ng-repeat="row in group.data">
+						<td data-title="'CLIENTE'" filter="{nomeCliente: 'text'}"
+							sortable="'nomeCliente'" groupable="'nomeCliente'">
 							{{row.nomeCliente}}
 						</td>
-						<td data-title="'CODICE PROGETTO'" filter="{codiceProgetto: 'text'}" sortable="'codiceProgetto'">
+						<td data-title="'CODICE PROGETTO'" filter="{codiceProgetto: 'text'}"
+							sortable="'codiceProgetto'" groupable="'codiceProgetto'">
 							<a ui-sref="projectdetail({projectId: {{row.idProgetto}}})">
 								{{row.codiceProgetto}}
 							</a>
 						</td>
-						<td data-title="'PROGETTO'" filter="{nomeProgetto: 'text'}" sortable="'nomeProgetto'">
+						<td data-title="'PROGETTO'" filter="{nomeProgetto: 'text'}"
+							sortable="'nomeProgetto'" groupable="'nomeProgetto'">
 							<a ui-sref="projectdetail({projectId: {{row.idProgetto}}})">
 								{{row.nomeProgetto}}
 							</a>
@@ -27,6 +43,27 @@
 							{{row.giornateMese}}
 						</td>
 					</tr>
+
+					<tr class="ggclienteprogettoTableTotals" ng-repeat-end>
+						<td colspan="3" class="text-success text-left">
+							<strong>Totali:</strong>
+						</td>
+						<td>
+							<em>{{ sumGrouped(group.data, "giornateMese").toFixed(2).replace(".",",") }}</em>
+						</td>
+        			</tr>
+
+					<tfoot ng-if="isLastPage()">
+	          		<tr>
+							<td colspan="3" class="text-success text-left">
+								<strong>Totali complessivi:</strong>
+							</td>
+							<td>
+								<em>{{ totalDays }}</em>
+							</td>
+	          		</tr>
+	        		</tfoot>
+
 				</table>
 			</div>
 		</div>

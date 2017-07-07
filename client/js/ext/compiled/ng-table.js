@@ -1321,6 +1321,7 @@ function ngTable($q, $parse) {
                     }
                     var localValue;
                     var getter = function (context) {
+							  //console.log('expr: ' + expr + '; localValue: ' + localValue);
                         if (localValue !== undefined) {
                             return localValue;
                         }
@@ -1328,6 +1329,7 @@ function ngTable($q, $parse) {
                     };
                     getter.assign = function ($scope, value) {
                         var parsedExpr = $parse(expr);
+								//console.log('parsedExpr: ' + parsedExpr);
                         if (parsedExpr.assign) {
                             // we should be writing back to the parent scope as this is where the expression
                             // came from
@@ -1448,6 +1450,7 @@ var NgTableColumn = (function () {
             // satisfy the arguments expected by the function returned by parsedAttribute in the ngTable directive
             var getterFn = extendedCol[prop];
             extendedCol[prop] = function () {
+					//console.log('getterFn: ' + getterFn);
 					 if (arguments.length === 1 && !isScopeLike(arguments[0])) {
 						 getterFn.assign(defaultScope, arguments[0]);
                 }

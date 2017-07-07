@@ -16,7 +16,8 @@ angular.module('app', [
     'table.service',
     'riepiloghi',
     'export-service',
-    'menu.directives'
+    'menu.directives',
+    'ngTableCustom'
   ]);
 
 angular.module('common.services',[]);
@@ -24,3 +25,4 @@ angular.module('table.service',[]);
 angular.module('riepiloghi', ['ngFileSaver']);
 angular.module('export-service',[]);
 angular.module('menu.directives', []);
+angular.module('ngTableCustom', []);

@@ -1,0 +1,32 @@
+<tr class="ng-table-sort-header-custom">
+   <th title="{{$column.headerTitle(this)}}"
+         ng-repeat="$column in $columns"
+         ng-if="$column.show(this)"
+         class="header {{$column.class(this)}}">
+      <div class="ng-table-header"
+            ng-class="{
+              'sortable': $column.sortable(this),
+              'sort-asc': params.sorting()[$column.sortable(this)]=='asc',
+              'sort-desc': params.sorting()[$column.sortable(this)]=='desc'
+            }"
+            ng-click="$ctrl.sortBy($column, $event)">
+         <span ng-bind="$column.title(this)"
+               ng-class="{'sort-indicator': params.settings().sortingIndicator == 'span'}">
+         </span>
+      </div>
+      <div class="ng-table-header groupable"
+            ng-class="{
+              'group-checked': $ctrl.isSelectedGroup($column.groupable(this))
+            }"
+            ng-click="$ctrl.groupBy($column.groupable(this))"
+            ng-if="$column.groupable(this)">
+         <div class="group-indicator">
+            <div class="group-icon"
+               ng-class="{
+                 'group-icon::after': $ctrl.isSelectedGroup($column.groupable(this))
+               }">
+            </div>
+         </div>
+      </div>
+   </th>
+</tr>

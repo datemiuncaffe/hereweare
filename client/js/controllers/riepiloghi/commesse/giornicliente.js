@@ -19,10 +19,13 @@ angular
          meseFin: currentMonth
       };
 
+      $scope.totalDays = 0;
+
       var query = $resource('http://' + resourceBaseUrl + '/query_giorni_lav_cliente_mese');
 
       ref.tableParams = new NgTableParams({
-            filter: tablefilter
+            filter: tablefilter,
+            group: "mese"
          },
          {
          	getData : function(params) {
@@ -36,6 +39,11 @@ angular
          				console.log('data.giorniCliente: ' + JSON.stringify(data.giorniCliente, null, '\t'));
          				res = data.giorniCliente;
          			}
+
+                  $scope.totalDays =
+                     $scope.sumGrouped(res, "giornateMese")
+                        .toFixed(2).replace(".",",");
+
          			return res;
          		});
          	}
@@ -49,4 +57,26 @@ angular
          yearIn: 'templates/table/filters/startYear.html',
          yearFin: 'templates/table/filters/endYear.html'
       };
+
+      $scope.isLastPage = function() {
+        return ref.tableParams.page() === $scope.totalPages();
+      };
+
+      $scope.totalPages = function(){
+        return Math.ceil(ref.tableParams.total() /
+          ref.tableParams.count());
+      };
+
+      $scope.sumGrouped = function(data, field) {
+        var sum = 0;
+        data.forEach(function(item){
+          if (item[field] != null &&
+              item[field].length > 0) {
+            var dottedValue = item[field].replace(",",".");
+            sum += parseFloat(dottedValue);
+          }
+        });
+        return sum;
+      };
+
    }]);

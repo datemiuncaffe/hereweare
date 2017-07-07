@@ -9,11 +9,13 @@ angular
     var currentMonth = now.month();
     console.log('inside GiorniClienteProgettoController: year = ' + currentYear + '; month = ' + currentMonth);
 
+    $scope.totalDays = 0;
+
     var query = $resource('http://' + resourceBaseUrl + '/query_giorni_lav_cliente_progetto_mese');
 
     ref.tableParams = new NgTableParams({
-        filter: {
-        }
+        filter: {},
+        group: "nomeCliente"
       },
       {
     		getData : function(params) {
@@ -29,8 +31,35 @@ angular
                      JSON.stringify(data.giorniClienteProgetto, null, '\t'));
     					res = data.giorniClienteProgetto;
     				}
+
+               $scope.totalDays =
+                  $scope.sumGrouped(res, "giornateMese")
+                     .toFixed(2).replace(".",",");
+
     				return res;
     			});
     		}
-  	});
+  	   });
+
+      $scope.isLastPage = function() {
+        return ref.tableParams.page() === $scope.totalPages();
+      };
+
+      $scope.totalPages = function(){
+        return Math.ceil(ref.tableParams.total() /
+          ref.tableParams.count());
+      };
+
+      $scope.sumGrouped = function(data, field) {
+        var sum = 0;
+        data.forEach(function(item){
+          if (item[field] != null &&
+              item[field].length > 0) {
+            var dottedValue = item[field].replace(",",".");
+            sum += parseFloat(dottedValue);
+          }
+        });
+        return sum;
+      };
+
   }]);
