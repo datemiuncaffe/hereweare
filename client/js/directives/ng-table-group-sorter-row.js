@@ -15,7 +15,6 @@ angular
 		function NgTableGroupSorterRowController($scope) {
 			this.$scope = $scope;
 			this.groupFns = [];
-			this.selectedGroups = [];
 		}
 		NgTableGroupSorterRowController.prototype.sortBy = function ($column, event) {
 			var parsedSortable = $column.sortable && $column.sortable();
@@ -50,16 +49,14 @@ angular
 			if (this.isSelectedGroup(group)) {
 				this.changeSortDirection(group);
 			} else {
-				this.getSelectedGroups().splice(0);
-				this.getSelectedGroups().push(group);
 				this.$scope.params.group(group);
 			}
 		};
-		NgTableGroupSorterRowController.prototype.getSelectedGroups = function() {
-			return this.selectedGroups;
+		NgTableGroupSorterRowController.prototype.getSelectedGroup = function() {
+			return this.$scope.params.group();
 		};
 		NgTableGroupSorterRowController.prototype.isSelectedGroup = function (group) {
-			return this.getSelectedGroups().indexOf(group) > -1;
+			return this.getSelectedGroup()[group] != null;
 		};
 		NgTableGroupSorterRowController.prototype.changeSortDirection = function (group) {
 			var newDirection;
