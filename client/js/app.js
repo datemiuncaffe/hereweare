@@ -215,8 +215,11 @@ angular
       function ($rootScope, $scope, $window, $location, crud, $cookies, menu) {
          var currentPageUrl = $window.location.href;
          $scope.loginPageUrl =
-            currentPageUrl.slice(0, currentPageUrl.lastIndexOf('/')) +
-            '/login.html';
+            currentPageUrl.slice(0,
+               currentPageUrl.indexOf($window.location.pathname)) +
+            location.pathname + 'login.html';
+
+         console.log('loginPageUrl: ' + $scope.loginPageUrl);
 
          $scope.hwAuthCookie = $cookies.getObject('hwAuth');
          console.log('hwAuthCookie: ' +
