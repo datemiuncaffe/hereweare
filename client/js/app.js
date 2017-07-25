@@ -31,21 +31,21 @@ angular
            }
         }
       })
-      .state('overview', {
-        url: '/overview',
+      .state('dettaglioprogetto', {
+        url: '/dettaglioprogetto',
         views:{
-          'overviewview': {
-              templateUrl: 'views/estimate/overview.html',
-              controller: 'OverviewController'
+          'dettaglioprogettoview': {
+              templateUrl: 'views/ricerca/dettaglioprogetto.html',
+              controller: 'DettaglioProgettoController'
            }
         }
       })
-      .state('ricerca', {
-        url: '/ricerca',
+      .state('progettipercliente', {
+        url: '/progettipercliente',
         views:{
-          'ricercaview': {
-              templateUrl: 'views/estimate/ricerca.html',
-              controller: 'RicercaController'
+          'progettiperclienteview': {
+              templateUrl: 'views/ricerca/progettipercliente.html',
+              controller: 'ProgettiPerClienteController'
            }
         }
       })
@@ -176,7 +176,7 @@ angular
         }
       });
 
-      $urlRouterProvider.otherwise('overview');
+      $urlRouterProvider.otherwise('dettaglioprogetto');
 
       $locationProvider.hashPrefix('');
 

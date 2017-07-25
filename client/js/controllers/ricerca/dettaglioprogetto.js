@@ -1,6 +1,6 @@
 angular
 	.module("app")
-	.controller("OverviewController", ['$scope', '$resource', '$q', 'crud', '$window', '$log',
+	.controller("DettaglioProgettoController", ['$scope', '$resource', '$q', 'crud', '$window', '$log',
 					function($scope, $resource, $q, crud, $window, $log) {
 		var now = moment();
 		var currentYear = now.year();

@@ -7,56 +7,98 @@
 
     var sections = {
       verticalSections: [
-        {name: 'Overview', type: 'link', state: 'overview', visibility: [1,2,4,5]},
-        {name: 'Ricerca', type: 'link', state: 'ricerca', visibility: [1,2,4,5]},
-        {name: 'Progetti', type: 'toggle', pages: [
-          {name: 'Attivi', type: 'link', state: 'activeprojects', visibility: [1,2,4,5], icon: ''},
-          {name: 'Interni', type: 'link', state: 'senseiprojects', visibility: [1,2,4,5], icon: ''},
-          {name: 'Nuovi', type: 'link', state: 'newprojects', visibility: [1,2,4,5], icon: ''}]
-        },
-        {name: 'Riepilogo dipendenti', type: 'toggle', pages: [
-          {name: 'Ore mese', type: 'link', state: 'oremese', visibility: [1,3,4,5], icon: ''},
-          {name: 'GG commessa dip.', type: 'link', state: 'giornicommessautente', visibility: [1,3,4,5], icon: ''},
-          {name: 'GG dip. commentati', type: 'link', state: 'giornicommessautentewithcomments', visibility: [1,3,4,5], icon: ''}]
-        },
-        {name: 'Riepilogo commesse', type: 'toggle', pages: [
-          {name: 'GG commessa', type: 'link', state: 'giornicommessa', visibility: [1,3,4,5], icon: ''},
-          {name: 'GG erogate', type: 'link', state: 'giorni', visibility: [1,3,4,5], icon: ''},
-          {name: 'GG cliente', type: 'link', state: 'giornicliente', visibility: [1,3,4,5], icon: ''},
-          {name: 'GG cliente progetto', type: 'link', state: 'giorniclienteprogetto', visibility: [1,3,4,5], icon: ''}]
-        },
-        {name: 'Reporting', type: 'toggle', pages: [
-          {name: 'Per dipendente', type: 'link', state: 'employeefilter', visibility: [1,2,4,5], icon: ''}]
-        },
-        {name: 'Budgets', type: 'tree', pages: [], visibility: [1,2,4,5]},
-		  {name: 'Working', type: 'toggle', pages: [
-		    {name: 'Costi interni', type: 'link', state: 'employeecosts', visibility: [1,2,4,5], icon: ''}]
-        },
-        {name: 'Migrate', type: 'link', state: 'migrateehourtables', visibility: [5]}
+         {
+            name: 'Overview', type: 'toggle', pages: [
+               {name: 'Progetti', type: 'link', state: '', visibility: [1,2,4,5], icon: ''}
+            ]
+         },
+         {
+            name: 'Ricerca', type: 'toggle', pages: [
+               {name: 'Dettaglio progetto', type: 'link', state: 'dettaglioprogetto', visibility: [1,2,4,5], icon: ''},
+               {name: 'Progetti per cliente', type: 'link', state: 'progettipercliente', visibility: [1,2,4,5], icon: ''}
+            ]
+         },
+         {
+            name: 'Progetti', type: 'toggle', pages: [
+               {name: 'Attivi', type: 'link', state: 'activeprojects', visibility: [1,2,4,5], icon: ''},
+               {name: 'Interni', type: 'link', state: 'senseiprojects', visibility: [1,2,4,5], icon: ''},
+               {name: 'Nuovi', type: 'link', state: 'newprojects', visibility: [1,2,4,5], icon: ''}
+            ]
+         },
+         {
+            name: 'Riepilogo dipendenti', type: 'toggle', pages: [
+               {name: 'Ore mese', type: 'link', state: 'oremese', visibility: [1,3,4,5], icon: ''},
+               {name: 'GG commessa dip.', type: 'link', state: 'giornicommessautente', visibility: [1,3,4,5], icon: ''},
+               {name: 'GG dip. commentati', type: 'link', state: 'giornicommessautentewithcomments', visibility: [1,3,4,5], icon: ''}
+            ]
+         },
+         {
+            name: 'Riepilogo commesse', type: 'toggle', pages: [
+               {name: 'GG commessa', type: 'link', state: 'giornicommessa', visibility: [1,3,4,5], icon: ''},
+               {name: 'GG erogate', type: 'link', state: 'giorni', visibility: [1,3,4,5], icon: ''},
+               {name: 'GG cliente', type: 'link', state: 'giornicliente', visibility: [1,3,4,5], icon: ''},
+               {name: 'GG cliente progetto', type: 'link', state: 'giorniclienteprogetto', visibility: [1,3,4,5], icon: ''}
+            ]
+         },
+         {
+            name: 'Reporting', type: 'toggle', pages: [
+               {name: 'Per dipendente', type: 'link', state: 'employeefilter', visibility: [1,2,4,5], icon: ''}
+            ]
+         },
+         {
+            name: 'Budgets', type: 'tree', pages: [], visibility: [1,2,4,5]
+         },
+         {
+            name: 'Working', type: 'toggle', pages: [
+               {name: 'Costi interni', type: 'link', state: 'employeecosts', visibility: [1,2,4,5], icon: ''}
+            ]
+         },
+         {
+            name: 'Migrate', type: 'link', state: 'migrateehourtables', visibility: [5]
+         }
       ],
       orizontalSections: [
-        {name: 'Overview', type: 'link', state: 'overview', visibility: [1,2,4,5]},
-        {name: 'Ricerca', type: 'link', state: 'ricerca', visibility: [1,2,4,5]},
-        {name: 'Progetti', type: 'toggle', width: '400px', pages: [
-          {name: 'Attivi', type: 'link', state: 'activeprojects', visibility: [1,2,4,5], icon: ''},
-          {name: 'Interni', type: 'link', state: 'senseiprojects', visibility: [1,2,3,4,5], icon: ''},
-          {name: 'Nuovi', type: 'link', state: 'newprojects', visibility: [1,2,4,5], icon: ''}]
-        },
-        {name: 'Riepilogo dipendenti', type: 'toggle', pages: [
-          {name: 'Ore mese', type: 'link', state: 'oremese', visibility: [1,3,4,5], icon: ''},
-          {name: 'GG commessa dip.', type: 'link', state: 'giornicommessautente', visibility: [1,3,4,5], icon: ''},
-          {name: 'GG dip. commentati', type: 'link', state: 'giornicommessautentewithcomments', visibility: [1,3,4,5], icon: ''}]
-        },
-        {name: 'Riepilogo commesse', type: 'toggle', pages: [
-          {name: 'GG commessa', type: 'link', state: 'giornicommessa', visibility: [1,3,4,5], icon: ''},
-          {name: 'GG erogate', type: 'link', state: 'giorni', visibility: [1,3,4,5], icon: ''},
-          {name: 'GG cliente', type: 'link', state: 'giornicliente', visibility: [1,3,4,5], icon: ''},
-          {name: 'GG cliente progetto', type: 'link', state: 'giorniclienteprogetto', visibility: [1,3,4,5], icon: ''}]
-        },
-        {name: 'Reporting', type: 'toggle', pages: [
-          {name: 'Per dipendente', type: 'link', state: 'employeefilter', visibility: [1,3,4,5], icon: ''}]
-        },
-        {name: 'Migrate', type: 'link', state: 'migrateehourtables', visibility: [5]}
+         {
+            name: 'Overview', type: 'toggle', pages: [
+               {name: 'Progetti', type: 'link', state: '', visibility: [1,2,4,5], icon: ''}
+            ]
+         },
+         {
+            name: 'Ricerca', type: 'toggle', pages: [
+               {name: 'Dettaglio progetto', type: 'link', state: 'dettaglioprogetto', visibility: [1,2,4,5], icon: ''},
+               {name: 'Progetti per cliente', type: 'link', state: 'progettipercliente', visibility: [1,2,4,5], icon: ''}
+            ]
+         },
+         {
+            name: 'Progetti', type: 'toggle', width: '400px', pages: [
+               {name: 'Attivi', type: 'link', state: 'activeprojects', visibility: [1,2,4,5], icon: ''},
+               {name: 'Interni', type: 'link', state: 'senseiprojects', visibility: [1,2,3,4,5], icon: ''},
+               {name: 'Nuovi', type: 'link', state: 'newprojects', visibility: [1,2,4,5], icon: ''}
+            ]
+         },
+         {
+            name: 'Riepilogo dipendenti', type: 'toggle', pages: [
+               {name: 'Ore mese', type: 'link', state: 'oremese', visibility: [1,3,4,5], icon: ''},
+               {name: 'GG commessa dip.', type: 'link', state: 'giornicommessautente', visibility: [1,3,4,5], icon: ''},
+               {name: 'GG dip. commentati', type: 'link', state: 'giornicommessautentewithcomments', visibility: [1,3,4,5], icon: ''}
+            ]
+         },
+         {
+            name: 'Riepilogo commesse', type: 'toggle', pages: [
+               {name: 'GG commessa', type: 'link', state: 'giornicommessa', visibility: [1,3,4,5], icon: ''},
+               {name: 'GG erogate', type: 'link', state: 'giorni', visibility: [1,3,4,5], icon: ''},
+               {name: 'GG cliente', type: 'link', state: 'giornicliente', visibility: [1,3,4,5], icon: ''},
+               {name: 'GG cliente progetto', type: 'link', state: 'giorniclienteprogetto', visibility: [1,3,4,5], icon: ''}
+            ]
+         },
+         {
+            name: 'Reporting', type: 'toggle', pages: [
+               {name: 'Per dipendente', type: 'link', state: 'employeefilter', visibility: [1,3,4,5], icon: ''}
+            ]
+         },
+         {
+            name: 'Migrate', type: 'link', state: 'migrateehourtables', visibility: [5]
+         }
       ]
     };
 

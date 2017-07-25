@@ -1,6 +1,6 @@
 angular
 	.module("app")
-	.controller("RicercaController", ['$scope', '$resource', '$state', '$compile', 'resourceBaseUrl', 'crud', '$q',
+	.controller("ProgettiPerClienteController", ['$scope', '$resource', '$state', '$compile', 'resourceBaseUrl', 'crud', '$q',
 	                                  function($scope, $resource, $state, $compile, resourceBaseUrl, crud, $q) {
 		$scope.customers = null;
 		$scope.selectedCustomer = {
@@ -60,7 +60,7 @@ angular
 			}
 		};
 
-		var table = d3.select("form[name=ricercaForm] div.search_results")
+		var table = d3.select("form[name=progettiPerClienteForm] div.search_results")
 									.append("table")
 									.attr("style", "width:100%; table-layout:fixed;"),
 				thead = table.append("thead"),
