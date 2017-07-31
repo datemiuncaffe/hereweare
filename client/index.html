@@ -15,6 +15,8 @@
 
     <link href="css/styles.css" rel="stylesheet">
 
+    <link href="css/overview/overviewprogetti.css" rel="stylesheet">
+
     <link href="css/project/list/activeprojects.css" rel="stylesheet">
     <link href="css/project/list/senseiprojects.css" rel="stylesheet">
     <link href="css/project/list/newprojects.css" rel="stylesheet">
@@ -95,11 +97,14 @@
 
     <script src="js/pikaday.js"></script>
     <script src="js/directives/calendar.js"></script>
+    <script src="js/directives/hereweare-datatable.js"></script>
     <script src="js/directives/menu-directives.js"></script>
     <script src="js/directives/ng-table-group-sorter-row.js"></script>
 
     <script src="js/controllers/ricerca/dettaglioprogetto.js"></script>
     <script src="js/controllers/ricerca/progettipercliente.js"></script>
+
+    <script src="js/controllers/overview/overviewprogetti.js"></script>
 
     <script src="js/controllers/project/list/activeprojects.js"></script>
     <script src="js/controllers/project/list/senseiprojects.js"></script>
@@ -197,6 +202,7 @@
         <div ui-view="activeprojectsview"></div>
         <div ui-view="senseiprojectsview"></div>
         <div ui-view="newprojectsview"></div>
+        <div ui-view="overviewprogettiview"></div>
         <div ui-view="dettaglioprogettoview" class="calendar"></div>
         <div ui-view="progettiperclienteview"></div>
         <div ui-view="projectdetailview"></div>

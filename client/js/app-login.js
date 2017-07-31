@@ -5,7 +5,6 @@ angular
    'hwlog-service',
    'ngResource',
    'ui.router',
-   'crudService',
    'ngAnimate',
    'ngMaterial',
    'ngAria',
@@ -18,7 +17,7 @@ angular
 
       $locationProvider.hashPrefix('');
 
-      $provide.value('resourceBaseUrl', '$resourceBaseUrl$');
+      $provide.value('resourceBaseUrlBackend', '$resourceBaseUrlBackend$');
   }]);
 
 angular.module('authenService',[]);

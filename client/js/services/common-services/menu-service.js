@@ -9,7 +9,7 @@
       verticalSections: [
          {
             name: 'Overview', type: 'toggle', pages: [
-               {name: 'Progetti', type: 'link', state: '', visibility: [1,2,4,5], icon: ''}
+               {name: 'Progetti', type: 'link', state: 'overviewprogetti', visibility: [1,2,4,5], icon: ''}
             ]
          },
          {
@@ -60,7 +60,7 @@
       orizontalSections: [
          {
             name: 'Overview', type: 'toggle', pages: [
-               {name: 'Progetti', type: 'link', state: '', visibility: [1,2,4,5], icon: ''}
+               {name: 'Progetti', type: 'link', state: 'overviewprogetti', visibility: [1,2,4,5], icon: ''}
             ]
          },
          {

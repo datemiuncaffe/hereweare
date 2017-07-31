@@ -1,7 +1,7 @@
 angular
   .module('riepiloghi')
-  .controller('GiorniCommessaController', ['$scope', '$state', 'NgTableParams', '$resource', 'resourceBaseUrl',
-         function($scope, $state, NgTableParams, $resource, resourceBaseUrl) {
+  .controller('GiorniCommessaController', ['$scope', '$state', 'NgTableParams', '$resource', 'resourceBaseUrlBackend',
+         function($scope, $state, NgTableParams, $resource, resourceBaseUrlBackend) {
       var ref = this;
 
       var now = moment();
@@ -20,7 +20,7 @@ angular
 
       $scope.totalDays = 0;
 
-      var query = $resource('http://' + resourceBaseUrl + '/query_giorni_lav_commessa_mese');
+      var query = $resource('http://' + resourceBaseUrlBackend + '/query_giorni_lav_commessa_mese');
 
       ref.tableParams = new NgTableParams({
             filter: tablefilter,

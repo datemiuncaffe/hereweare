@@ -31,6 +31,15 @@ angular
            }
         }
       })
+      .state('overviewprogetti', {
+        url: '/overviewprogetti',
+        views:{
+          'overviewprogettiview': {
+              templateUrl: 'views/overview/overviewprogetti.html',
+              controller: 'OverviewProgettiController'
+           }
+        }
+      })
       .state('dettaglioprogetto', {
         url: '/dettaglioprogetto',
         views:{
@@ -180,7 +189,8 @@ angular
 
       $locationProvider.hashPrefix('');
 
-      $provide.value('resourceBaseUrl', '$resourceBaseUrl$');
+      $provide.value('resourceBaseUrlBackend', '$resourceBaseUrlBackend$');
+      $provide.value('resourceBaseUrlPoller', '$resourceBaseUrlPoller$');
   }])
   //take all whitespace out of string
   .filter('nospace', function () {

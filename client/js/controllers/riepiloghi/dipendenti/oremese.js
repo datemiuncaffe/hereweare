@@ -1,7 +1,7 @@
 angular
    .module('riepiloghi')
-   .controller('OreMeseController', ['$scope', '$state', 'NgTableParams', '$resource', 'resourceBaseUrl',
-   function($scope, $state, NgTableParams, $resource, resourceBaseUrl) {
+   .controller('OreMeseController', ['$scope', '$state', 'NgTableParams', '$resource', 'resourceBaseUrlBackend',
+   function($scope, $state, NgTableParams, $resource, resourceBaseUrlBackend) {
       var ref = this;
 
       var now = moment();
@@ -21,7 +21,7 @@ angular
 
       $scope.totalHours = 0;
 
-      var query = $resource('http://' + resourceBaseUrl + '/query_ore_lav_utente_mese');
+      var query = $resource('http://' + resourceBaseUrlBackend + '/query_ore_lav_utente_mese');
 
       ref.tableParams = new NgTableParams({
             filter: tablefilter,
@@ -44,7 +44,7 @@ angular
                   $scope.totalHours =
                      $scope.sumGrouped(res, "oreMese")
                         .toFixed(2).replace(".",",");
-                  
+
          			return res;
          		});
          	}

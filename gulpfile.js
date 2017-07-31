@@ -66,14 +66,16 @@ function copyCompleteTestFn() {
 function modifyLocalFn() {
 	gutil.log('modify app.js file in local...');
 	gulp.src([config.local.modify[0].src])
-    //.pipe(replace('$resourceBaseUrl$', 'localhost:3002'))
-	 .pipe(replace('$resourceBaseUrl$', 'hereweare/hereweareapp/hereweare-backend'))
+    //.pipe(replace('$resourceBaseUrlBackend$', 'localhost:3002'))
+	 .pipe(replace('$resourceBaseUrlBackend$', 'hereweare/hereweareapp/hereweare-backend'))
+	 .pipe(replace('$resourceBaseUrlPoller$', 'hereweare/hereweareapp/hereweare-ehour-poller'))
     .pipe(gulp.dest(config.local.modify[0].dest));
 
 	gutil.log('modify ricerca.html file in local...');
 	gulp.src([config.local.modify[1].src])
-    //.pipe(replace('$resourceBaseUrl$', 'localhost:3002'))
-	 .pipe(replace('$resourceBaseUrl$', 'hereweare/hereweareapp/hereweare-backend'))
+    //.pipe(replace('$resourceBaseUrlBackend$', 'localhost:3002'))
+	 .pipe(replace('$resourceBaseUrlBackend$', 'hereweare/hereweareapp/hereweare-backend'))
+	 .pipe(replace('$resourceBaseUrlPoller$', 'hereweare/hereweareapp/hereweare-ehour-poller'))
     .pipe(gulp.dest(config.local.modify[1].dest));
 }
 
@@ -81,20 +83,22 @@ function modifyLocalFn() {
 function modifyTestFn() {
 	gutil.log('modify app.js file in test...');
 	gulp.src([config.test.modify[0].src])
-    //.pipe(replace('$resourceBaseUrl$', '89.96.126.46:3002'))
-	 //.pipe(replace('$resourceBaseUrl$', '192.168.88.184:3002'))
-	 //.pipe(replace('$resourceBaseUrl$', 'localhost:3002'))
-	 //.pipe(replace('$resourceBaseUrl$', '89.96.126.46/hereweare/hereweare-backend'))
-	 .pipe(replace('$resourceBaseUrl$', '89.96.126.46/hereweareapp/hereweare-backend'))
+    //.pipe(replace('$resourceBaseUrlBackend$', '89.96.126.46:3002'))
+	 //.pipe(replace('$resourceBaseUrlBackend$', '192.168.88.184:3002'))
+	 //.pipe(replace('$resourceBaseUrlBackend$', 'localhost:3002'))
+	 //.pipe(replace('$resourceBaseUrlBackend$', '89.96.126.46/hereweare/hereweare-backend'))
+	 .pipe(replace('$resourceBaseUrlBackend$', '89.96.126.46/hereweareapp/hereweare-backend'))
+	 .pipe(replace('$resourceBaseUrlPoller$', '89.96.126.46/hereweareapp/hereweare-ehour-poller'))
     .pipe(gulp.dest(config.test.modify[0].dest));
 
 	gutil.log('modify ricerca.html file in test...');
 	gulp.src([config.test.modify[1].src])
-    //.pipe(replace('$resourceBaseUrl$', '89.96.126.46:3002'))
-	 //.pipe(replace('$resourceBaseUrl$', '192.168.88.184:3002'))
-	 //.pipe(replace('$resourceBaseUrl$', 'localhost:3002'))
-	 //.pipe(replace('$resourceBaseUrl$', '89.96.126.46/hereweare/hereweare-backend'))
-	 .pipe(replace('$resourceBaseUrl$', '89.96.126.46/hereweareapp/hereweare-backend'))
+    //.pipe(replace('$resourceBaseUrlBackend$', '89.96.126.46:3002'))
+	 //.pipe(replace('$resourceBaseUrlBackend$', '192.168.88.184:3002'))
+	 //.pipe(replace('$resourceBaseUrlBackend$', 'localhost:3002'))
+	 //.pipe(replace('$resourceBaseUrlBackend$', '89.96.126.46/hereweare/hereweare-backend'))
+	 .pipe(replace('$resourceBaseUrlBackend$', '89.96.126.46/hereweareapp/hereweare-backend'))
+	 .pipe(replace('$resourceBaseUrlPoller$', '89.96.126.46/hereweareapp/hereweare-ehour-poller'))
     .pipe(gulp.dest(config.test.modify[1].dest));
 }
 

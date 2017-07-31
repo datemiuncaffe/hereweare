@@ -1,0 +1,36 @@
+form[name=overviewProgettiForm] div.top {
+   font-family: Arial;
+   font-size: 14px;
+   width: 100%;
+   float: left;
+   margin-bottom: 10px;
+   border-bottom: 1px solid black;
+}
+
+/* ------------------------ center --------------------------------- */
+form[name=overviewProgettiForm] div.center {
+   font-family: Arial;
+   font-size: 14px;
+   width: 100%;
+   float: left;
+   margin-bottom: 10px;
+   border-bottom: 1px solid black;
+}
+form[name=overviewProgettiForm] div.center div.project_list {
+	margin-bottom: 8px;
+}
+form[name=overviewProgettiForm] div.center div.project_list table {
+   margin-top: 20px;
+}
+form[name=overviewProgettiForm] div.center div.project_list table th {
+   padding-left: 2px;
+   padding-right: 2px;
+	border: 1px solid black;
+}
+form[name=overviewProgettiForm] div.center div.project_list table td {
+   padding-left: 2px;
+   padding-right: 2px;
+	border: 1px solid black;
+}
+
+/* ------------------------ general ----------------------------- */

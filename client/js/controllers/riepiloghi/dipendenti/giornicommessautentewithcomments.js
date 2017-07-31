@@ -1,10 +1,10 @@
 angular
   .module('riepiloghi')
   .controller('giorniCommessaUtenteWithCommentsController',
-      ['$scope', '$state', 'NgTableParams', '$resource', 'resourceBaseUrl',
+      ['$scope', '$state', 'NgTableParams', '$resource', 'resourceBaseUrlBackend',
        '$stateParams', 'FileSaver', 'Blob', 'excelgen',
        '$rootScope', 'crud',
-      function($scope, $state, NgTableParams, $resource, resourceBaseUrl,
+      function($scope, $state, NgTableParams, $resource, resourceBaseUrlBackend,
         $stateParams, FileSaver, Blob, excelgen, $rootScope, crud) {
 	  var ref = this;
 
@@ -38,7 +38,7 @@ angular
     console.log('tablefilter = ' +
       JSON.stringify(tablefilter, null, '\t'));
 
-    var query = $resource('http://' + resourceBaseUrl +
+    var query = $resource('http://' + resourceBaseUrlBackend +
       '/query_giorni_lav_commessa_utente_mese_with_comments');
 
     ref.tableParams = new NgTableParams({

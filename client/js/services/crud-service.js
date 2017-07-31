@@ -12,8 +12,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 (function(window, angular, undefined) {'use strict';
 
 	var module = angular.module("crudService",['angular-cache']);
-	module.factory('crud', ['$resource', 'resourceBaseUrl', 'CacheFactory',
-                function($resource, resourceBaseUrl, CacheFactory) {
+	module.factory('crud',
+         ['$resource', 'CacheFactory', 'resourceBaseUrlBackend', 'resourceBaseUrlPoller',
+         function($resource, CacheFactory, resourceBaseUrlBackend, resourceBaseUrlPoller) {
       var budgetsCostsByCustomerIdsCache;
       if (!CacheFactory.get('budgetsCostsByCustomerIdsCache')) {
          budgetsCostsByCustomerIdsCache = CacheFactory('budgetsCostsByCustomerIdsCache', {
@@ -25,41 +26,45 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       var queries = {
          GET: {
             BOTH: {
-               getBudgetsCostsByCustomerIds: 'http://' + resourceBaseUrl +
+               getBudgetsCostsByCustomerIds: 'http://' + resourceBaseUrlBackend +
                   '/query_budgets_costs_by_customer_ids'
             },
             LOCAL: {
-               getCustomersAndProjects:	'http://' + resourceBaseUrl +
+               getCustomersAndProjects:	'http://' + resourceBaseUrlBackend +
                   '/api/customers?filter[include][projects]=budgets',
-               getBudgets: 'http://' + resourceBaseUrl + '/budgets-ops/budgets',
-               fsBrowseDocs: 'http://' + resourceBaseUrl + '/browseDocs',
-               getEmployeeCosts: 'http://' + resourceBaseUrl + '/redis-ops/users'
+               getBudgets: 'http://' + resourceBaseUrlBackend + '/budgets-ops/budgets',
+               fsBrowseDocs: 'http://' + resourceBaseUrlBackend + '/browseDocs',
+               getEmployeeCosts: 'http://' + resourceBaseUrlBackend + '/redis-ops/users'
             },
             EHOUR: {
-               getActiveUsers: 'http://' + resourceBaseUrl + '/query_active_users',
-               getCustomers: 'http://' + resourceBaseUrl + '/query_customers',
-               getProjectsByCustomerId: 'http://' + resourceBaseUrl +
+               getActiveUsers: 'http://' + resourceBaseUrlBackend + '/query_active_users',
+               getCustomers: 'http://' + resourceBaseUrlBackend + '/query_customers',
+               getProjectsByCustomerId: 'http://' + resourceBaseUrlBackend +
                   '/query_projects_by_customer_id',
-               getProjectById: 'http://' + resourceBaseUrl +
+               getProjectById: 'http://' + resourceBaseUrlBackend +
                   '/query_project_by_id',
-               getCosts: 'http://' + resourceBaseUrl + '/query_costs',
+               getCosts: 'http://' + resourceBaseUrlBackend + '/query_costs',
                getReportsByUserNameAndDateIntervalAndProjects:
-                  'http://' + resourceBaseUrl +
+                  'http://' + resourceBaseUrlBackend +
                   '/query_reports_by_username_dateinterval_projects',
                getProjectsAndCustomersByUserNameAndDateInterval:
-                  'http://' + resourceBaseUrl +
+                  'http://' + resourceBaseUrlBackend +
                   '/query_projects_customers_by_username_dateinterval',
-               showTables: 'http://' + resourceBaseUrl + '/migrate/show_tables'
+               showTables: 'http://' + resourceBaseUrlBackend + '/migrate/show_tables'
+            },
+            HEREWEARE: {
+               getCustomers: 'http://' + resourceBaseUrlPoller + '/api/model/customer/read',
+               getProjectsInCustomers: 'http://' + resourceBaseUrlPoller + '/api/model/projectsInCustomer/read'
             }
          },
          PUT: {
-            updateBudgets: 'http://' + resourceBaseUrl +
+            updateBudgets: 'http://' + resourceBaseUrlBackend +
                '/budgets-ops/update-all-by-project-id'
          },
          POST: {
-            saveProject: 'http://' + resourceBaseUrl + '/projects-ops/save-project',
-            fsSave: 'http://' + resourceBaseUrl + '/save',
-            saveEmployeeCosts: 'http://' + resourceBaseUrl + '/redis-ops/save-users'
+            saveProject: 'http://' + resourceBaseUrlBackend + '/projects-ops/save-project',
+            fsSave: 'http://' + resourceBaseUrlBackend + '/save',
+            saveEmployeeCosts: 'http://' + resourceBaseUrlBackend + '/redis-ops/save-users'
          }
       };
 
@@ -70,77 +75,57 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
                   $resource(queries.GET.BOTH.getBudgetsCostsByCustomerIds, null,
                      {'query':
                         {method:'GET',
-                         cache: CacheFactory.get('budgetsCostsByCustomerIdsCache'),
-                         isArray:true}
+                        cache: CacheFactory.get('budgetsCostsByCustomerIdsCache'),
+                        isArray:true}
                      })
             },
             LOCAL: {
                getCustomersAndProjects:
                   $resource(queries.GET.LOCAL.getCustomersAndProjects, null,
-                     {'query':
-                        {method:'GET',
-                         isArray:true}
-                     }),
+                     {'query': {method:'GET', isArray:true}}),
                getBudgets:
                   $resource(queries.GET.LOCAL.getBudgets, null,
-                     {'query':
-                        {method:'GET'}
-                     }),
+                     {'query': {method:'GET'}}),
                fsBrowseDocs:
                   $resource(queries.GET.LOCAL.fsBrowseDocs, null,
-                     {'query':
-                        {method:'GET'}
-                     }),
+                     {'query': {method:'GET'}}),
                getEmployeeCosts:
                   $resource(queries.GET.LOCAL.getEmployeeCosts, null,
-                     {'query':
-                        {method:'GET'}
-                     })
+                     {'query': {method:'GET'}})
             },
             EHOUR: {
                getActiveUsers:
                   $resource(queries.GET.EHOUR.getActiveUsers, null,
-                     {'query':
-                        {method:'GET',
-                         isArray:true}
-                     }),
+                     {'query': {method:'GET', isArray:true}}),
                getCustomers:
                   $resource(queries.GET.EHOUR.getCustomers, null,
-                     {'query':
-                        {method:'GET',
-                         isArray:true}}),
+                     {'query': {method:'GET', isArray:true}}),
                getProjectsByCustomerId:
                   $resource(queries.GET.EHOUR.getProjectsByCustomerId, null,
-                     {'query':
-                        {method:'GET',
-                         isArray:true}}),
+                     {'query': {method:'GET', isArray:true}}),
                getProjectById:
                   $resource(queries.GET.EHOUR.getProjectById, null,
-                     {'query':
-                        {method:'GET'}
-                     }),
+                     {'query': {method:'GET'}}),
                getCosts:
                   $resource(queries.GET.EHOUR.getCosts, null,
-                     {'query':
-                        {method:'GET',
-                         isArray:true}
-                     }),
+                     {'query': {method:'GET', isArray:true}}),
                getReportsByUserNameAndDateIntervalAndProjects:
                   $resource(queries.GET.EHOUR.getReportsByUserNameAndDateIntervalAndProjects, null,
-                     {'query':
-                        {method:'GET'}
-                     }),
+                     {'query': {method:'GET'}}),
                getProjectsAndCustomersByUserNameAndDateInterval:
                   $resource(queries.GET.EHOUR.getProjectsAndCustomersByUserNameAndDateInterval, null,
-                     {'query':
-                        {method:'GET'}
-                     }),
+                     {'query': {method:'GET'}}),
                showTables:
                   $resource(queries.GET.EHOUR.showTables, null,
-                     {'query':
-                        {method:'GET',
-                         isArray:true}
-                     })
+                     {'query': {method:'GET', isArray:true}})
+            },
+            HEREWEARE: {
+               getCustomers:
+                  $resource(queries.GET.HEREWEARE.getCustomers, null,
+                     {'query': {method:'GET'}}),
+               getProjectsInCustomers:
+                  $resource(queries.GET.HEREWEARE.getProjectsInCustomers, null,
+                     {'query': {method:'GET'}})
             }
          },
          PUT: {
@@ -206,6 +191,14 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
                },
                showTables: function() {
                   return resources.GET.EHOUR.showTables.query().$promise;
+               }
+            },
+            HEREWEARE: {
+               getCustomers: function(){
+                  return resources.GET.HEREWEARE.getCustomers.query().$promise;
+               },
+               getProjectsInCustomers: function(){
+                  return resources.GET.HEREWEARE.getProjectsInCustomers.query().$promise;
                }
             }
          },

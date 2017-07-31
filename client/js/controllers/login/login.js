@@ -3,9 +3,9 @@
 
   angular.module('appLogin')
     .controller('LoginController',
-        ['$rootScope', '$scope', '$window', '$location', 'crud',
+        ['$rootScope', '$scope', '$window', '$location',
          '$cookies', '$authenService', '$authorizeService',
-        function ($rootScope, $scope, $window, $location, crud,
+        function ($rootScope, $scope, $window, $location,
           $cookies, $authenService, $authorizeService) {
 
       $scope.hwuser = {
@@ -30,7 +30,7 @@
       $scope.message = '';
       $scope.register = function(){
         // create user in local mongodb
-				crud.createHwuser($scope.hwuser)
+				$authorizeService.createHwuser($scope.hwuser)
           .then(function(hwuser) {
   					console.log('created hwuser: ' + JSON.stringify(hwuser));
             $scope.message = 'Welcome';
