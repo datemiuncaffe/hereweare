@@ -4,20 +4,25 @@ angular
 		return {
 			restrict: "E",
 			scope: {
-				sourceName: "="
+				sourceName: "=",
+				columnsKeys: "=",
+				type: "=",
+				rowsKey: "="
 			},
 			controller: HereweareDatatableController,
 			link: function(scope, element, attrs, controller) {
 				console.log('hereweareDatatable link');
-				controller.getData(scope.sourceName);
+				controller.getData()
+							.getTable()
+							.compileDatatable();
 			}
 		};
 	});
 
 HereweareDatatableController.$inject = ['$scope', '$log', '$parse', '$compile',
-		'$attrs', '$element', '$document', 'crud'];
+		'$attrs', '$element', '$document', '$q', 'crud'];
 function HereweareDatatableController($scope, $log, $parse, $compile,
-		$attrs, $element, $document, crud) {
+		$attrs, $element, $document, $q, crud) {
 	console.log('HereweareDatatableController');
 	this.$scope = $scope;
 	this.$log = $log;
@@ -27,62 +32,24 @@ function HereweareDatatableController($scope, $log, $parse, $compile,
 	this.$element = $element;
 	this.$document = $document;
 	this.crud = crud;
+	this.deferred = $q.defer();
 
-	this.sources = {
-		"projectsInCustomer": {
-			type: "grouped",
-			rowskey: "projects",
-			header: {
-				name: "NOME PROGETTO",
-				code: "CODICE PROGETTO"
-			}
-		}
-	};
+	this.sourceName = this.$scope.sourceName;
+	this.columnsKeys = this.$scope.columnsKeys;
+	this.type = this.$scope.type;
+	this.rowsKey = this.$scope.rowsKey;
 
-	this.table = '';
-
-	this.starttable = '<table class="hereweare-datatable">';
-	this.endtable = '</table>';
-
-	this.startbody = '<tbody>';
-	this.endbody = '</tbody>';
-};
-
-HereweareDatatableController.prototype.addHeader = function() {
-
-};
-
-HereweareDatatableController.prototype.addBody = function() {
-
-};
-
-HereweareDatatableController.prototype.addRow = function() {
-
-};
-
-HereweareDatatableController.prototype.addGroup = function() {
-
-};
-
-HereweareDatatableController.prototype.getTable = function(sourceName, data) {
-	switch (sourceName) {
-		case "customer":
-
-			break;
-		case "projectsInCustomer":
-
-			break;
-		default:
-
-	}
+	this.data = null;
+	this.table = null;
 };
 
 
-HereweareDatatableController.prototype.getData = function (sourceName) {
-	console.log('HereweareDatatableController getData: sourceName: ' + sourceName);
+
+HereweareDatatableController.prototype.getData = function () {
+	var _this = this;
 
 	var resource;
-	switch (sourceName) {
+	switch (this.sourceName) {
 		case 'customer':
 			resource = this.crud.GET.HEREWEARE.getCustomers();
 			break;
@@ -94,38 +61,153 @@ HereweareDatatableController.prototype.getData = function (sourceName) {
 	if (resource) {
 		resource.then(function(data) {
 			console.log('HereweareDatatable getData: ' + JSON.stringify(data, null, '\t'));
+			console.log('HereweareDatatableController getData resolve');
+			_this.data = data;
+			_this.deferred.resolve('getData completed');
 		}).catch(function(err) {
-			console.log('HereweareDatatable getData err: ' +
-				JSON.stringify(err));
+			//console.log('HereweareDatatable getData err: ' + JSON.stringify(err));
+			console.log('HereweareDatatableController getData reject');
+			_this.deferred.reject('getData ERR: ' + err);
 		});
 	}
 
+	return _this;
+};
+
+HereweareDatatableController.prototype.getTable = function () {
+	var _this = this;
+
+	this.deferred.promise.then(function(success) {
+		console.log('HereweareDatatableController getTable resolve data: ' + _this.data);
+		_this.table = new HereweareTable(_this.data, _this.type,
+				_this.columnsKeys, _this.rowsKey);
+		_this.deferred.reject('getTable success');
+	}).catch(function(failure) {
+		console.log('getTable failure: ' + failure);
+		_this.deferred.reject('getTable failure');
+	});
+
+	return _this;
 };
 
 HereweareDatatableController.prototype.compileDatatable = function () {
-	//  if (!this.$element.hasClass('ng-table')) {
-	// 	  this.$scope.templates = {
-	// 			header: (this.$attrs.templateHeader ? this.$attrs.templateHeader : 'ng-table/header.html'),
-	// 			pagination: (this.$attrs.templatePagination ? this.$attrs.templatePagination : 'ng-table/pager.html')
-	// 	  };
-	// 	  this.$element.addClass('ng-table');
-	// 	  var headerTemplate = void 0;
-	// 	  // $element.find('> thead').length === 0 doesn't work on jqlite
-	// 	  var theadFound_1 = false;
-	// 	  __WEBPACK_IMPORTED_MODULE_0_angular__["forEach"](this.$element.children(), function (e) {
-	// 			if (e.tagName === 'THEAD') {
-	// 				 theadFound_1 = true;
-	// 			}
-	// 	  });
-	// 	  if (!theadFound_1) {
-	// 			headerTemplate = __WEBPACK_IMPORTED_MODULE_0_angular__["element"]('<thead ng-include="templates.header"></thead>', this.$document);
-	// 			this.$element.prepend(headerTemplate);
-	// 	  }
-	// 	  var paginationTemplate = __WEBPACK_IMPORTED_MODULE_0_angular__["element"]('<div ng-table-pagination="params" template-url="templates.pagination"></div>', this.$document);
-	// 	  this.$element.after(paginationTemplate);
-	// 	  if (headerTemplate) {
-	// 			this.$compile(headerTemplate)(this.$scope);
-	// 	  }
-	// 	  this.$compile(paginationTemplate)(this.$scope);
-	//  }
+	var _this = this;
+
+	this.deferred.promise.then(function(success) {
+		try {
+			console.log('HereweareDatatableController compileDatatable resolve');
+			console.log('template: ' + _this.table.template);
+			_this.$element.after(_this.table.template);
+		 	_this.$compile(_this.table.template)(_this.$scope);
+			_this.deferred.resolve('compile success');
+		} catch (e) {
+			_this.deferred.reject('compile failure');
+		} finally {
+
+		}
+	}).catch(function(failure) {
+		_this.deferred.reject('compile failure');
+	});
+
+	return _this;
+};
+
+/* -------------------- table -------------------------- */
+var HereweareTable = function HereweareTable(data, type, columnsKeys, rowsKey) {
+	this.template = "";
+	this.data = data;
+	this.type = type;
+	this.columnsKeys = columnsKeys;
+	this.rowsKey = rowsKey;
+	this.build();
+};
+
+HereweareTable.prototype.build = function() {
+	console.log('build type: ' + this.type);
+	this.template = '<table class="hereweare-datatable">';
+	switch (this.type) {
+		case 'simple':
+			this.buildSimple.call(this);
+			break;
+		case 'grouped':
+			this.buildGrouped.call(this);
+			break;
+		default:
+			this.buildSimple.call(this);
+			break;
+	}
+	this.template += '</table>';
+};
+
+HereweareTable.prototype.buildSimple = function() {
+	console.log('buildSimple data: ' + this.data);
+	if (this.data) {
+		console.log('buildSimple');
+		this.addHeader()
+			.addBody();
+	}
+};
+
+HereweareTable.prototype.buildGrouped = function() {
+	if (this.data) {
+		console.log('buildGrouped');
+		this.addHeader()
+			.addBody();
+	}
+};
+
+HereweareTable.prototype.addHeader = function() {
+	console.log('addHeader');
+	this.template += '<thead>';
+	this.template += '<tr><th>Name</th><th>Position</th></tr>';
+	this.template += '</thead>';
+	return this;
+};
+
+HereweareTable.prototype.addBody = function() {
+	var _this = this;
+
+	this.template += '<tbody>';
+	if (this.rowsKey && this.data) {
+		switch (this.type) {
+			case 'simple':
+				this.data[this.rowsKey.split('.')[0]].forEach(function(item) {
+					_this.addBodyRow(item);
+				});
+				break;
+			case 'grouped':
+				this.data[this.rowsKey.split('.')[0]].forEach(function(item) {
+					_this.addBodyRow();
+					item[_this.rowsKey.split('.')[1]].forEach(function(groupItem) {
+						_this.addBodyRow(groupItem);
+					});
+				});
+				break;
+			default:
+
+				break;
+		}
+	}
+	this.template += '</tbody>';
+	return this;
+};
+
+HereweareTable.prototype.addBodyRow = function(item) {
+	var _this = this;
+
+	if (item) {
+		this.template += '<tr>';
+		this.columnsKeys.split(',').forEach(function(key){
+			_this.template += '<td>' + item[key] + '</td>';
+		});
+		this.template += '</tr>';
+	} else {
+		this.template += '<tr>';
+		this.template += '<td>GROUP</td>';
+		this.template += '</tr>';
+	}
+};
+
+HereweareTable.prototype.addGroup = function() {
+
 };
