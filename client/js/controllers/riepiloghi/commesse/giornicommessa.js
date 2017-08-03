@@ -39,9 +39,9 @@ angular
             			res = data.giorniCommessa;
             		}
 
-               $scope.totalDays =
-                  $scope.sumGrouped(res, "giornateMese")
-                     .toFixed(2).replace(".",",");
+                  $scope.totalDays =
+                     $scope.sumGrouped(res, "giornateMese")
+                           .toFixed(2).replace(".",",");
 
             		return res;
             	});

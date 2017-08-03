@@ -59,7 +59,7 @@ angular
         }
       })
       .state('projectdetail', {
-        url: '/projectdetail?projectId',
+        url: '/projectdetail?projectId&mese&anno',
         views:{
           'projectdetailview': {
               templateUrl: 'views/project/detail.html',

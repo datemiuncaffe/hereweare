@@ -25,13 +25,22 @@ angular
 		};
 		$scope.modifyButton = {
 		};
+		$scope.mese = null;
+		$scope.anno = null;
 		/* end entities */
 
 		if ($stateParams.projectId != null && $stateParams.projectId > 0) {
 			$scope.project.id = parseInt($stateParams.projectId);
 			$scope.modifyButton.link = "projectmodify({projectId: " + $scope.project.id + "})";
 		}
-		console.log('$stateParams.projectId: ' + $stateParams.projectId);
+		if ($stateParams.mese != null && $stateParams.mese > 0) {
+			$scope.mese = $stateParams.mese;
+		}
+		if ($stateParams.anno != null && $stateParams.anno > 0) {
+			$scope.anno = $stateParams.anno;
+		}
+		console.log('$stateParams: projectId = ' + $scope.project.id + '; ' +
+						'mese = ' + $scope.mese + '; ' + 'anno = ' + $scope.anno);
 
 		/* loading data */
 		if ($scope.project.id != null && $scope.project.id > 0) {
@@ -242,7 +251,18 @@ angular
 		function setFilters(data, columns) {
 			var tablefilters = d3.select("tr.tablefilters")
 					.selectAll("input")
-					.attr("value", '')
+					.attr("value", function(d, i) {
+						switch (d) {
+							case 'ANNO':
+								return ($scope.anno ? $scope.anno : '');
+								break;
+							case 'MESE':
+								return ($scope.mese ? months[$scope.mese - 1] : '');
+								break;
+							default:
+								return '';
+						}
+					})
 					.on("input", function(d, i) {
 						var filtereddata = filterTable(data, columns);
 						renderTable(filtereddata, columns);

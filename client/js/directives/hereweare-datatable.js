@@ -6,8 +6,9 @@ angular
 			scope: {
 				sourceName: "=",
 				columnsKeys: "=",
+				rowsKey: "=",
 				type: "=",
-				rowsKey: "="
+				groupKey: "="
 			},
 			controller: HereweareDatatableController,
 			link: function(scope, element, attrs, controller) {
@@ -36,13 +37,13 @@ function HereweareDatatableController($scope, $log, $parse, $compile,
 
 	this.sourceName = this.$scope.sourceName;
 	this.columnsKeys = this.$scope.columnsKeys;
-	this.type = this.$scope.type;
 	this.rowsKey = this.$scope.rowsKey;
+	this.type = this.$scope.type;
+	this.groupKey = this.$scope.groupKey;
 
 	this.data = null;
 	this.table = null;
 };
-
 
 
 HereweareDatatableController.prototype.getData = function () {
@@ -80,7 +81,7 @@ HereweareDatatableController.prototype.getTable = function () {
 	this.deferred.promise.then(function(success) {
 		console.log('HereweareDatatableController getTable resolve data: ' + _this.data);
 		_this.table = new HereweareTable(_this.data, _this.type,
-				_this.columnsKeys, _this.rowsKey);
+				_this.columnsKeys, _this.rowsKey, _this.groupKey);
 		_this.deferred.reject('getTable success');
 	}).catch(function(failure) {
 		console.log('getTable failure: ' + failure);
@@ -113,12 +114,14 @@ HereweareDatatableController.prototype.compileDatatable = function () {
 };
 
 /* -------------------- table -------------------------- */
-var HereweareTable = function HereweareTable(data, type, columnsKeys, rowsKey) {
+var HereweareTable = function HereweareTable(data, type,
+			columnsKeys, rowsKey, groupKey) {
 	this.template = "";
 	this.data = data;
 	this.type = type;
 	this.columnsKeys = columnsKeys;
 	this.rowsKey = rowsKey;
+	this.groupKey = groupKey;
 	this.build();
 };
 
@@ -176,10 +179,10 @@ HereweareTable.prototype.addBody = function() {
 				});
 				break;
 			case 'grouped':
-				this.data[this.rowsKey.split('.')[0]].forEach(function(item) {
-					_this.addBodyRow();
-					item[_this.rowsKey.split('.')[1]].forEach(function(groupItem) {
-						_this.addBodyRow(groupItem);
+				this.data[this.rowsKey.split('.')[0]].forEach(function(groupItem) {
+					_this.addGroupRow(groupItem);
+					groupItem[_this.rowsKey.split('.')[1]].forEach(function(item) {
+						_this.addBodyRow(item);
 					});
 				});
 				break;
@@ -201,13 +204,15 @@ HereweareTable.prototype.addBodyRow = function(item) {
 			_this.template += '<td>' + item[key] + '</td>';
 		});
 		this.template += '</tr>';
-	} else {
-		this.template += '<tr>';
-		this.template += '<td>GROUP</td>';
-		this.template += '</tr>';
 	}
 };
 
-HereweareTable.prototype.addGroup = function() {
-
+HereweareTable.prototype.addGroupRow = function(groupItem) {
+	if (groupItem) {
+		console.log('groupItem: ' + JSON.stringify(groupItem));
+		console.log('groupKey: ' + this.groupKey);
+		this.template += '<tr class="hereweare-datatable-group-row">';
+		this.template += '<td>' + groupItem[this.groupKey] + '</td>';
+		this.template += '</tr>';
+	}
 };

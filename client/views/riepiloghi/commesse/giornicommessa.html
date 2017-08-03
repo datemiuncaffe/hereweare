@@ -37,13 +37,13 @@
 						</td>
 						<td data-title="'CODICE PROGETTO'" filter="{codiceProgetto: 'text'}"
 							sortable="'codiceProgetto'" groupable="'codiceProgetto'">
-							<a ui-sref="projectdetail({projectId: {{row.idProgetto}}})">
+							<a ui-sref="projectdetail({projectId: {{row.idProgetto}}, mese: {{row.mese}}, anno: {{row.anno}}})">
 								{{row.codiceProgetto}}
 							</a>
 						</td>
 						<td data-title="'PROGETTO'" filter="{nomeProgetto: 'text'}"
 							sortable="'nomeProgetto'" groupable="'nomeProgetto'">
-							<a ui-sref="projectdetail({projectId: {{row.idProgetto}}})">
+							<a ui-sref="projectdetail({projectId: {{row.idProgetto}}, mese: {{row.mese}}, anno: {{row.anno}}})">
 								{{row.nomeProgetto}}
 							</a>
 						</td>
