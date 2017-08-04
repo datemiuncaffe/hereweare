@@ -1,0 +1,27 @@
+<table class="hereweare-datatable">
+   <thead>
+      <tr>
+         <th>Name</th>
+         <th>Position</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr class="hereweare-datatable-group-row"
+            ng-repeat-start="group in data[rowsKey.split('.')[0]]">
+         <td colspan="6">
+            {{group[groupKey]}}
+         </td>
+      </tr>
+      <tr ng-repeat="row in group[rowsKey.split('.')[1]]">
+         <td ng-repeat="columnKey in columnsKeys.split(',')">
+            <!--a ui-sref="projectdetail(\{projectId: {{row.idProgetto}}\})"-->
+            <!--a ui-sref=" 'projectdetail(projectId: ' + row.idProgetto + ')' "-->
+            <a ui-sref="projectdetail({ projectId: {{row.projectId}} })"
+               title="{{row.projectId}}">
+               {{row[columnKey]}}
+            </a>
+         </td>
+      </tr>
+      <tr class="" ng-repeat-end></tr>
+   </tbody>
+</table>

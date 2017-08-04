@@ -1,48 +1,66 @@
 angular
-	.module("app")
+	.module("hereweareDatatable")
 	.directive("hereweareDatatable", function() {
 		return {
 			restrict: "E",
 			scope: {
-				sourceName: "=",
-				columnsKeys: "=",
-				rowsKey: "=",
-				type: "=",
-				groupKey: "="
+				sourceName: "="
 			},
 			controller: HereweareDatatableController,
+			templateUrl: function (elem, attrs) {
+				console.log('attrs: ' + attrs.sourceName +
+					'; conf: ' + JSON.stringify(conf.sources[attrs.sourceName]));
+				return conf.sources[attrs.sourceName].template;
+			},
 			link: function(scope, element, attrs, controller) {
 				console.log('hereweareDatatable link');
-				controller.getData()
-							.getTable()
-							.compileDatatable();
+				controller.getData();
+				//			.getTable()
+				//			.compileDatatable();
 			}
 		};
 	});
+
+var conf = {
+	sources: {
+		customer: {
+			type: "simple",
+			template: "js/directives/hereweare-datatable/templates/simple.tmlp.html",
+			rowsKey: "customers",
+			columnsKeys: "name,code"
+		},
+		projectsInCustomer: {
+			type: "grouped",
+			template: "js/directives/hereweare-datatable/templates/grouped.tmlp.html",
+			rowsKey: "projectsInCustomer.projects",
+			columnsKeys: "name,code",
+			groupKey: "name"
+		}
+	}
+};
 
 HereweareDatatableController.$inject = ['$scope', '$log', '$parse', '$compile',
 		'$attrs', '$element', '$document', '$q', 'crud'];
 function HereweareDatatableController($scope, $log, $parse, $compile,
 		$attrs, $element, $document, $q, crud) {
 	console.log('HereweareDatatableController');
-	this.$scope = $scope;
-	this.$log = $log;
-	this.$parse = $parse;
-	this.$compile = $compile;
-	this.$attrs = $attrs;
-	this.$element = $element;
-	this.$document = $document;
+
 	this.crud = crud;
 	this.deferred = $q.defer();
 
-	this.sourceName = this.$scope.sourceName;
-	this.columnsKeys = this.$scope.columnsKeys;
-	this.rowsKey = this.$scope.rowsKey;
-	this.type = this.$scope.type;
-	this.groupKey = this.$scope.groupKey;
+	this.$scope = $scope;
+	this.$scope.data = null;
+	
+	this.sourceName = $attrs.sourceName;
+	$scope.rowsKey = conf.sources[$attrs.sourceName].rowsKey;
+	$scope.columnsKeys = conf.sources[$attrs.sourceName].columnsKeys;
+	$scope.type = conf.sources[$attrs.sourceName].type;
+	$scope.groupKey = conf.sources[$attrs.sourceName].groupKey;
 
-	this.data = null;
-	this.table = null;
+	console.log('rowsKey: ' + $scope.rowsKey +
+		'; columnsKeys: ' + $scope.columnsKeys +
+		'; type: ' + $scope.type + '; groupKey: ' + $scope.groupKey);
+
 };
 
 
@@ -63,7 +81,7 @@ HereweareDatatableController.prototype.getData = function () {
 		resource.then(function(data) {
 			console.log('HereweareDatatable getData: ' + JSON.stringify(data, null, '\t'));
 			console.log('HereweareDatatableController getData resolve');
-			_this.data = data;
+			_this.$scope.data = data;
 			_this.deferred.resolve('getData completed');
 		}).catch(function(err) {
 			//console.log('HereweareDatatable getData err: ' + JSON.stringify(err));
@@ -75,6 +93,7 @@ HereweareDatatableController.prototype.getData = function () {
 	return _this;
 };
 
+/*
 HereweareDatatableController.prototype.getTable = function () {
 	var _this = this;
 
@@ -112,8 +131,10 @@ HereweareDatatableController.prototype.compileDatatable = function () {
 
 	return _this;
 };
+*/
 
 /* -------------------- table -------------------------- */
+/*
 var HereweareTable = function HereweareTable(data, type,
 			columnsKeys, rowsKey, groupKey) {
 	this.template = "";
@@ -202,6 +223,9 @@ HereweareTable.prototype.addBodyRow = function(item) {
 		this.template += '<tr>';
 		this.columnsKeys.split(',').forEach(function(key){
 			_this.template += '<td>' + item[key] + '</td>';
+			// <a ui-sref="projectdetail({projectId: item.projectId})">
+			// 	{{row.codiceProgetto}}
+			// </a>
 		});
 		this.template += '</tr>';
 	}
@@ -216,3 +240,4 @@ HereweareTable.prototype.addGroupRow = function(groupItem) {
 		this.template += '</tr>';
 	}
 };
+*/

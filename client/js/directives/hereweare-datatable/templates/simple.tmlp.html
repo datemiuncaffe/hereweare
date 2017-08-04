@@ -1,0 +1,15 @@
+<table class="hereweare-datatable">
+   <thead>
+      <tr>
+         <th>Name</th>
+         <th>Position</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr ng-repeat="row in data[rowsKey.split('.')[0]]">
+         <td ng-repeat="columnKey in columnsKeys.split(',')">
+            {{row[columnKey]}}
+         </td>
+      </tr>
+   </tbody>
+</table>
