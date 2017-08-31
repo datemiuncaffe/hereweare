@@ -13,8 +13,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
 	var module = angular.module("crudService",['angular-cache']);
 	module.factory('crud',
-         ['$resource', 'CacheFactory', 'resourceBaseUrlBackend', 'resourceBaseUrlPoller',
-         function($resource, CacheFactory, resourceBaseUrlBackend, resourceBaseUrlPoller) {
+         ['$resource', 'CacheFactory', 'resourceBaseUrlBackend', 'resourceBaseUrlOperations',
+         function($resource, CacheFactory, resourceBaseUrlBackend, resourceBaseUrlOperations) {
       var budgetsCostsByCustomerIdsCache;
       if (!CacheFactory.get('budgetsCostsByCustomerIdsCache')) {
          budgetsCostsByCustomerIdsCache = CacheFactory('budgetsCostsByCustomerIdsCache', {
@@ -53,8 +53,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
                showTables: 'http://' + resourceBaseUrlBackend + '/migrate/show_tables'
             },
             HEREWEARE: {
-               getCustomers: 'http://' + resourceBaseUrlPoller + '/api/model/customer/read',
-               getProjectsInCustomers: 'http://' + resourceBaseUrlPoller + '/api/model/projectsInCustomer/read'
+               getCustomers: 'http://' + resourceBaseUrlOperations + '/api/model/customer/read',
+               getProjectsInCustomers: 'http://' + resourceBaseUrlOperations + '/api/model/projectsInCustomer/read'
             }
          },
          PUT: {

@@ -68,14 +68,14 @@ function modifyLocalFn() {
 	gulp.src([config.local.modify[0].src])
     //.pipe(replace('$resourceBaseUrlBackend$', 'localhost:3002'))
 	 .pipe(replace('$resourceBaseUrlBackend$', 'hereweare/hereweareapp/hereweare-backend'))
-	 .pipe(replace('$resourceBaseUrlPoller$', 'hereweare/hereweareapp/hereweare-ehour-poller'))
+	 .pipe(replace('$resourceBaseUrlOperations$', 'hereweare/hereweareapp/hereweare-operations'))
     .pipe(gulp.dest(config.local.modify[0].dest));
 
 	gutil.log('modify ricerca.html file in local...');
 	gulp.src([config.local.modify[1].src])
     //.pipe(replace('$resourceBaseUrlBackend$', 'localhost:3002'))
 	 .pipe(replace('$resourceBaseUrlBackend$', 'hereweare/hereweareapp/hereweare-backend'))
-	 .pipe(replace('$resourceBaseUrlPoller$', 'hereweare/hereweareapp/hereweare-ehour-poller'))
+	 .pipe(replace('$resourceBaseUrlOperations$', 'hereweare/hereweareapp/hereweare-operations'))
     .pipe(gulp.dest(config.local.modify[1].dest));
 }
 
@@ -88,7 +88,7 @@ function modifyTestFn() {
 	 //.pipe(replace('$resourceBaseUrlBackend$', 'localhost:3002'))
 	 //.pipe(replace('$resourceBaseUrlBackend$', '89.96.126.46/hereweare/hereweare-backend'))
 	 .pipe(replace('$resourceBaseUrlBackend$', '89.96.126.46/hereweareapp/hereweare-backend'))
-	 .pipe(replace('$resourceBaseUrlPoller$', '89.96.126.46/hereweareapp/hereweare-ehour-poller'))
+	 .pipe(replace('$resourceBaseUrlOperations$', '89.96.126.46/hereweareapp/hereweare-operations'))
     .pipe(gulp.dest(config.test.modify[0].dest));
 
 	gutil.log('modify ricerca.html file in test...');
@@ -98,7 +98,7 @@ function modifyTestFn() {
 	 //.pipe(replace('$resourceBaseUrlBackend$', 'localhost:3002'))
 	 //.pipe(replace('$resourceBaseUrlBackend$', '89.96.126.46/hereweare/hereweare-backend'))
 	 .pipe(replace('$resourceBaseUrlBackend$', '89.96.126.46/hereweareapp/hereweare-backend'))
-	 .pipe(replace('$resourceBaseUrlPoller$', '89.96.126.46/hereweareapp/hereweare-ehour-poller'))
+	 .pipe(replace('$resourceBaseUrlOperations$', '89.96.126.46/hereweareapp/hereweare-operations'))
     .pipe(gulp.dest(config.test.modify[1].dest));
 }
 

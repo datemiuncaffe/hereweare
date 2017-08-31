@@ -190,7 +190,7 @@ angular
       $locationProvider.hashPrefix('');
 
       $provide.value('resourceBaseUrlBackend', '$resourceBaseUrlBackend$');
-      $provide.value('resourceBaseUrlPoller', '$resourceBaseUrlPoller$');
+      $provide.value('resourceBaseUrlOperations', '$resourceBaseUrlOperations$');
   }])
   //take all whitespace out of string
   .filter('nospace', function () {
