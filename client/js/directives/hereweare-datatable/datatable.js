@@ -14,9 +14,10 @@ angular
 			},
 			link: function(scope, element, attrs, controller) {
 				console.log('hereweareDatatable link');
-				controller.getData();
-				//			.getTable()
-				//			.compileDatatable();
+				controller.getData().then(function(data){
+					console.log('HereweareDatatable LINK getData: ' + JSON.stringify(data, null, '\t'));
+					controller.compile(data, element);
+				});
 			}
 		};
 	});
@@ -39,10 +40,9 @@ var conf = {
 	}
 };
 
-HereweareDatatableController.$inject = ['$scope', '$log', '$parse', '$compile',
-		'$attrs', '$element', '$document', '$q', 'crud'];
-function HereweareDatatableController($scope, $log, $parse, $compile,
-		$attrs, $element, $document, $q, crud) {
+var HereweareDatatableController =
+		['$scope', '$log', '$parse', '$compile', '$attrs', '$element', '$document', '$q', 'crud',
+			function ($scope, $log, $parse, $compile,	$attrs, $element, $document, $q, crud) {
 	console.log('HereweareDatatableController');
 
 	this.crud = crud;
@@ -50,7 +50,7 @@ function HereweareDatatableController($scope, $log, $parse, $compile,
 
 	this.$scope = $scope;
 	this.$scope.data = null;
-	
+
 	this.sourceName = $attrs.sourceName;
 	$scope.rowsKey = conf.sources[$attrs.sourceName].rowsKey;
 	$scope.columnsKeys = conf.sources[$attrs.sourceName].columnsKeys;
@@ -61,183 +61,84 @@ function HereweareDatatableController($scope, $log, $parse, $compile,
 		'; columnsKeys: ' + $scope.columnsKeys +
 		'; type: ' + $scope.type + '; groupKey: ' + $scope.groupKey);
 
-};
+	this.getData = function () {
+		var _this = this;
 
-
-HereweareDatatableController.prototype.getData = function () {
-	var _this = this;
-
-	var resource;
-	switch (this.sourceName) {
-		case 'customer':
-			resource = this.crud.GET.HEREWEARE.getCustomers();
-			break;
-		case 'projectsInCustomer':
-			resource = this.crud.GET.HEREWEARE.getProjectsInCustomers();
-			break;
-		default:
-	}
-	if (resource) {
-		resource.then(function(data) {
-			console.log('HereweareDatatable getData: ' + JSON.stringify(data, null, '\t'));
-			console.log('HereweareDatatableController getData resolve');
-			_this.$scope.data = data;
-			_this.deferred.resolve('getData completed');
-		}).catch(function(err) {
-			//console.log('HereweareDatatable getData err: ' + JSON.stringify(err));
-			console.log('HereweareDatatableController getData reject');
-			_this.deferred.reject('getData ERR: ' + err);
-		});
-	}
-
-	return _this;
-};
-
-/*
-HereweareDatatableController.prototype.getTable = function () {
-	var _this = this;
-
-	this.deferred.promise.then(function(success) {
-		console.log('HereweareDatatableController getTable resolve data: ' + _this.data);
-		_this.table = new HereweareTable(_this.data, _this.type,
-				_this.columnsKeys, _this.rowsKey, _this.groupKey);
-		_this.deferred.reject('getTable success');
-	}).catch(function(failure) {
-		console.log('getTable failure: ' + failure);
-		_this.deferred.reject('getTable failure');
-	});
-
-	return _this;
-};
-
-HereweareDatatableController.prototype.compileDatatable = function () {
-	var _this = this;
-
-	this.deferred.promise.then(function(success) {
-		try {
-			console.log('HereweareDatatableController compileDatatable resolve');
-			console.log('template: ' + _this.table.template);
-			_this.$element.after(_this.table.template);
-		 	_this.$compile(_this.table.template)(_this.$scope);
-			_this.deferred.resolve('compile success');
-		} catch (e) {
-			_this.deferred.reject('compile failure');
-		} finally {
-
-		}
-	}).catch(function(failure) {
-		_this.deferred.reject('compile failure');
-	});
-
-	return _this;
-};
-*/
-
-/* -------------------- table -------------------------- */
-/*
-var HereweareTable = function HereweareTable(data, type,
-			columnsKeys, rowsKey, groupKey) {
-	this.template = "";
-	this.data = data;
-	this.type = type;
-	this.columnsKeys = columnsKeys;
-	this.rowsKey = rowsKey;
-	this.groupKey = groupKey;
-	this.build();
-};
-
-HereweareTable.prototype.build = function() {
-	console.log('build type: ' + this.type);
-	this.template = '<table class="hereweare-datatable">';
-	switch (this.type) {
-		case 'simple':
-			this.buildSimple.call(this);
-			break;
-		case 'grouped':
-			this.buildGrouped.call(this);
-			break;
-		default:
-			this.buildSimple.call(this);
-			break;
-	}
-	this.template += '</table>';
-};
-
-HereweareTable.prototype.buildSimple = function() {
-	console.log('buildSimple data: ' + this.data);
-	if (this.data) {
-		console.log('buildSimple');
-		this.addHeader()
-			.addBody();
-	}
-};
-
-HereweareTable.prototype.buildGrouped = function() {
-	if (this.data) {
-		console.log('buildGrouped');
-		this.addHeader()
-			.addBody();
-	}
-};
-
-HereweareTable.prototype.addHeader = function() {
-	console.log('addHeader');
-	this.template += '<thead>';
-	this.template += '<tr><th>Name</th><th>Position</th></tr>';
-	this.template += '</thead>';
-	return this;
-};
-
-HereweareTable.prototype.addBody = function() {
-	var _this = this;
-
-	this.template += '<tbody>';
-	if (this.rowsKey && this.data) {
-		switch (this.type) {
-			case 'simple':
-				this.data[this.rowsKey.split('.')[0]].forEach(function(item) {
-					_this.addBodyRow(item);
-				});
+		var resource;
+		switch (this.sourceName) {
+			case 'customer':
+				resource = this.crud.GET.HEREWEARE.getCustomers();
 				break;
-			case 'grouped':
-				this.data[this.rowsKey.split('.')[0]].forEach(function(groupItem) {
-					_this.addGroupRow(groupItem);
-					groupItem[_this.rowsKey.split('.')[1]].forEach(function(item) {
-						_this.addBodyRow(item);
-					});
-				});
+			case 'projectsInCustomer':
+				resource = this.crud.GET.HEREWEARE.getProjectsInCustomers();
 				break;
 			default:
-
-				break;
 		}
-	}
-	this.template += '</tbody>';
-	return this;
-};
+		if (resource) {
+			console.log('HereweareDatatableController getting data');
+			return resource.then(function(data) {
+				console.log('HereweareDatatable getData: ' + JSON.stringify(data, null, '\t'));
+				console.log('HereweareDatatableController getData resolve');
+				return data;
+			}).catch(function(err) {
+				console.log('HereweareDatatableController getData reject');
+				return {error: err};
+			});
+		} else {
+			return {error: "error: no resource found"};
+		}
+	};
 
-HereweareTable.prototype.addBodyRow = function(item) {
-	var _this = this;
+	this.compile = function(data, element) {
+		console.log('HereweareDatatableController compile');
 
-	if (item) {
-		this.template += '<tr>';
-		this.columnsKeys.split(',').forEach(function(key){
-			_this.template += '<td>' + item[key] + '</td>';
-			// <a ui-sref="projectdetail({projectId: item.projectId})">
-			// 	{{row.codiceProgetto}}
-			// </a>
+		var tbody = element.find('tbody');
+		var groupRowTemplate = "<tr class=\"hereweare-datatable-group-row\">";
+
+		data[$scope.rowsKey.split('.')[0]].forEach(function(groupRowData) {
+			var groupRow = groupRowTemplate;
+			groupRow += "<td colspan=\"6\">" + groupRowData[$scope.groupKey] + "</td>";
+			groupRow += "</tr>";
+
+			var linkFn = $compile(groupRow);
+			var content = linkFn($scope);
+			tbody.append(content);
+
+			groupRowData[$scope.rowsKey.split('.')[1]].forEach(function(rowData) {
+				var row = "<tr>";
+				$scope.columnsKeys.split(',').forEach(function(columnKey) {
+					row += "<td><a ui-sref=\"projectdetail({ projectId: " +
+							rowData.projectId + " })\" " +
+							"title=\"" + rowData.projectId + "\">" +
+							rowData[columnKey] + "</a></td>";
+				});
+				row += "</tr>";
+
+				linkFn = $compile(row);
+				content = linkFn($scope);
+				tbody.append(content);
+			});
+
 		});
-		this.template += '</tr>';
-	}
-};
 
-HereweareTable.prototype.addGroupRow = function(groupItem) {
-	if (groupItem) {
-		console.log('groupItem: ' + JSON.stringify(groupItem));
-		console.log('groupKey: ' + this.groupKey);
-		this.template += '<tr class="hereweare-datatable-group-row">';
-		this.template += '<td>' + groupItem[this.groupKey] + '</td>';
-		this.template += '</tr>';
-	}
-};
+
+/*
+	<tr class="hereweare-datatable-group-row"
+			ng-repeat-start="group in data[rowsKey.split('.')[0]]">
+		<td colspan="6">
+			{{group[groupKey]}}
+		</td>
+	</tr>
+	<tr ng-repeat="row in group[rowsKey.split('.')[1]]">
+		<td ng-repeat="columnKey in columnsKeys.split(',')">
+			<a ui-sref="projectdetail({ projectId: {{row.projectId}} })"
+				title="{{row.projectId}}">
+				{{row[columnKey]}}
+			</a>
+		</td>
+	</tr>
+	<tr class="" ng-repeat-end></tr>
 */
+	};
+
+}];
