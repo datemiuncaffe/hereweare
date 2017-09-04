@@ -24,6 +24,7 @@
     "nsp": "^2.1.0",
     "shipit-bower": "^0.2.1",
     "shipit-captain": "^0.4.4",
+    "shipit-deploy": "^2.5.1",
     "shipit-npm": "^0.2.0"
   },
   "repository": {
