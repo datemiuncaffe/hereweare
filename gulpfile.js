@@ -225,7 +225,7 @@ var shipitLocalOptions = {
 	init: shipitLocal.init,
 	run: ['deploy:init', 'deploy:update', 'deploy:publish',
 			'deploy:clean', 'deploy:finish', 'bower:install',
-			'npm:run --cmd setup'],
+			'npm:run'],
 	targetEnv: 'staging',
 	confirm: true
 }
@@ -257,7 +257,7 @@ var shipitDeliveryOptions = {
 	init: shipitForDelivery.init,
 	run: ['deploy:init', 'deploy:update', 'deploy:publish',
 			'deploy:clean', 'deploy:finish', 'bower:install',
-			'npm:run --cmd setup'],
+			'npm:run'],
 	targetEnv: 'staging',
 	confirm: false
 }
