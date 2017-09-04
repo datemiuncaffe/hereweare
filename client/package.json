@@ -1,0 +1,9 @@
+{
+  "name": "hereweare-frontend-client",
+  "version": "1.0.0",
+  "description": "hereweare frontend client",
+  "dependencies": {
+    "ng-table": "^3.0.1"
+  },
+  "license": "UNLICENSED"
+}

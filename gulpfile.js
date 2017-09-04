@@ -224,8 +224,8 @@ gulp.task('buildcomplete', buildCompleteFn);
 var shipitLocalOptions = {
 	init: shipitLocal.init,
 	run: ['deploy:init', 'deploy:update', 'deploy:publish',
-			'deploy:clean', 'deploy:finish',
-			'npm:install', 'bower:install'],
+			'deploy:clean', 'deploy:finish', 'bower:install',
+			'npm:run --cmd setup'],
 	targetEnv: 'staging',
 	confirm: true
 }
@@ -256,8 +256,8 @@ gulp.task('sonar:test:js', sonarJsTestAnalysisFn);
 var shipitDeliveryOptions = {
 	init: shipitForDelivery.init,
 	run: ['deploy:init', 'deploy:update', 'deploy:publish',
-			'deploy:clean', 'deploy:finish',
-			'npm:install', 'bower:install'],
+			'deploy:clean', 'deploy:finish', 'bower:install',
+			'npm:run --cmd setup'],
 	targetEnv: 'staging',
 	confirm: false
 }
