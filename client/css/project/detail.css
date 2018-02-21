@@ -80,6 +80,7 @@ form[name=projectDetailForm] div.center table {
 
 form[name=projectDetailForm] div.center table thead {
    width: 60%;
+   font-weight: bold;
 }
 form[name=projectDetailForm] div.center table thead tr {
    width: 60%;
@@ -105,6 +106,12 @@ form[name=projectDetailForm] div.center table tbody tr > td {
    padding-left: 2px;
    padding-right: 2px;
    border: 1px solid black;
+}
+form[name=projectDetailForm] div.center table tbody tr.spacer td {
+   line-height: 20%;
+}
+form[name=projectDetailForm] div.center table tbody tr.totalsrow {
+   font-weight: bold;
 }
 
 /* --------------------------- bottom div ------------------------------ */

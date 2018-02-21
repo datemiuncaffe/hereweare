@@ -1,36 +1,37 @@
 {
-  "name": "hereweare-frontend",
-  "version": "1.0.0",
-  "scripts": {
-    "setup": "bower install && npm install && cd client && npm install",
-    "start": "node .",
-    "pretest": "jshint .",
-    "posttest": "nsp check"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "bower": "^1.8.0",
-    "del": "^2.2.2",
-    "gulp": "^3.9.1",
-    "gulp-changed": "^2.0.0",
-    "gulp-print": "^2.0.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-replace": "^0.5.4",
-    "gulp-sequence": "^0.4.6",
-    "gulp-sonar": "^3.0.0",
-    "gulp-uglify": "^2.0.1",
-    "gulp-util": "^3.0.8",
-    "jshint": "^2.5.6",
-    "nsp": "^2.1.0",
-    "shipit-bower": "^0.2.1",
-    "shipit-captain": "^0.4.4",
-    "shipit-deploy": "^2.5.1",
-    "shipit-npm": "^0.2.0"
-  },
-  "repository": {
-    "type": "",
-    "url": ""
-  },
-  "license": "UNLICENSED",
-  "description": "hereweare-frontend"
+	"name": "hereweare-frontend",
+	"version": "1.0.0",
+	"scripts": {
+		"setup": "bower install && npm install && cd client && npm install",
+		"start": "node .",
+		"pretest": "jshint .",
+		"posttest": "nsp check",
+      "buildcomplete:local": "gulp buildcomplete:local"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"bower": "^1.8.0",
+		"del": "^2.2.2",
+		"gulp": "^3.9.1",
+		"gulp-changed": "^2.0.0",
+		"gulp-print": "^2.0.1",
+		"gulp-rename": "^1.2.2",
+		"gulp-replace": "^0.5.4",
+		"gulp-sequence": "^0.4.6",
+		"gulp-sonar": "^3.0.0",
+		"gulp-uglify": "^2.0.1",
+		"gulp-util": "^3.0.8",
+		"jshint": "^2.5.6",
+		"nsp": "^2.1.0",
+		"shipit-bower": "^0.2.1",
+		"shipit-captain": "^0.4.4",
+		"shipit-deploy": "^2.5.1",
+		"shipit-npm": "^0.2.0"
+	},
+	"repository": {
+		"type": "",
+		"url": ""
+	},
+	"license": "UNLICENSED",
+	"description": "hereweare-frontend"
 }

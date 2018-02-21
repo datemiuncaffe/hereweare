@@ -39,8 +39,8 @@ angular
 		if ($stateParams.anno != null && $stateParams.anno > 0) {
 			$scope.anno = $stateParams.anno;
 		}
-		console.log('$stateParams: projectId = ' + $scope.project.id + '; ' +
-						'mese = ' + $scope.mese + '; ' + 'anno = ' + $scope.anno);
+		//console.log('$stateParams: projectId = ' + $scope.project.id + '; ' +
+		//				'mese = ' + $scope.mese + '; ' + 'anno = ' + $scope.anno);
 
 		/* loading data */
 		if ($scope.project.id != null && $scope.project.id > 0) {
@@ -69,33 +69,33 @@ angular
 			$q.all([
 				crud.GET.LOCAL.getBudgets({id:$scope.project.id})
 						.then(function(res){
-							console.log('success res: ' + JSON.stringify(res, null, '\t'));
+							//console.log('success res: ' + JSON.stringify(res, null, '\t'));
 							return res;
 						}, function(error){
 							var res = {
 								status: error.status,
 								statusText: error.statusText
 							}
-							console.log('error: ' + JSON.stringify(res, null, '\t'));
+							//console.log('error: ' + JSON.stringify(res, null, '\t'));
 							return res;
 						}),
 				crud.GET.EHOUR.getCosts({projectId: $scope.project.id})
 						.then(function(res){
-							console.log('success res: ' + JSON.stringify(res, null, '\t'));
+							//console.log('success res: ' + JSON.stringify(res, null, '\t'));
 							return res;
 						}, function(res){
 							var res = {
 								status: error.status,
 								statusText: error.statusText
 							}
-							console.log('error: ' + JSON.stringify(res, null, '\t'));
+							//console.log('error: ' + JSON.stringify(res, null, '\t'));
 							return res;
 						})
 			]).then(function(data) {
-				console.log('data: ' + JSON.stringify(data, null, '\t'));
+				//console.log('data: ' + JSON.stringify(data, null, '\t'));
 				showData(data);
 			}, function(error){
-				console.log('error: ' + JSON.stringify(error, null, '\t'));
+				//console.log('error: ' + JSON.stringify(error, null, '\t'));
 			});
 		}
 		/* end loading data */
@@ -117,13 +117,13 @@ angular
 				}
 				if (data[0].budgets != null) {
 					budgets = data[0].budgets;
-					console.log('budgets: ' + JSON.stringify(budgets, null, '\t'));
+					//console.log('budgets: ' + JSON.stringify(budgets, null, '\t'));
 				}
 			}
 			var costs = [];
 			if (data[1].length > 0) {
 				costs = data[1];
-				console.log('costs: ' + JSON.stringify(costs, null, '\t'));
+				//console.log('costs: ' + JSON.stringify(costs, null, '\t'));
 			}
 
 			// prepare data for table
@@ -170,16 +170,16 @@ angular
 				});
 
 				var keys = Array.from(map.keys());
-				console.log('keys: ' + keys);
+				//console.log('keys: ' + keys);
 				var firstobj = map.get(keys[0]);
 				for (var field in firstobj) {
-					console.log('typeof field: ' + typeof firstobj[field]);
+					//console.log('typeof field: ' + typeof firstobj[field]);
 				}
 				var sortedKeys = keys.sort();
-				console.log('sortedKeys: ' + sortedKeys);
+				//console.log('sortedKeys: ' + sortedKeys);
 				sortedKeys.forEach(function(key){
 					var value = map.get(key);
-					console.log('m[' + key + '] = ' + JSON.stringify(value));
+					//console.log('m[' + key + '] = ' + JSON.stringify(value));
 					datatable.push(value);
 				});
 
@@ -269,15 +269,78 @@ angular
 					});
 		}
 
+		// add totals row
+		function addTotalsRow(data) {
+			tbody.select("tr.spacer").remove();
+			tbody.select("tr.totalsrow").remove();
+
+			console.log("data: " + JSON.stringify(data));
+			var totalsrowData = [];
+			var totals = {
+				budgetdays: 0,
+				costdays: 0
+			};
+			if (data.length > 0) {
+				totals = data.reduce(function(totals, datum){
+					if (datum.budgetdays) {
+						totals.budgetdays = totals.budgetdays + datum.budgetdays;
+					}
+					if (datum.costdays) {
+						totals.costdays = totals.costdays +
+							parseFloat(datum.costdays.replace(",", "."));
+					}
+					return totals;
+				}, totals);
+				totals.costdays = totals.costdays.toFixed(2).replace(".", ",");
+				console.log("totals = " + JSON.stringify(totals));
+				totalsrowData.push({
+					budgetdays: totals.budgetdays,
+					costdays: totals.costdays
+				});
+
+				tbody.append("tr")
+					.attr('class', 'spacer')
+					.append("td")
+					.html('&nbsp;')
+					.attr('colspan', 7);
+
+				tbody.append("tr")
+					.attr('class', 'totalsrow')
+					.data(totalsrowData)
+					.selectAll("td")
+					.data(function(row) {
+						console.log('row: ' + JSON.stringify(row));
+						return [
+							{value: 'TOTALI GIORNATE', colspan: 5, border: '1px solid black'},
+							{value: row['budgetdays'], colspan: 1, border: '1px solid black'},
+							{value: row['costdays'], colspan: 1, border: '1px solid black'}
+						]
+					})
+					.enter()
+					.append("td")
+					.attr('colspan', function(d) {
+						return d.colspan;
+					})
+					.style('border', function(d) {
+						return d.border;
+					})
+					.text(function(d) {
+						return d.value;
+					});
+			}
+		}
+
 		function renderTable(data, columns) {
-			var rows = tbody.selectAll("tr").data(data,
+			var rows = tbody.selectAll("tr.datarow").data(data,
 					function(d) {
 						return d.id;
 					});
 
 			// create a row for each object in the data
 			var rowsEnter = rows.enter()
-				.insert("tr");
+				//.insert("tr")
+				.append("tr")
+				.attr('class', 'datarow');
 //			.append("tr");
 
 			// create a cell in each row for each column
@@ -295,6 +358,8 @@ angular
 			// var rowsUpdate = rows.attr("style", "font-family: Courier"); // sets the font style
 
 			var rowsExit = rows.exit().remove();
+
+			addTotalsRow(data);
 		}
 
 		function filterTable(rows, columns) {
@@ -306,36 +371,36 @@ angular
 				var inputfilter = d3.select(this).select("input");
 				filtervalues.push(inputfilter.property("value"));
 			});
-			console.log('filtervalues: ' + filtervalues);
+			//console.log('filtervalues: ' + filtervalues);
 
 			var filteredrows = [];
 			rows.forEach(function(row){
-				console.log('row: ' + JSON.stringify(row));
+				//console.log('row: ' + JSON.stringify(row));
 
 				var failures = 0;
 				columns.forEach(function(column, i){
 					if (row[column] != null) {
 						var regExp = new RegExp(filtervalues[i], 'g');
 						var res = regExp.exec(row[column].toString());
-						console.log(column + '-' + row[column].toString() + '; filtervalue: ' + filtervalues[i] + '; res: ' + res);
+						//console.log(column + '-' + row[column].toString() + '; filtervalue: ' + filtervalues[i] + '; res: ' + res);
 						if (res == null) {
 							failures++;
 						}
 					} else {
-						console.log('filtervalue: ' + filtervalues[i]);
+						//console.log('filtervalue: ' + filtervalues[i]);
 						if (filtervalues[i] != null && filtervalues[i].length > 0) {
 							failures++;
 						}
 					}
 				});
 
-				console.log('failures = ' + failures);
+				//console.log('failures = ' + failures);
 				if (failures == 0) {
 					filteredrows.push(row);
 				}
 
 			});
-			console.log('filteredrows: ' + JSON.stringify(filteredrows, null, '\t'));
+			//console.log('filteredrows: ' + JSON.stringify(filteredrows, null, '\t'));
 			return filteredrows;
 		}
 
