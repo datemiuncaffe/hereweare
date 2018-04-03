@@ -17,7 +17,7 @@ var MysqlPool = function() {
 				pool = mysql.createPool({
 					queueLimit: 8,
 				  	connectionLimit : 4,
-					host : "192.168.88.55",
+					host : "192.168.88.111",
 					user : "ehour",
 					password: "ehour",
 					database : "ehour"

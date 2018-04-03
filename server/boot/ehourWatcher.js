@@ -2,7 +2,7 @@ var MySQLEvents = require('mysql-events');
 var logger = require('./../lib/logger');
 
 var conProps = {
-  host : '192.168.88.55',
+  host : '192.168.88.111',
   user : "ehour",
   password: "ehour",
   database : "ehour"
