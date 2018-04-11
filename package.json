@@ -5,7 +5,11 @@
   "scripts": {
     "start": "node .",
     "pretest": "jshint .",
-    "posttest": "nsp check"
+    "posttest": "nsp check",
+    "clean": "gulp clean",
+    "buildcomplete:local": "gulp buildcomplete:local",
+    "buildcomplete:test": "gulp buildcomplete:test",
+    "buildcomplete": "gulp buildcomplete"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
