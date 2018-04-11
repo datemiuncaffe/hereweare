@@ -6,7 +6,10 @@
 		"start": "node .",
 		"pretest": "jshint .",
 		"posttest": "nsp check",
-      "buildcomplete:local": "gulp buildcomplete:local"
+		"clean": "gulp clean",
+		"buildcomplete:local": "gulp buildcomplete:local",
+      "buildcomplete:test": "gulp buildcomplete:test",
+		"buildcomplete": "gulp buildcomplete"
 	},
 	"dependencies": {},
 	"devDependencies": {
