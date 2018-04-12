@@ -342,7 +342,7 @@ angular
 				var failures = 0;
 				columns.forEach(function(column, i){
 					if (row[column] != null) {
-						var regExp = new RegExp(filtervalues[i], 'g');
+						var regExp = new RegExp(filtervalues[i], 'gi');
 						var res = regExp.exec(row[column].toString());
 						console.log(column + '-' + row[column].toString() + '; filtervalue: ' + filtervalues[i] + '; res: ' + res);
 						if (res == null) {
