@@ -254,6 +254,74 @@
     						console.log("change event");
     					});
     		},
+         // add totals row
+   		addTotalsRow: function(table, data) {
+   			table.select("tbody").select("tr.spacer").remove();
+   			table.select("tbody").select("tr.totalsrow").remove();
+
+   			console.log("data: " + JSON.stringify(data));
+   			var totalsrowData = [];
+   			var totals = {
+   				budgetdays: 0,
+   				costdays: 0,
+               costhours: 0
+   			};
+   			if (data.length > 0) {
+   				totals = data.reduce(function(totals, datum){
+   					if (datum.budgetdays) {
+   						totals.budgetdays = totals.budgetdays + datum.budgetdays;
+   					}
+   					if (datum.costdays) {
+   						totals.costdays = totals.costdays +
+   							parseFloat(datum.costdays.replace(",", "."));
+   					}
+                  if (datum.costhours) {
+                     totals.costhours = totals.costhours +
+                        parseFloat(datum.costhours.replace(",", "."));
+                  }
+   					return totals;
+   				}, totals);
+   				totals.costdays = totals.costdays.toFixed(2).replace(".", ",");
+               totals.costhours = totals.costhours.toFixed(2).replace(".", ",");
+   				console.log("totals = " + JSON.stringify(totals));
+   				totalsrowData.push({
+   					budgetdays: totals.budgetdays,
+   					costdays: totals.costdays,
+                  costhours: totals.costhours
+   				});
+
+   				table.select("tbody").append("tr")
+   					.attr('class', 'spacer')
+   					.append("td")
+   					.html('&nbsp;')
+   					.attr('colspan', 7);
+
+   				table.select("tbody").append("tr")
+   					.attr('class', 'totalsrow')
+   					.data(totalsrowData)
+   					.selectAll("td")
+   					.data(function(row) {
+   						console.log('row: ' + JSON.stringify(row));
+   						return [
+   							{value: 'TOTALI GIORNATE', colspan: 4, border: '1px solid black'},
+   							{value: row['budgetdays'], colspan: 1, border: '1px solid black'},
+   							{value: row['costdays'], colspan: 1, border: '1px solid black'},
+                        {value: row['costhours'], colspan: 1, border: '1px solid black'}
+   						]
+   					})
+   					.enter()
+   					.append("td")
+   					.attr('colspan', function(d) {
+   						return d.colspan;
+   					})
+   					.style('border', function(d) {
+   						return d.border;
+   					})
+   					.text(function(d) {
+   						return d.value;
+   					});
+   			}
+   		},
         renderTable: function(id, table, data, columns) {
     			var rows = table.select("tbody").selectAll("tr").data(data,
     				function(d) {
@@ -262,7 +330,7 @@
 
     			// create a row for each object in the data
     			var rowsEnter = rows.enter()
-    				.insert("tr")
+    				.append("tr")
     				.on("click", function(d, i) {
     					console.log("row number: " + i);
     				});
@@ -285,6 +353,7 @@
 
     			this.addPopover(id);
           this.addTableLinks(id, table);
+            this.addTotalsRow(table, data);
 
     		},
     		filterTable: function(table, rows, columns) {

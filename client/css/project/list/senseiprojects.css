@@ -35,6 +35,9 @@ section[id=senseiprojects] div.center table {
    margin-top: 20px;
    margin-bottom: 20px;
 }
+section[id=senseiprojects] div.center table thead {
+   width: 60%;
+}
 section[id=senseiprojects] div.center th {
 	padding-left: 2px;
 	padding-right: 2px;
@@ -44,4 +47,10 @@ section[id=senseiprojects] div.center td {
 	padding-left: 2px;
 	padding-right: 2px;
 	border: 1px solid black;
+}
+section[id=senseiprojects] div.center table tbody tr.spacer td {
+   line-height: 20%;
+}
+section[id=senseiprojects] div.center table tbody tr.totalsrow {
+   font-weight: bold;
 }
