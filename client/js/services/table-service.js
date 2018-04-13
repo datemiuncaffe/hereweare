@@ -323,7 +323,7 @@
    			}
    		},
         renderTable: function(id, table, data, columns) {
-    			var rows = table.select("tbody").selectAll("tr").data(data,
+    			var rows = table.select("tbody").selectAll("tr.datarow").data(data,
     				function(d) {
     					return d.id;
     				});
@@ -331,6 +331,7 @@
     			// create a row for each object in the data
     			var rowsEnter = rows.enter()
     				.append("tr")
+               .attr('class', 'datarow')
     				.on("click", function(d, i) {
     					console.log("row number: " + i);
     				});
@@ -399,8 +400,8 @@
     		},
         addPopover: function(id) {
     			console.log('adding popover');
-    			var tablerows = $("section[id=" + this.sectionId + "] div[data-customer-id='" + id + "']" +
-    												" " + this.projectsContainer + " tbody tr");
+    			var tablerows = $("section[id=" + this.sectionId + "] div[data-customer-id='" +
+               id + "']" + " " + this.projectsContainer + " tbody tr.datarow");
           var hwtablesObj = this;
     			tablerows.each(function() {
     				var rowcells = $(this).find("td");
@@ -431,9 +432,9 @@
           var customerName = customerDiv.find("span.name h4").text();
 
           if ("div.newprojects" == this.projectsContainer) {
-            var tablerows = customerDiv.find(this.projectsContainer + " tbody tr");
+            var tablerows = customerDiv.find(this.projectsContainer + " tbody tr.datarow");
             var rowlinks = [];
-      			table.select("tbody").selectAll("tr").each(function(d){
+      			table.select("tbody").selectAll("tr.datarow").each(function(d){
       				var link = "projectmodify({" +
       							     "projectId: " + d.projectId +
       							  "})";
