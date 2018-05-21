@@ -6,7 +6,6 @@ var changed = require('gulp-changed');
 var gulpSequence = require('gulp-sequence');
 var del = require('del');
 
-var shipitCaptain = require('shipit-captain');
 var sonar = require("gulp-sonar");
 
 var config = require('./gulpconfig.json');
@@ -17,9 +16,6 @@ var sonarHtmlLocalConfig = require('./config/sonar/html/sonar-local-html.json');
 var sonarHtmlTestConfig = require('./config/sonar/html/sonar-test-html.json');
 var sonarJsLocalConfig = require('./config/sonar/js/sonar-local-js.json');
 var sonarJsTestConfig = require('./config/sonar/js/sonar-test-js.json');
-
-var shipitLocal = require('./config/shipit-local');
-var shipitForDelivery = require('./config/shipit-delivery');
 
 /* -------------------- custom functions and tasks -------------------------- */
 
@@ -220,28 +216,6 @@ gulp.task('buildcomplete:test', buildCompleteTestFn);
 gulp.task('build', buildFn);
 gulp.task('buildcomplete', buildCompleteFn);
 
-// ---------------------- Deploy task ----------------------------
-var shipitLocalOptions = {
-	init: shipitLocal.init,
-	run: ['deploy:init', 'deploy:update', 'deploy:publish',
-			'deploy:clean', 'deploy:finish', 'npm:install', 'bower:install',
-			'clientInstall'],
-	targetEnv: 'staging',
-	confirm: true
-}
-gulp.task('deploy-no-fetch:local', function(cb) {
-	try {
-   	shipitCaptain(shipitLocal.config, shipitLocalOptions, cb);
-	} catch(err) {
-		gutil.log('deploy-no-fetch:local err: ' + err);
-	}
-	gutil.log('deploy-no-fetch:local ...');
-});
-gulp.task('build:deploy', function(cb) {
-	gutil.log('build and deploy-no-fetch:local (running in series) ...');
-	gulpSequence('buildcomplete:test', 'deploy-no-fetch:local', cb);
-});
-
 // ------------------ Sonar task -------------------------------
 gulp.task('sonar:local:css', sonarCssLocalAnalysisFn);
 gulp.task('sonar:test:css', sonarCssTestAnalysisFn);
@@ -251,29 +225,6 @@ gulp.task('sonar:local:js', sonarJsLocalAnalysisFn);
 gulp.task('sonar:test:js', sonarJsTestAnalysisFn);
 
 /* ----------------------------- jenkins tasks ------------------------------ */
-
-/* --------- delivery deploy ---------- */
-var shipitDeliveryOptions = {
-	init: shipitForDelivery.init,
-	run: ['deploy:init', 'deploy:update', 'deploy:publish',
-			'deploy:clean', 'deploy:finish', 'npm:install', 'bower:install',
-			'clientInstall'],
-	targetEnv: 'staging',
-	confirm: false
-}
-gulp.task('deploy-no-fetch', function(cb) {
-	try {
-    shipitCaptain(shipitForDelivery.config, shipitDeliveryOptions, cb);
-	} catch(err) {
-	  gutil.log('deploy-no-fetch err: ' + err);
-	}
-	gutil.log('deploy-no-fetch...');
-});
-gulp.task('delivery-pipeline', function(cb) {
-	gutil.log('delivery-pipeline (running in series) ...');
-	gulpSequence('build:test', 'deploy-no-fetch', cb);
-});
-/* --------- end  delivery deploy ---------- */
 
 /* --------- sonar ------------------------- */
 function sonarPipelineLocalCssFn(cb) {
