@@ -1,8 +1,8 @@
 angular
 	.module("app")
 	.controller("ProjectModifyController",
-			['$scope', '$log', '$resource', '$q', '$stateParams', 'crud', 'internalCosts',
-		   function($scope, $log, $resource, $q, $stateParams, crud, internalCosts) {
+			['$scope', '$log', '$q', '$stateParams', 'crud', 'internalCosts',
+		   function($scope, $log, $q, $stateParams, crud, internalCosts) {
 
 		/* entities */
 		$scope.customer = {

@@ -1,7 +1,8 @@
 angular
    .module('riepiloghi')
-   .controller('GiorniClienteController', ['$scope', '$state', 'NgTableParams', '$resource', 'resourceBaseUrlBackend',
-         function($scope, $state, NgTableParams, $resource, resourceBaseUrlBackend) {
+   .controller('GiorniClienteController',
+         ['$scope', '$state', 'NgTableParams', 'crud', 'resourceBaseUrlBackend',
+         function($scope, $state, NgTableParams, crud, resourceBaseUrlBackend) {
       var ref = this;
 
       var now = moment();
@@ -21,8 +22,6 @@ angular
 
       $scope.totalDays = 0;
 
-      var query = $resource('http://' + resourceBaseUrlBackend + '/query_giorni_lav_cliente_mese');
-
       ref.tableParams = new NgTableParams({
             filter: tablefilter,
             group: "mese"
@@ -33,7 +32,7 @@ angular
          		console.log('params.url(): ' + JSON.stringify(params.url(), null, '\t'));
 
          		// ajax request to back end
-         		return query.get(params.url()).$promise.then(function(data) {
+               return crud.GET.EHOUR.getGiorniCliente(params.url()).then(function(data) {
          			var res = [];
          			if (data != null && data.giorniCliente != null && data.giorniCliente.length >0) {
          				console.log('data.giorniCliente: ' + JSON.stringify(data.giorniCliente, null, '\t'));

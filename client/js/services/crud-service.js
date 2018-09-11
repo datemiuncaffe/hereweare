@@ -27,30 +27,51 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
          GET: {
             BOTH: {
                getBudgetsCostsByCustomerIds: 'http://' + resourceBaseUrlBackend +
-                  '/query_budgets_costs_by_customer_ids'
+                  '/ehour/mongo/query/budgets_costs_by_customer_ids'
             },
             LOCAL: {
-               getCustomersAndProjects:	'http://' + resourceBaseUrlBackend +
-                  '/api/customers?filter[include][projects]=budgets',
-               getBudgets: 'http://' + resourceBaseUrlBackend + '/budgets-ops/budgets',
+//    toremove loopback getCustomersAndProjects:	'http://' + resourceBaseUrlBackend +
+//    toremove loopback    '/api/customers?filter[include][projects]=budgets',
+               getBudgets: 'http://' + resourceBaseUrlBackend + '/models/budgets-ops/budgets',
                fsBrowseDocs: 'http://' + resourceBaseUrlBackend + '/browseDocs',
-               getEmployeeCosts: 'http://' + resourceBaseUrlBackend + '/redis-ops/users'
+               getEmployeeCosts: 'http://' + resourceBaseUrlBackend + '/redis/redis-ops/users'
             },
             EHOUR: {
-               getActiveUsers: 'http://' + resourceBaseUrlBackend + '/query_active_users',
-               getCustomers: 'http://' + resourceBaseUrlBackend + '/query_customers',
+               getActiveUsers: 'http://' + resourceBaseUrlBackend + '/ehour/query/bm/usr/active_users',
+               getCustomers: 'http://' + resourceBaseUrlBackend + '/ehour/query/bm/cus/customers',
                getProjectsByCustomerId: 'http://' + resourceBaseUrlBackend +
-                  '/query_projects_by_customer_id',
+                  '/ehour/query/bm/pro/projects_by_customer_id',
                getProjectById: 'http://' + resourceBaseUrlBackend +
-                  '/query_project_by_id',
-               getCosts: 'http://' + resourceBaseUrlBackend + '/query_costs',
+                  '/ehour/query/bm/pro/project_by_id',
+               getCosts: 'http://' + resourceBaseUrlBackend + '/ehour/query/bp/prd/costs',
                getReportsByUserNameAndDateIntervalAndProjects:
                   'http://' + resourceBaseUrlBackend +
-                  '/query_reports_by_username_dateinterval_projects',
+                  '/ehour/query/bp/rep/reports_by_username_dateinterval_projects',
                getProjectsAndCustomersByUserNameAndDateInterval:
                   'http://' + resourceBaseUrlBackend +
-                  '/query_projects_customers_by_username_dateinterval',
-               showTables: 'http://' + resourceBaseUrlBackend + '/migrate/show_tables'
+                  '/ehour/query/bp/rep/projects_customers_by_username_dateinterval',
+               showTables: 'http://' + resourceBaseUrlBackend + '/migrate/show_tables',
+               getGiorni:
+                  'http://' + resourceBaseUrlBackend +
+                  '/ehour/query/bp/com/giorni',
+               getGiorniCliente:
+                  'http://' + resourceBaseUrlBackend +
+                  '/ehour/query/bp/com/giorni_cliente',
+               getGiorniClienteProgetto:
+                  'http://' + resourceBaseUrlBackend +
+                  '/ehour/query/bp/com/giorni_cliente_progetto',
+               getGiorniCommessa:
+                  'http://' + resourceBaseUrlBackend +
+                  '/ehour/query/bp/com/giorni_commessa',
+               getGiorniCommessaUtente:
+                  'http://' + resourceBaseUrlBackend +
+                  '/ehour/query/bp/dip/giorni_commessa_utente',
+               getGiorniCommessaUtenteWithComments:
+                  'http://' + resourceBaseUrlBackend +
+                  '/ehour/query/bp/dip/giorni_commessa_utente_with_comments',
+               getOreLavUtenteMese:
+                  'http://' + resourceBaseUrlBackend +
+                  '/ehour/query/bp/dip/ore_lav_utente'
             },
             HEREWEARE: {
                getCustomers: 'http://' + resourceBaseUrlOperations + '/api/model/customer/read',
@@ -59,10 +80,10 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
          },
          PUT: {
             updateBudgets: 'http://' + resourceBaseUrlBackend +
-               '/budgets-ops/update-all-by-project-id'
+               '/models/budgets-ops/update-all-by-project-id'
          },
          POST: {
-            saveProject: 'http://' + resourceBaseUrlBackend + '/projects-ops/save-project',
+            saveProject: 'http://' + resourceBaseUrlBackend + '/models/projects-ops/save-project',
             fsSave: 'http://' + resourceBaseUrlBackend + '/save',
             saveEmployeeCosts: 'http://' + resourceBaseUrlBackend + '/redis-ops/save-users'
          }
@@ -117,7 +138,28 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
                      {'query': {method:'GET'}}),
                showTables:
                   $resource(queries.GET.EHOUR.showTables, null,
-                     {'query': {method:'GET', isArray:true}})
+                     {'query': {method:'GET', isArray:true}}),
+               getGiorni:
+                  $resource(queries.GET.EHOUR.getGiorni, null,
+                     {'query': {method:'GET'}}),
+               getGiorniCliente:
+                  $resource(queries.GET.EHOUR.getGiorniCliente, null,
+                     {'query': {method:'GET'}}),
+               getGiorniClienteProgetto:
+                  $resource(queries.GET.EHOUR.getGiorniClienteProgetto, null,
+                     {'query': {method:'GET'}}),
+               getGiorniCommessa:
+                  $resource(queries.GET.EHOUR.getGiorniCommessa, null,
+                     {'query': {method:'GET'}}),
+               getGiorniCommessaUtente:
+                  $resource(queries.GET.EHOUR.getGiorniCommessaUtente, null,
+                     {'query': {method:'GET'}}),
+               getGiorniCommessaUtenteWithComments:
+                  $resource(queries.GET.EHOUR.getGiorniCommessaUtenteWithComments, null,
+                     {'query': {method:'GET'}}),
+               getOreLavUtenteMese:
+                  $resource(queries.GET.EHOUR.getOreLavUtenteMese, null,
+                     {'query': {method:'GET'}})
             },
             HEREWEARE: {
                getCustomers:
@@ -191,6 +233,33 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
                },
                showTables: function() {
                   return resources.GET.EHOUR.showTables.query().$promise;
+               },
+               getGiorni: function(params) {
+                  return resources.GET.EHOUR.getGiorni.query(params).$promise;
+               },
+               getGiorniCliente: function(params) {
+                  return resources.GET.EHOUR.getGiorniCliente
+                     .query(params).$promise;
+               },
+               getGiorniClienteProgetto: function(params) {
+                  return resources.GET.EHOUR.getGiorniClienteProgetto
+                     .query(params).$promise;
+               },
+               getGiorniCommessa: function(params) {
+                  return resources.GET.EHOUR.getGiorniCommessa
+                     .query(params).$promise;
+               },
+               getGiorniCommessaUtente: function(params) {
+                  return resources.GET.EHOUR.getGiorniCommessaUtente
+                     .query(params).$promise;
+               },
+               getGiorniCommessaUtenteWithComments: function(params) {
+                  return resources.GET.EHOUR.getGiorniCommessaUtenteWithComments
+                     .query(params).$promise;
+               },
+               getOreLavUtenteMese: function(params) {
+                  return resources.GET.EHOUR.getOreLavUtenteMese
+                     .query(params).$promise;
                }
             },
             HEREWEARE: {

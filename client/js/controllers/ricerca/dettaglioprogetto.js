@@ -1,7 +1,7 @@
 angular
 	.module("app")
-	.controller("DettaglioProgettoController", ['$scope', '$resource', '$q', 'crud', '$window', '$log',
-					function($scope, $resource, $q, crud, $window, $log) {
+	.controller("DettaglioProgettoController", ['$scope', '$q', 'crud', '$window', '$log',
+					function($scope, $q, crud, $window, $log) {
 		var now = moment();
 		var currentYear = now.year();
 		var currentMonth = now.month();

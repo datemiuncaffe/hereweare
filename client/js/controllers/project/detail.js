@@ -1,8 +1,8 @@
 angular
 	.module("app")
 	.controller("ProjectDetailController",
-		['$scope', '$window', '$log', '$resource', '$q', '$stateParams', 'crud',
-	    function($scope, $window, $log, $resource, $q, $stateParams, crud) {
+		['$scope', '$window', '$log', '$q', '$stateParams', 'crud',
+	    function($scope, $window, $log, $q, $stateParams, crud) {
 
 		var months = ['Gennaio','Febbraio','Marzo','Aprile','Maggio',
 				  		  'Giugno','Luglio','Agosto','Settembre','Ottobre',

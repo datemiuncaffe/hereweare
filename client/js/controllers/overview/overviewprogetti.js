@@ -1,8 +1,8 @@
 angular
 	.module("app")
 	.controller("OverviewProgettiController",
-		['$scope', '$resource', '$state', '$compile', 'crud', '$q',
-		function($scope, $resource, $state, $compile, crud, $q) {
+		['$scope', '$state', '$compile', 'crud', '$q',
+		function($scope, $state, $compile, crud, $q) {
 
 			var tbody = angular.element(document)
 				.find("table.hereweare-datatable tbody");

@@ -1,7 +1,7 @@
 angular
 	.module("app")
-	.controller("ProgettiPerClienteController", ['$scope', '$resource', '$state', '$compile', 'resourceBaseUrlBackend', 'crud', '$q',
-	                                  function($scope, $resource, $state, $compile, resourceBaseUrlBackend, crud, $q) {
+	.controller("ProgettiPerClienteController", ['$scope', '$state', '$compile', 'resourceBaseUrlBackend', 'crud', '$q',
+	                                  function($scope, $state, $compile, resourceBaseUrlBackend, crud, $q) {
 		$scope.customers = null;
 		$scope.selectedCustomer = {
 			projects: []

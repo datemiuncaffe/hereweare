@@ -1,9 +1,9 @@
 angular
 	.module("app")
 	.controller("EmployeeFilterController",
-			['$scope', '$resource', '$state', '$sessionStorage', '$window',
+			['$scope', '$state', '$sessionStorage', '$window',
 			 '$log', 'crud', '$q', 'FileSaver', 'Blob', 'excelgen',
-	    function($scope, $resource, $state, $sessionStorage, $window,
+	    function($scope, $state, $sessionStorage, $window,
 				 			 $log, crud, $q, FileSaver, Blob, excelgen) {
 		$scope.employees = null;
 		$scope.selectedEmployee = {};

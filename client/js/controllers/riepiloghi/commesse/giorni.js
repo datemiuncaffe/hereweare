@@ -1,7 +1,7 @@
 angular
    .module('riepiloghi')
-   .controller('GiorniController', ['$scope', '$state', 'NgTableParams', '$resource', 'resourceBaseUrlBackend', function($scope,
-   	  $state, NgTableParams, $resource, resourceBaseUrlBackend) {
+   .controller('GiorniController', ['$scope', '$state', 'NgTableParams', 'crud', 'resourceBaseUrlBackend', function($scope,
+   	  $state, NgTableParams, crud, resourceBaseUrlBackend) {
       var ref = this;
 
       var now = moment();
@@ -21,8 +21,6 @@ angular
 
       $scope.totalDays = 0;
 
-      var query = $resource('http://' + resourceBaseUrlBackend + '/query_giorni_lav_mese');
-
       ref.tableParams = new NgTableParams({
         filter: tablefilter,
         group: "mese"
@@ -33,8 +31,9 @@ angular
       			console.log('params.url(): ' + JSON.stringify(params.url(), null, '\t'));
 
       			// ajax request to back end
-      			return query.get(params.url()).$promise.then(function(data) {
-      				var res = [];
+               return crud.GET.EHOUR.getGiorni(params.url()).then(function(data) {
+                  var res = [];
+                  console.log('typeof: ' + typeof data);
       				if (data != null && data.giorni != null && data.giorni.length >0) {
       					console.log('data: ' + JSON.stringify(data, null, '\t'));
       					res = data.giorni;
@@ -43,9 +42,12 @@ angular
                   $scope.totalDays =
                      $scope.sumGrouped(res, "giornateMese")
                         .toFixed(2).replace(".",",");
+                  console.log('res: ' + JSON.stringify(res, null, '\t'));
+                  console.log('totalDays: ' + $scope.totalDays);
 
       				return res;
       			});
+
       		}
       });
       ref.monthFilterByInterval = {
